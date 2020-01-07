@@ -1,5 +1,5 @@
-# Freedactive Single Page Application Framework ![Alt text](/assets/favicon.ico?raw=true)
-*For JavaScript Developers, Not Framework Developers*
+# ![Alt text](/assets/favicon.ico?raw=true) Freedactive
+*The Single Page Application Framework for JavaScript developers, not framework developers*
 
 ## Purpose?
 The motivation of this framework came about after using all these great SPA frameworks such as: 
