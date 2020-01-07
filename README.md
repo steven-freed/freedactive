@@ -10,9 +10,8 @@ one is for 'JavaScript' developers, *not* framework developers. Now you can harn
 SPA with simple JavaScript expertise rather than pages of 3rd party documentation.
 
 ## Documentation
-
 ### Components
-*Theory:*
+#### Theory
 A component in Freedactive is a first class function that returns an object literal.
 Components are structured in this fashion to allow developers to harness the power
 of access modifiers in JavaScript.
@@ -45,7 +44,7 @@ function App() {
 }
 ```
 
-*Component Required Properties:*
+#### Component Required Properties
 Components also require some properties and methods as well as your choice of
 adding your own for logic or event handlers.
 
@@ -80,7 +79,7 @@ function App() {
 export default App;
 ```
 
-*Using Children in a Component:*
+#### Using Children in a Component
 Using a component in another component is simple, we can use JavaScripts
 backtick strings to insert a component's markup into another components
 markup. First we must invoke our components constructor 'MyButton()' to obtain
@@ -133,7 +132,39 @@ function App() {
 export default App;
 ```
 
-*Router*
+### Styles
+#### Inline Styles
+Freedactive inline styles are very similar to React's inline styles. You use
+camel casing of normal css attributes for keys and normal css values for values.
+
+example:
+```
+function App() {
+
+    const headerStyle = Style({
+        color: "blue"
+    });
+
+    const markup = (`
+        <div id="App">
+            <h1 style=${headerStyle}>Welcome to Freedactive!</h1>
+        </div>
+    `);
+    const style = '';
+    const children = [
+    ];
+    return {
+        getMarkup: () => markup,
+        getStyle: () => style,
+        getChildren: () => children,
+    }
+}
+
+export default App;
+```
+
+### Routing
+#### Router Object
 Navigation is a big concern in SPA. With Freedactive you get the framework
 with batteries included (a Router). To setup routing create a 'Router' object
 and pass it an object literal containing your routes.
@@ -180,34 +211,4 @@ function NavBar() {
 }
 
 export default NavBar;
-```
-
-*Inline Styles*
-Freedactive inline styles are very similar to React's inline styles. You use
-camel casing of normal css attributes for keys and normal css values for values.
-
-example:
-```
-function App() {
-
-    const headerStyle = Style({
-        color: "blue"
-    });
-
-    const markup = (`
-        <div id="App">
-            <h1 style=${headerStyle}>Welcome to Freedactive!</h1>
-        </div>
-    `);
-    const style = '';
-    const children = [
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children,
-    }
-}
-
-export default App;
 ```
