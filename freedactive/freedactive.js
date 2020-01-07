@@ -22,13 +22,13 @@ const router = async function (root, routes) {
         (req.verb ? '/' + req.verb : '');
 
     let route = routes[parsedURL] ? routes[parsedURL]() : null;
-    if (route === null) {
-        getChildren();
-        return;
-    }
+    // if route is unknown just load from 'App' component
+    if (route === null) 
+        route = App();
 
     if (root === "app-router-container" && routes[parsedURL].name === 'App') {
         container.innerHTML = "";
+        return;
     } else {
         container.innerHTML = await route.getMarkup();
     }
@@ -160,10 +160,6 @@ export const Router = function(components) {
     } catch (e) {
         throw e;
     } finally {
-        window.removeEventListener('load', router);
-        window.addEventListener('load', function() {
-            router("app-router-container", components);
-        });
         window.addEventListener('hashchange', function() {
             router("app-router-container", components);
         });
