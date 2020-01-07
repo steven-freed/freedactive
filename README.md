@@ -1,5 +1,4 @@
-# Freedactive Single Page Application Framework
-| ![Alt text](/assets/favicon.ico?raw=true) |
+# Freedactive Single Page Application Framework ![Alt text](/assets/favicon.ico?raw=true)
 *For JavaScript Developers, Not Framework Developers*
 
 ## Purpose?
