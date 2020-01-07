@@ -1,12 +1,13 @@
 # Freedactive Single Page Application Framework
+| ![Alt text](/assets/favicon.ico?raw=true) |
 *For JavaScript Developers, Not Framework Developers*
 
 ## Purpose?
 The motivation of this framework came about after using all these great SPA frameworks such as: 
-React, Angular, and Vue. After using them I noticed that I either knew alot about these frameworks
-or I had to keep up with their latest updates to be able to use the frameworks effectively. This
-inspired me to create Freedactive, another old SPA framework you need to keep up with. However this
-one is for 'JavaScript' developers, *not* framework developers. Now you can harness the power of an
+React, Angular, and Vue. After using them I noticed that I knew alot about these frameworks but
+I didn't know alot about JavaScript or traditional web development. This inspired me to
+create Freedactive, another old SPA framework you need to keep up with. However this one is
+for 'JavaScript' developers, *not* framework developers. Now you can harness the power of an
 SPA with simple JavaScript expertise rather than pages of 3rd party documentation.
 
 ## Documentation

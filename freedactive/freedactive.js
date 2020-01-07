@@ -8,6 +8,13 @@ const props = [
     'getChildren'
 ];
 
+// Initialized App
+window.addEventListener('load', function() {
+    router("app-container", {
+        '/': App
+    });
+});
+
 /**
  * 
  * @param {string} root name of container to be swapped out between routes
@@ -16,8 +23,8 @@ const props = [
 const router = async function (root, routes) {
     
     const container = null || document.getElementById(root);
-    let req = parseRequestURL();
-    let parsedURL = (req.resource ? '/' + req.resource : '/') + 
+    const req = parseRequestURL();
+    const parsedURL = (req.resource ? '/' + req.resource : '/') + 
         (req.id ? '/:id' : '') + 
         (req.verb ? '/' + req.verb : '');
 
@@ -42,20 +49,13 @@ const router = async function (root, routes) {
     await scriptAndStyle(container, getMethodsAndStyle(route), route);
 };
 
-// Initialized App
-window.addEventListener('load', function() {
-    router("app-container", {
-        '/': App
-    });
-});
-
 /**
  *  Parses url with fragmentation identifier
  */
 const parseRequestURL = function () {
     let url = location.hash.slice(1).toLowerCase() || '/';
-    let r = url.split('/');
-    let req = {
+    const r = url.split('/');
+    const req = {
         resource: null,
         id: null,
         verb: null
@@ -84,11 +84,13 @@ const anonToFuncs = function (userMethods) {
             sig = sig.replace("=>", "");
             sig = sig.slice(0, funcBody.indexOf("("));
     
-            let f = sig.indexOf("function");
-            let a = sig.indexOf("async");
+            const func = "function";
+            const asy = "async";
+            const f = sig.indexOf(func);
+            const a = sig.indexOf(asy);
             // if method has keyword 'function'
             if (f > -1) {
-                funcBody = funcBody.splice(f + 8, 0, ` ${method} `);
+                funcBody = funcBody.splice(f + func.length, 0, ` ${method} `);
             } else {
                 // if method is an arrow function
                 // normal arrow function
@@ -96,7 +98,7 @@ const anonToFuncs = function (userMethods) {
                     funcBody = funcBody.splice(0, 0, `function ${method} `);
                 } else {
                     // async arrow function
-                    funcBody = funcBody.splice(a + 5, 0, ` function ${method} `)
+                    funcBody = funcBody.splice(a + asy.length, 0, ` function ${method} `)
                 }
             }
           
@@ -111,7 +113,7 @@ const anonToFuncs = function (userMethods) {
  * @param {Function} component user defined component
  */
 const getMethodsAndStyle = function (component) {
-    let componentProps = Object.assign({}, component);
+    const componentProps = Object.assign({}, component);
     Object.keys(componentProps).map((prop) => {
         if (props.includes(prop) && prop !== 'style')
             delete componentProps[prop];
@@ -132,8 +134,8 @@ const getMethodsAndStyle = function (component) {
 const scriptAndStyle = function (container, userMethods, component) {
     // insert user component methods as a script
     if (Object.keys(userMethods).length) {
-        let scriptCode = anonToFuncs(userMethods);
-        let js = document.createElement('script');
+        const scriptCode = anonToFuncs(userMethods);
+        const js = document.createElement('script');
         js.type = 'text/javascript';
         js.appendChild(document.createTextNode(scriptCode));
         container.appendChild(js);
@@ -141,7 +143,7 @@ const scriptAndStyle = function (container, userMethods, component) {
 
     // insert user component style as a link
     if (component.getStyle()) {
-        let linkStyle = document.createElement('link');
+        const linkStyle = document.createElement('link');
         linkStyle.type = 'text/css';
         linkStyle.rel = 'stylesheet';
         linkStyle.href = component.getStyle();
@@ -155,15 +157,19 @@ const scriptAndStyle = function (container, userMethods, component) {
  * @param {Object} components 
  */
 export const Router = function(components) {
-    try {
-        return `<div id="app-router-container"></div>`;
-    } catch (e) {
-        throw e;
-    } finally {
-        window.addEventListener('hashchange', function() {
-            router("app-router-container", components);
-        });
-    }
+    window.addEventListener('hashchange', function() {
+        router("app-router-container", components);
+    });
+
+    const style = Style({
+        position: 'relative',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%'
+    });
+
+    return `<div id="app-router-container" style="${style}"></div>`;
 };
 
 /**
@@ -174,7 +180,7 @@ export const Router = function(components) {
  */
 export const Style = function (style) {
     let styleList = Object.keys(style).map((key) => {
-        let dashed = key.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
+        const dashed = key.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
         return `${dashed}:${style[key]};`;
     });
     return styleList.join("");

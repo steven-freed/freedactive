@@ -32,10 +32,10 @@ function NavBar() {
     const lis = Object.keys(navRoutes).map((k) => `<li><a href="#${k}">${routes[k].name}</a></li>`);
 
     const markup = (`
+        ${
+            router
+        }
         <div id="navbar">
-            ${
-                router
-            }
             <span></span>
             <ul style="${listStyle}">
                     <li><a href="#"><img src="${logo}" alt="home"></img></a></li>
