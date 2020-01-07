@@ -22,7 +22,7 @@ of access modifiers in JavaScript.
 3. public: any variables or methods placed in the returned object literal
 
 example:
-```
+```js
 function App() {
 
     // constructor
@@ -58,7 +58,7 @@ object literal. This prevents any access modification mistakes such as overwriti
 the markup or style sheet src of a component.
 
 example:
-```
+```js
 function App() {
 
     const markup = (`
@@ -87,7 +87,7 @@ our components public properties, next we call our 'getMarkup' method to
 insert our 'MyButton' component's html 'MyButton().getMarkup()'. 
 
 example:
-```
+```js
 function MyButton() {
     const markup = (`
         <div id="MyButton">
@@ -107,7 +107,7 @@ function MyButton() {
 export default MyButton;
 ```
 
-```
+```js
 import MyButton from './MyButton.js';
 
 function App() {
@@ -138,7 +138,7 @@ Freedactive inline styles are very similar to React's inline styles. You use
 camel casing of normal css attributes for keys and normal css values for values.
 
 example:
-```
+```js
 function App() {
 
     const headerStyle = Style({
@@ -169,7 +169,8 @@ Navigation is a big concern in SPA. With Freedactive you get the framework
 with batteries included (a Router). To setup routing create a 'Router' object
 and pass it an object literal containing your routes.
 
-```
+example:
+```js
 import { Router, } from './freedactive.js';
 
 import App from './App.js';
@@ -221,7 +222,7 @@ Your handlers will be converted to named functions and rendered to the DOM
 as a script element.
 
 example:
-```
+```js
 function HelloWorld() {
 
     // onclick event to invoke the 'notify' function
