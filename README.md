@@ -212,3 +212,39 @@ function NavBar() {
 
 export default NavBar;
 ```
+
+### Events
+#### Event Handlers
+Event handlers for components in Freedactive can be asynchronous, arrow,
+anonymous, or named functions. No need to worry about Babel and polyfills.
+Your handlers will be converted to named functions and rendered to the DOM
+as a script element.
+
+example:
+```
+function HelloWorld() {
+
+    // onclick event to invoke the 'notify' function
+    const markup = (`
+        <div id="hello-world">
+            <button onclick="notify()">Press Here</button>
+        </div>
+    `);
+    const style = './HelloWorld.css';
+    const children = [
+    ];
+    return {
+        getMarkup: () => markup,
+        getStyle: () => style,
+        getChildren: () => children,
+        /**
+        *   public method notify to handle onclick event
+        */
+        notify: function() {
+            alert('Hello World!');
+        },
+    }
+};
+
+export default HelloWorld;
+```
