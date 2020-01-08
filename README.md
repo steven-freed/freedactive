@@ -1,4 +1,4 @@
-# ![Alt text](/assets/favicon.ico?raw=true) Freedactive
+# ![Alt text](/assets/favicon.png?raw=true) Freedactive
 *The Single Page Application Framework for JavaScript developers, not framework developers*
 
 ## Purpose?
@@ -168,6 +168,7 @@ export default App;
 Navigation is a big concern in SPA. With Freedactive you get the framework
 with batteries included (a Router). To setup routing create a 'Router' object
 and pass it an object literal containing your routes.
+(Note: when using the Router object you do not need to include your routing components in the children array of your component (NavBar))
 
 example:
 ```js

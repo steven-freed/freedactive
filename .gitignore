@@ -1,3 +1,4 @@
 *.png
+!favicon.png
 *.jpg
 *.DS_STORE

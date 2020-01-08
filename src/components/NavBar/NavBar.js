@@ -19,7 +19,7 @@ function NavBar() {
     const router = Router(routes);
 
     // logo
-    const logo = '../../../assets/favicon.ico';
+    const logo = '../../../assets/favicon.png';
 
     // inline styles
     const listStyle = Style({
