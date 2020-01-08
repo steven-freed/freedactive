@@ -13,18 +13,9 @@
     justify-content: space-between;
 }
 
-#navbar ul li a {
-    text-decoration: none;
+#navbar li {
     color: inherit;
-    font-size: 22px;
-    padding: 5px;
     outline: none;
-}
-
-#navbar ul li a:target {
-    outline: none;
-    color: inherit;
-    border-bottom: 2px solid;
 }
 
 span {

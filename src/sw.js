@@ -119,6 +119,3 @@ function unregister() {
     });
   }
 }
-
-// registers service worker for app
-register();

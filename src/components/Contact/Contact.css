@@ -2,7 +2,7 @@ input {
     visibility: hidden;
 }
 
-button {
+#contact-button {
     width: 100px;
     height: 50px;
 }

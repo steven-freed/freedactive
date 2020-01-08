@@ -1,8 +1,8 @@
 
 function MyButton() {
     const markup = (`
-        <div id="MyButton">
-            <button>MyButton</button>
+        <div>
+            <button id="my-button">MyButton</button>
         </div>
     `);
     const style = './src/components/MyButton/MyButton.css';

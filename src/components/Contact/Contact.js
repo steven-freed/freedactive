@@ -3,7 +3,7 @@ function Contact() {
     const markup = (`
         <div id="contact">
             <input type="text" value="What's Up?"> 
-            <button onclick="notify()">Contact Us</button>
+            <button id="contact-button" onclick="notify()">Contact Us</button>
         </div>
     `);
     const style = './src/components/Contact/Contact.css';

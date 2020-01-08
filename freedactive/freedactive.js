@@ -1,39 +1,35 @@
-import App from '../src/App.js';
+var App;
 
 // Freedactive component properties
-const props = [
+var props = [
     'style',
     'getMarkup',
     'getStyle',
     'getChildren'
 ];
 
-// Initialized App
-window.addEventListener('load', function() {
+function init(root) {
+    App = root;
+    // Initialized App
     router("app-container", {
         '/': App
     });
-});
+}
 
 /**
  * 
  * @param {string} root name of container to be swapped out between routes
  * @param {Object} routes path, functional component pairs
  */
-const router = async function (root, routes) {
-    
-    const container = null || document.getElementById(root);
-    const req = parseRequestURL();
-    const parsedURL = (req.resource ? '/' + req.resource : '/') + 
-        (req.id ? '/:id' : '') + 
-        (req.verb ? '/' + req.verb : '');
-
-    let route = routes[parsedURL] ? routes[parsedURL]() : null;
+var router = async function (root, routes) {
+    var container = null || document.getElementById(root);
+    var url = parseRequestURL();
+    var route = routes[url] ? routes[url]() : null;
     // if route is unknown just load from 'App' component
     if (route === null) 
         route = App();
 
-    if (root === "app-router-container" && routes[parsedURL].name === 'App') {
+    if (root === "app-router-container" && routes[url].name === 'App') {
         container.innerHTML = "";
         return;
     } else {
@@ -52,19 +48,10 @@ const router = async function (root, routes) {
 /**
  *  Parses url with fragmentation identifier
  */
-const parseRequestURL = function () {
-    let url = location.hash.slice(1).toLowerCase() || '/';
-    const r = url.split('/');
-    const req = {
-        resource: null,
-        id: null,
-        verb: null
-    };
-    req.resource = r[1];
-    req.id = r[2];
-    req.verb = r[3];
-
-    return req;
+var parseRequestURL = function () {
+    var url = location.href;
+    url = url.slice(url.indexOf('/', 8));
+    return url;
 };
 
 /**
@@ -74,20 +61,20 @@ const parseRequestURL = function () {
  * 
  * @param {Array} userMethods methods of any kind
  */
-const anonToFuncs = function (userMethods) {
+var anonToFuncs = function (userMethods) {
     return Object.keys(userMethods).map((method) => {
             // function body without '=>'
-            let funcBody = userMethods[method].toString();
+            var funcBody = userMethods[method].toString();
             funcBody = funcBody.replace("=>", "");
             // function signature, everything before first '('
-            let sig = funcBody.slice(0, funcBody.indexOf("{"));
+            var sig = funcBody.slice(0, funcBody.indexOf("{"));
             sig = sig.replace("=>", "");
             sig = sig.slice(0, funcBody.indexOf("("));
     
-            const func = "function";
-            const asy = "async";
-            const f = sig.indexOf(func);
-            const a = sig.indexOf(asy);
+            var func = "function";
+            var asy = "async";
+            var f = sig.indexOf(func);
+            var a = sig.indexOf(asy);
             // if method has keyword 'function'
             if (f > -1) {
                 funcBody = funcBody.splice(f + func.length, 0, ` ${method} `);
@@ -112,8 +99,8 @@ const anonToFuncs = function (userMethods) {
  * 
  * @param {Function} component user defined component
  */
-const getMethodsAndStyle = function (component) {
-    const componentProps = Object.assign({}, component);
+var getMethodsAndStyle = function (component) {
+    var componentProps = Object.assign({}, component);
     Object.keys(componentProps).map((prop) => {
         if (props.includes(prop) && prop !== 'style')
             delete componentProps[prop];
@@ -131,11 +118,11 @@ const getMethodsAndStyle = function (component) {
  * @param {Array} userMethods user defined public methods
  * @param {Object} component routing component
  */
-const scriptAndStyle = function (container, userMethods, component) {
+var scriptAndStyle = function (container, userMethods, component) {
     // insert user component methods as a script
     if (Object.keys(userMethods).length) {
-        const scriptCode = anonToFuncs(userMethods);
-        const js = document.createElement('script');
+        var scriptCode = anonToFuncs(userMethods);
+        var js = document.createElement('script');
         js.type = 'text/javascript';
         js.appendChild(document.createTextNode(scriptCode));
         container.appendChild(js);
@@ -143,7 +130,7 @@ const scriptAndStyle = function (container, userMethods, component) {
 
     // insert user component style as a link
     if (component.getStyle()) {
-        const linkStyle = document.createElement('link');
+        var linkStyle = document.createElement('link');
         linkStyle.type = 'text/css';
         linkStyle.rel = 'stylesheet';
         linkStyle.href = component.getStyle();
@@ -156,12 +143,15 @@ const scriptAndStyle = function (container, userMethods, component) {
  * 
  * @param {Object} components 
  */
-export const Router = function(components) {
-    window.addEventListener('hashchange', function() {
-        router("app-router-container", components);
+var components;
+var Router = function(comps) {
+    components = comps;
+   /*window.addEventListener('hashchange', function() {
+        router("app-router-container", components, app);
     });
+    */
 
-    const style = Style({
+    var style = Style({
         position: 'relative',
         top: '0',
         left: '0',
@@ -172,15 +162,20 @@ export const Router = function(components) {
     return `<div id="app-router-container" style="${style}"></div>`;
 };
 
+function routeto(link) {
+    history.pushState(null, null, location.origin + link);
+    router("app-router-container", components);
+}
+
 /**
  * Inline Style creator, uses camel casing object literals
  * and converts them to standard css dashed conventions.
  *
  * @param {object} style property, value object literal using camel casing 
  */
-export const Style = function (style) {
-    let styleList = Object.keys(style).map((key) => {
-        const dashed = key.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
+var Style = function (style) {
+    var styleList = Object.keys(style).map((key) => {
+        var dashed = key.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
         return `${dashed}:${style[key]};`;
     });
     return styleList.join("");

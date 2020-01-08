@@ -1,8 +1,3 @@
-import {
-    Style,
-    Router,
-} from '../../../freedactive/freedactive.js';
-
 import App from '../../App.js';
 import About from '../About/About.js';
 import Contact from '../Contact/Contact.js';
@@ -14,7 +9,7 @@ function NavBar() {
         '/about': About,
         '/contact': Contact
     };
-
+    
     // router
     const router = Router(routes);
 
@@ -29,7 +24,7 @@ function NavBar() {
     // li elements for routes
     const navRoutes = Object.assign({}, routes);
     delete navRoutes['/'];
-    const lis = Object.keys(navRoutes).map((k) => `<li><a href="#${k}">${routes[k].name}</a></li>`);
+    const lis = Object.keys(navRoutes).map((k) => `<li onclick="routeto('${k}')">${routes[k].name}</li>`);
 
     const markup = (`
         ${
@@ -38,7 +33,7 @@ function NavBar() {
         <div id="navbar">
             <span></span>
             <ul style="${listStyle}">
-                    <li><a href="#"><img src="${logo}" alt="home"></img></a></li>
+                    <li onclick="routeto('/')"><img src="${logo}" alt="home"></img></li>
                     ${lis.map((li) => li).join('')}
             </ul>
         </div>
