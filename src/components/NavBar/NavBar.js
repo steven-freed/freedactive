@@ -9,7 +9,7 @@ function NavBar() {
         '/about': About,
         '/contact': Contact
     };
-    
+
     // router
     const router = Router(routes);
 

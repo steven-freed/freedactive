@@ -1,5 +1,4 @@
 import NavBar from './components/NavBar/NavBar.js';
-import MyButton from './components/MyButton/MyButton.js';
 
 function App() {
 
@@ -7,14 +6,12 @@ function App() {
         <div id="App">
             <h1>App</h1>
             <p>stuff and more stuff...</p>
-            ${MyButton().getMarkup()}
             ${NavBar().getMarkup()}
         </div>
     `);
     const style = './src/App.css';
     const children = [
-        NavBar,
-        MyButton
+        NavBar
     ];
     return {
         getMarkup: () => markup,

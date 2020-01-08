@@ -9,7 +9,44 @@ create Freedactive, another old SPA framework you need to keep up with. However 
 for 'JavaScript' developers, *not* framework developers. Now you can harness the power of an
 SPA with simple JavaScript expertise rather than pages of 3rd party documentation.
 
+## API
+### Router
+1. Router({ path: component }) - returns div container that will handle swapping components based on route accessed.
+2. routeto(path) - Event listener that should be registered with elements when using Router.
+example:
+```js
+const markup = "<button onclick=`routeto("${path}")`></button>";
+```
+
+### Style
+1. Style({ property: "value" }) - returns inline style given an object of camel cased property and dashed string value pairs (very similar to React's inline styles).
+
 ## Documentation
+### Setup
+In your index.html file you must have: freedactive.js, your App.js (with type "module"), and a script initializing the freedactive library (with type "module").
+```html
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+        <title>Freedactive</title>
+        <!--
+            freedactive spa component framework
+        -->
+        <script src="/freedactive/freedactive.js"></script>
+        <script src="/src/App.js" type="module"></script>
+        <script type="module">
+            // initializes library, like main method in Java and C
+            import App from './src/App.js';
+            Freedactive.init(App);
+        </script>
+    </head>
+    <body>
+        <div id="app-container"></div>
+    </body>
+</html>
+```
+
 ### Components
 #### Theory
 A component in Freedactive is a first class function that returns an object literal.
@@ -188,7 +225,7 @@ function NavBar() {
 
     // create route list items
     const lis = Object.keys(routes).map((path) => {
-        return `<li><a href="#${path}">${routes[path].name}</a></li>`
+        return `<li onclick="routeto('${path}')">${routes[path].name}</li>`
     });
 
     const markup = (`
