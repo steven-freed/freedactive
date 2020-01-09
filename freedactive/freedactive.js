@@ -14,7 +14,7 @@ var Freedactive = (function() {
      */
     var init = function(root) {
         App = root;
-        router("app-container", {
+        router('app-container', {
             '/': App
         });
     }
@@ -34,7 +34,7 @@ var Freedactive = (function() {
      * @param {string} root name of component container to be swapped during route changes
      * @param {Object} routes { path: component } pairs
      */
-    var router = async function (root, routes) {
+    var router = function (root, routes) {
         var container = null || document.getElementById(root);
         var url = Utils.parseUrl();
         var currentRoute = routes[url] ? routes[url]() : null;
@@ -44,21 +44,21 @@ var Freedactive = (function() {
             currentRoute = App();
 
         // prevents page reloads when using Router if 'App' is the route 
-        if (root === "app-router-container" && routes[url].name === 'App') {
-            container.innerHTML = "";
+        if (root === 'app-router-container' && routes[url].name === 'App') {
+            container.innerHTML = '';
             return;
         } else {
             // sets container with current route's markup
-            container.innerHTML = await currentRoute.getMarkup();
+            container.innerHTML = currentRoute.getMarkup();
         }
     
         // loads scripts and styles for child components of current route
-        await currentRoute.getChildren().map(function(child) {
+        currentRoute.getChildren().map(function(child) {
             Utils.scriptAndStyle(container, Utils.getMethodsAndStyle(child(), props), child());
         });
     
         // loads scripts and styles for current route
-        await Utils.scriptAndStyle(container, Utils.getMethodsAndStyle(currentRoute, props), currentRoute);
+        Utils.scriptAndStyle(container, Utils.getMethodsAndStyle(currentRoute, props), currentRoute);
     };
 
 
@@ -87,27 +87,27 @@ var Freedactive = (function() {
             return Object.keys(userMethods).map(function(method) {
                     // function body without '=>'
                     var funcBody = userMethods[method].toString();
-                    funcBody = funcBody.replace("=>", "");
+                    funcBody = funcBody.replace('=>', '');
                     // function signature, everything before first '('
-                    var sig = funcBody.slice(0, funcBody.indexOf("{"));
-                    sig = sig.replace("=>", "");
-                    sig = sig.slice(0, funcBody.indexOf("("));
+                    var sig = funcBody.slice(0, funcBody.indexOf('{'));
+                    sig = sig.replace('=>', '');
+                    sig = sig.slice(0, funcBody.indexOf('('));
             
-                    var func = "function";
-                    var asy = "async";
+                    var func = 'function';
+                    var asy = 'async';
                     var f = sig.indexOf(func);
                     var a = sig.indexOf(asy);
                     // if method has keyword 'function'
                     if (f > -1) {
-                        funcBody = funcBody.splice(f + func.length, 0, ` ${method} `);
+                        funcBody = funcBody.splice(f + func.length, 0, ' ' + method + ' ');
                     } else {
                         // if method is an arrow function
                         // normal arrow function
                         if (a < 0) { 
-                            funcBody = funcBody.splice(0, 0, `function ${method} `);
+                            funcBody = funcBody.splice(0, 0, 'function ' + method + ' ');
                         } else {
                             // async arrow function
-                            funcBody = funcBody.splice(a + asy.length, 0, ` function ${method} `)
+                            funcBody = funcBody.splice(a + asy.length, 0, ' function ' + method + ' ')
                         }
                     }
                 
@@ -187,7 +187,7 @@ var Freedactive = (function() {
             height: '100%'
         });
 
-        return `<div id="app-router-container" style="${style}"></div>`;
+        return '<div id="app-router-container" style="' + style + '"></div>';
     };
 
     /**
@@ -198,7 +198,7 @@ var Freedactive = (function() {
      */
     var routeto = function(link) {
         history.pushState(null, null, location.origin + link);
-        router("app-router-container", components);
+        router('app-router-container', components);
     }
 
     /**
@@ -210,11 +210,11 @@ var Freedactive = (function() {
     var Style = function(style) {
         var styleList = Object.keys(style).map(function(key) {
             var dashed = key.replace(/[A-Z]/g, function(m) {
-                return "-" + m.toLowerCase();
+                return '-' + m.toLowerCase();
             });
-            return `${dashed}:${style[key]};`;
+            return dashed + ':' + style[key] + ';';
         });
-        return styleList.join("");
+        return styleList.join('');
     };
 
     // user accessible props
@@ -251,5 +251,5 @@ var Style = function(style) {
 
 // extends strings to include splice
 String.prototype.splice = function(start, remove, str) {
-    return `${this.slice(0, start)}${str}${this.slice(start + Math.abs(remove))}`;
+    return this.slice(0, start) + str + this.slice(start + Math.abs(remove));
 };
