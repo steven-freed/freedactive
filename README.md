@@ -23,21 +23,28 @@ const markup = "<button onclick=`routeto("${path}")`></button>";
 
 ## Documentation
 ### Setup
-In your index.html file you must have: freedactive.js, your App.js (with type "module"), and a script initializing the freedactive library (with type "module").
+In your index.html file you must have: 
+1. freedactive.min.js file from https://steven-freed.github.io/freedactive/freedactive.min.js
+containing the framework
+2. your entry component App.js
+(with type "module" if using ECMAScript2015+)
+3. script tag to initialize the freedactive library with your entry component
+(with type "module" if using ECMAScript2015+)
+4. div with id "app-container"
 ```html
 <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
         <title>Freedactive</title>
-        <!--
-            freedactive spa component framework
-        -->
-        <script src="/freedactive/freedactive.js"></script>
-        <script src="/src/App.js" type="module"></script>
+
+        <!-- 1 -->
+        <script src="https://steven-freed.github.io/freedactive/freedactive.min.js"></script>
+        <!-- 2 -->
+        <script src="/App.js" type="module"></script>
+        <!-- 3 -->
         <script type="module">
-            // initializes library, like main method in Java and C
-            import App from './src/App.js';
+            import App from './App.js';
             Freedactive.init(App);
         </script>
     </head>
@@ -47,7 +54,8 @@ In your index.html file you must have: freedactive.js, your App.js (with type "m
 </html>
 ```
 
-### Components
+### Components 
+*ECMAScript2015+ syntax version*
 #### Theory
 A component in Freedactive is a first class function that returns an object literal.
 Components are structured in this fashion to allow developers to harness the power
