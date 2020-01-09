@@ -49,6 +49,7 @@ containing the framework
         </script>
     </head>
     <body>
+        <!-- 4 -->
         <div id="app-container"></div>
     </body>
 </html>
