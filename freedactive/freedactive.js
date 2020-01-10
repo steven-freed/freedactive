@@ -4,7 +4,11 @@
 var Freedactive = (function() {
 
     // starting component containing user's app
+    var APP_CONTAINER = 'app-container';
+    var ROUTER_CONTAINER = 'app-router-container';
+    var ENTRY_COMPONENT = 'App';
     var App;
+    var components = {};
 
     /**
      * Initializes user's application indicating the
@@ -14,8 +18,10 @@ var Freedactive = (function() {
      */
     var init = function(root) {
         App = root;
-        router('app-container', {
-            '/': App
+        ENTRY_COMPONENT = root.name ? root.name : ENTRY_COMPONENT;
+        components['/'] = App;
+        window.addEventListener('load', function() {
+            router(APP_CONTAINER);
         });
     }
 
@@ -34,31 +40,48 @@ var Freedactive = (function() {
      * @param {string} root name of component container to be swapped during route changes
      * @param {Object} routes { path: component } pairs
      */
-    var router = function (root, routes) {
+    var router = function (root) {
+        // set up mutation observer to observe if 'app-router-container'
+        // is added to DOM. This allows for displaying the correct component
+        // for the corresponding url.
+        var callback = function() {
+            if (document.getElementById(ROUTER_CONTAINER)) {
+                router(ROUTER_CONTAINER);
+                observer.disconnect();
+            }
+        }
+        var observer = new MutationObserver(callback);
+        observer.observe(document.getElementById(APP_CONTAINER), { 
+            //attributes: false,
+            childList: true,
+            //characterData: false,
+            //subtree: true
+        });
+
         var container = null || document.getElementById(root);
         var url = Utils.parseUrl();
-        var currentRoute = routes[url] ? routes[url]() : null;
-        
-        // if route is unknown just load from 'App' component
-        if (currentRoute === null)
-            currentRoute = App();
+        var rt = components[url] ? components[url]() : null;
 
-        // prevents page reloads when using Router if 'App' is the route 
-        if (root === 'app-router-container' && routes[url].name === 'App') {
+        // if route is unknown just load from 'ENTRY_COMPONENT' component
+        if (rt === null) 
+            rt = App();
+
+        // prevents page reloads when using Router if ENTRY_COMPONENT is the route 
+        if (root === ROUTER_CONTAINER && components[url].name === ENTRY_COMPONENT) {
             container.innerHTML = '';
             return;
         } else {
             // sets container with current route's markup
-            container.innerHTML = currentRoute.getMarkup();
+            container.innerHTML = rt.getMarkup();
         }
     
         // loads scripts and styles for child components of current route
-        currentRoute.getChildren().map(function(child) {
+        rt.getChildren().map(function(child) {
             Utils.scriptAndStyle(container, Utils.getMethodsAndStyle(child(), props), child());
         });
     
         // loads scripts and styles for current route
-        Utils.scriptAndStyle(container, Utils.getMethodsAndStyle(currentRoute, props), currentRoute);
+        Utils.scriptAndStyle(container, Utils.getMethodsAndStyle(rt, props), rt);
     };
 
 
@@ -85,29 +108,30 @@ var Freedactive = (function() {
          */
         var aton = function (userMethods) {
             return Object.keys(userMethods).map(function(method) {
+                    var FUNCTION = 'function';
+                    var ASYNC = 'async';
+                    var ARROW = '=>';
                     // function body without '=>'
                     var funcBody = userMethods[method].toString();
-                    funcBody = funcBody.replace('=>', '');
+                    funcBody = funcBody.replace(ARROW, '');
                     // function signature, everything before first '('
                     var sig = funcBody.slice(0, funcBody.indexOf('{'));
-                    sig = sig.replace('=>', '');
+                    sig = sig.replace(ARROW, '');
                     sig = sig.slice(0, funcBody.indexOf('('));
             
-                    var func = 'function';
-                    var asy = 'async';
-                    var f = sig.indexOf(func);
-                    var a = sig.indexOf(asy);
+                    var f = sig.indexOf(FUNCTION);
+                    var a = sig.indexOf(ASYNC);
                     // if method has keyword 'function'
                     if (f > -1) {
-                        funcBody = funcBody.splice(f + func.length, 0, ' ' + method + ' ');
+                        funcBody = funcBody.splice(f + FUNCTION.length, 0, ' ' + method + ' ');
                     } else {
                         // if method is an arrow function
                         // normal arrow function
                         if (a < 0) { 
-                            funcBody = funcBody.splice(0, 0, 'function ' + method + ' ');
+                            funcBody = funcBody.splice(0, 0, FUNCTION + ' ' + method + ' ');
                         } else {
                             // async arrow function
-                            funcBody = funcBody.splice(a + asy.length, 0, ' function ' + method + ' ')
+                            funcBody = funcBody.splice(a + ASYNC.length, 0, ' ' + FUNCTION + ' ' + method + ' ')
                         }
                     }
                 
@@ -143,20 +167,22 @@ var Freedactive = (function() {
         var scriptAndStyle = function (container, userMethods, component) {
             // insert user component methods as a script
             if (Object.keys(userMethods).length) {
-                var scriptCode = Utils.aton(userMethods);
+                var methodsScript = Utils.aton(userMethods);
                 var js = document.createElement('script');
                 js.type = 'text/javascript';
-                js.appendChild(document.createTextNode(scriptCode));
+                js.appendChild(document.createTextNode(methodsScript));
                 container.appendChild(js);
             }
 
-            // insert user component style as a link
-            if (component.getStyle()) {
-                var linkStyle = document.createElement('link');
-                linkStyle.type = 'text/css';
-                linkStyle.rel = 'stylesheet';
-                linkStyle.href = component.getStyle();
-                container.appendChild(linkStyle);
+            // insert user component style as a link if...
+            // link with href = css path of functional component does not exist,
+            // component has a style
+            if (!document.querySelector('[href="' + component.getStyle() + '"]') && component.getStyle()) {
+                var styleLink = document.createElement('link');
+                styleLink.type = 'text/css';
+                styleLink.rel = 'stylesheet';
+                styleLink.href = component.getStyle();
+                document.head.appendChild(styleLink);
             }
         };
 
@@ -169,25 +195,15 @@ var Freedactive = (function() {
 
     })();
 
-
-    var components = {};
     /**
-     * Allows for routing in an SPA
+     * Routes different components to different routes.
      * 
-     * @param {Object} comps { path: component } pairs
+     * @param {Object} comps components to assign to different routes
+     * @param {Object} style router style
      */
-    var Router = function(comps) {
+    var Router = function(comps, style) {
         components = comps;
-
-        var style = Style({
-            position: 'relative',
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: '100%'
-        });
-
-        return '<div id="app-router-container" style="' + style + '"></div>';
+        return '<div id="' + ROUTER_CONTAINER + '" style="' + style + '"></div>';
     };
 
     /**
@@ -198,7 +214,7 @@ var Freedactive = (function() {
      */
     var routeto = function(link) {
         history.pushState(null, null, location.origin + link);
-        router('app-router-container', components);
+        router(ROUTER_CONTAINER);
     }
 
     /**
@@ -236,8 +252,15 @@ var Freedactive = (function() {
  */
 
 // Router
-var Router = function(components) {
-    return Freedactive.Router.init(components);
+var Router = function(comps, style=null) {
+    var routerStyle = Style({
+        position: 'relative',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%'
+    });
+    return Freedactive.Router.init(comps, style=style ? style : routerStyle);
 }
 
 var routeto = function(link) {

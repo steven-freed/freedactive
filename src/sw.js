@@ -13,7 +13,7 @@ const isLocalhost = Boolean(
 function register(config) {
   if ('serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
-    const publicUrl = new URL("http://localhost:8081/", self.location.href);
+    const publicUrl = new URL("http://localhost:8080/", self.location.href);
     if (publicUrl.origin !== self.location.origin) {
       return;
     }

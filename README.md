@@ -3,34 +3,24 @@
 
 ## Purpose?
 The motivation of this framework came about after using all these great SPA frameworks such as: 
-React, Angular, and Vue. After using them I noticed that I knew alot about these frameworks but
-I didn't know alot about JavaScript or traditional web development. This inspired me to
-create Freedactive, another old SPA framework you need to keep up with. However this one is
-for 'JavaScript' developers, *not* framework developers. Now you can harness the power of an
-SPA with simple JavaScript expertise rather than pages of 3rd party documentation.
-
-## API
-### Router
-1. Router({ path: component }) - returns div container that will handle swapping components based on route accessed.
-2. routeto(path) - Event listener that should be registered with elements when using Router.
-example:
-```js
-const markup = "<button onclick=`routeto("${path}")`></button>";
-```
-
-### Style
-1. Style({ property: "value" }) - returns inline style given an object of camel cased property and dashed string value pairs (very similar to React's inline styles).
+React, Angular, and Vue. After using them I noticed that I knew a lot about these frameworks but
+I didn't feel like I knew a lot about JavaScript. I soon found out that there are many different
+versions (ECMAScript) of JavaScript and many of these frameworks use transpilers for backwards
+compatibility. I just wanted something simple; no transpilers, no more libraries for libraries,
+JUST CODE. This inspired me to create Freedactive, another SPA framework BATTERIES INCLUDED!
+Many modern web browsers today support ES6 so no transpilers are necessary. However you are
+still able to use ES6 or ES5 and use transpiilers or bundlers if you'd like. Get started easily
+now, no downloads required!
 
 ## Documentation
 ### Setup
 In your index.html file you must have: 
 1. freedactive.min.js file from https://steven-freed.github.io/freedactive/freedactive.min.js
 containing the framework
-2. your entry component App.js
+2. your entry component, for example App.js
 (with type "module" if using ECMAScript2015+)
-3. script tag to initialize the freedactive library with your entry component
-(with type "module" if using ECMAScript2015+)
-4. div with id "app-container"
+3. div with id "app-container"
+4. initialize Freedactive in your entry component
 ```html
 <!DOCTYPE html>
     <head>
@@ -42,18 +32,61 @@ containing the framework
         <script src="https://steven-freed.github.io/freedactive/freedactive.min.js"></script>
         <!-- 2 -->
         <script src="/App.js" type="module"></script>
-        <!-- 3 -->
-        <script type="module">
-            import App from './App.js';
-            Freedactive.init(App);
-        </script>
     </head>
     <body>
-        <!-- 4 -->
+        <!-- 3 -->
         <div id="app-container"></div>
     </body>
 </html>
 ```
+
+```js
+function App() {
+
+    const markup = (`
+        <div>
+            <h1>Welcome to Freedactive!</h1>
+        </div>
+    `);
+    const style = './src/App.css';
+    const children = [
+    ];
+    return {
+        getMarkup: () => markup,
+        getStyle: () => style,
+        getChildren: () => children,
+    }
+}
+
+export default App;
+
+/**    4    **/
+Freedactive.init(App);
+```
+
+## API
+### Router
+1. Router(routes, style?): support for routing a single page application
+**Parameters**
+routes - { path: component } path to component mappings
+style? - optional parameter to specify an inline style for the router
+**Return value** 
+string containing a div container to handle swapping components based on accessed route
+2. routeto(path): event listener that should be registered with elements when using Router.
+**Parameters**
+path - string path
+**Return value** 
+None
+example:
+```js
+const markup = "<button onclick=`routeto("${path}")`></button>";
+```
+### Style
+1. Style(style): inline style support
+**Parameters**
+style - object of camel cased property and dashed string value pairs (very similar to React's inline styles)
+**Return value**
+string of css
 
 ### Components 
 *ECMAScript2015+ syntax version*
@@ -69,12 +102,12 @@ of access modifiers in JavaScript.
 
 example:
 ```js
-function App() {
+function Test() {
 
     // constructor
 
     let privateVariable = 5;
-    let privateMethod = function() {
+    const privateMethod = function() {
         // do stuff
     };
 
@@ -108,7 +141,7 @@ example:
 function App() {
 
     const markup = (`
-        <div id="App">
+        <div>
             <h1>Welcome to Freedactive!</h1>
         </div>
     `);
@@ -136,7 +169,7 @@ example:
 ```js
 function MyButton() {
     const markup = (`
-        <div id="MyButton">
+        <div>
             <button>MyButton</button>
         </div>
     `);
@@ -159,7 +192,7 @@ import MyButton from './MyButton.js';
 function App() {
 
     const markup = (`
-        <div id="App">
+        <div>
             <h1>Welcome to Freedactive!</h1>
             ${MyButton().getMarkup()}
         </div>
@@ -188,11 +221,11 @@ example:
 function App() {
 
     const headerStyle = Style({
-        color: "blue"
+        color: 'blue'
     });
 
     const markup = (`
-        <div id="App">
+        <div>
             <h1 style=${headerStyle}>Welcome to Freedactive!</h1>
         </div>
     `);
@@ -218,8 +251,6 @@ and pass it an object literal containing your routes.
 
 example:
 ```js
-import { Router, } from './freedactive.js';
-
 import App from './App.js';
 import About from './About.js';
 import Contact from './Contact.js';
@@ -238,7 +269,7 @@ function NavBar() {
     });
 
     const markup = (`
-        <div id="navbar">
+        <div>
             <ul>
                     ${lis.map((li) => li).join('')}
             </ul>
@@ -274,7 +305,7 @@ function HelloWorld() {
 
     // onclick event to invoke the 'notify' function
     const markup = (`
-        <div id="hello-world">
+        <div>
             <button onclick="notify()">Press Here</button>
         </div>
     `);
@@ -289,6 +320,7 @@ function HelloWorld() {
         *   public method notify to handle onclick event
         */
         notify: function() {
+            // any DOM manipulation goes here
             alert('Hello World!');
         },
     }

@@ -21,3 +21,8 @@ function App() {
 }
 
 export default App;
+
+// initializes the entry component for Freedactive
+Freedactive.init(App);
+// registers service worker
+register();

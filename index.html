@@ -8,17 +8,14 @@
             freedactive spa component framework
         -->
         <link rel="stylesheet" href="index.css" />
-        <script src="/freedactive/freedactive.js"></script>
+        <script src="https://steven-freed.github.io/freedactive/freedactive.min.js"></script>
         <script src="/src/App.js" type="module"></script>
-        <script type="module">
-            import App from './src/App.js';
-            Freedactive.init(App);
-        </script>
 
         <!--
             PWA configurations
         -->
         <link rel="manifest" href="manifest.json" />
+        <script src="/src/sw.js" type="text/javascript"></script>
         <link rel="apple-touch-icon" sizes="120x120" href="/assets/apple-icon-120x120.png">
         <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-icon-180x180.png">
         <link rel="icon" type="image/png" sizes="192x192"  href="/assets/android-icon-192x192.png">
@@ -26,12 +23,6 @@
         <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
         <meta name="theme-color" content="#ffffff">
-        
-        <script src="/src/sw.js" type="text/javascript"></script>
-        <script>
-            // registers service worker for app to be PWA ready
-            register();
-        </script>
     </head>
     <body>
         <div id="app-container"></div>
