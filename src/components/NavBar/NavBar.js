@@ -11,7 +11,7 @@ function NavBar() {
     };
 
     // router
-    const router = Router(routes);
+    const router = Router(routes, null);
 
     // logo
     const logo = '../../../assets/favicon.png';

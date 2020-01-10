@@ -252,7 +252,7 @@ var Freedactive = (function() {
  */
 
 // Router
-var Router = function(comps, style=null) {
+var Router = function(comps, style) {
     var routerStyle = Style({
         position: 'relative',
         top: '0',
@@ -260,7 +260,7 @@ var Router = function(comps, style=null) {
         width: '100%',
         height: '100%'
     });
-    return Freedactive.Router.init(comps, style=style ? style : routerStyle);
+    return Freedactive.Router.init(comps, style ? style : routerStyle);
 }
 
 var routeto = function(link) {

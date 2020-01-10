@@ -69,10 +69,10 @@ register();
 
 ## API
 ### Router
-1. Router(routes, style?): support for routing a single page application\
+1. Router(routes, style): support for routing a single page application\
 *Parameters*\
 routes - { path: component } path to component mappings\
-style? - optional parameter to specify an inline style for the router\
+style - specify an inline style for the router or set to null for default style\
 *Return value*\
 string containing a div container to handle swapping components based on accessed route
 2. routeto(path): event listener that should be registered with elements when using Router.\
@@ -277,7 +277,7 @@ function NavBar() {
                     ${lis.map((li) => li).join('')}
             </ul>
             ${
-                Router(routes)
+                Router(routes, null)
             }
         </div>
     `);
