@@ -21,6 +21,7 @@ containing the framework
 (with type "module" if using ECMAScript2015+)
 3. div with id "app-container"
 4. initialize Freedactive in your entry component
+5. Optional Step: register service worker to cache content for offline use
 ```html
 <!DOCTYPE html>
     <head>
@@ -62,31 +63,33 @@ export default App;
 
 /**    4    **/
 Freedactive.init(App);
+/**    5    **/
+register();
 ```
 
 ## API
 ### Router
-1. Router(routes, style?): support for routing a single page application
-**Parameters**
-routes - { path: component } path to component mappings
-style? - optional parameter to specify an inline style for the router
-**Return value** 
-string containing a div container to handle swapping components based on accessed route
-2. routeto(path): event listener that should be registered with elements when using Router.
-**Parameters**
-path - string path
-**Return value** 
-None
+1. Router(routes, style?): support for routing a single page application\
+**Parameters**\
+routes - { path: component } path to component mappings\
+style? - optional parameter to specify an inline style for the router\
+**Return value**\
+string containing a div container to handle swapping components based on accessed route\
+2. routeto(path): event listener that should be registered with elements when using Router.\
+**Parameters**\
+path - string path\
+**Return value**\
+None\
 example:
 ```js
 const markup = "<button onclick=`routeto("${path}")`></button>";
 ```
 ### Style
-1. Style(style): inline style support
-**Parameters**
-style - object of camel cased property and dashed string value pairs (very similar to React's inline styles)
-**Return value**
-string of css
+1. Style(style): inline style support\
+**Parameters**\
+style - object of camel cased property and dashed string value pairs (very similar to React's inline styles)\
+**Return value**\
+string of css\
 
 ### Components 
 *ECMAScript2015+ syntax version*
