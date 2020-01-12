@@ -1,28 +1,24 @@
-import NavBar from './components/NavBar/NavBar.js';
 
 function App() {
 
-    const markup = (`
-        <div id="App">
-            <h1>App</h1>
-            <p>stuff and more stuff...</p>
-            ${NavBar().getMarkup()}
-        </div>
-    `);
-    const style = './src/App.css';
-    const children = [
-        NavBar
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children,
+    this.getMarkup = function() {
+        return ('\
+            <div id="App">\
+                <h1>App</h1>\
+                <p>stuff and more stuff...</p>\
+                ${NavBar}\
+            </div>').$({
+                NavBar: new NavBar().getMarkup()
+            });
+    }
+    this.getStyle = function() {
+        return './src/App.css';
+    }
+    this.getChildren = function() {
+        return [
+            NavBar
+        ];
     }
 }
 
-export default App;
-
-// initializes the entry component for Freedactive
 Freedactive.init(App);
-// registers service worker
-register();

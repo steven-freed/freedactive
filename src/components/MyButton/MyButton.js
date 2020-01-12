@@ -1,18 +1,13 @@
 
 function MyButton() {
-    const markup = (`
-        <div>
-            <button id="my-button">MyButton</button>
-        </div>
-    `);
-    const style = './src/components/MyButton/MyButton.css';
-    const children = [
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children
+    this.getMarkup = function() {
+        return ('\
+            <div>\
+                <button id="my-button">MyButton</button>\
+            </div>\
+        ');
+    }
+    this.getStyle = function() {
+        return './src/components/MyButton/MyButton.css';
     }
 }
-
-export default MyButton;

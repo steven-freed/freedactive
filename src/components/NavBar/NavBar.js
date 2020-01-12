@@ -1,52 +1,59 @@
-import App from '../../App.js';
-import About from '../About/About.js';
-import Contact from '../Contact/Contact.js';
 
 function NavBar() { 
+
     // routes
-    const routes = {
+    Router.set({
+        '/': App,
+        '/about': About,
+        '/contact': Contact,
+        '/contact/form': ContactForm
+    });
+
+    // logo
+    var logo = '../../../assets/favicon.png';
+
+    // inline styles
+    var listStyle = Style({
+        padding: "0px 25px 34px 25px"
+    });
+    
+    // navbar navigation
+    var routes = {
         '/': App,
         '/about': About,
         '/contact': Contact
     };
 
-    // router
-    const router = Router(routes, null);
-
-    // logo
-    const logo = '../../../assets/favicon.png';
-
-    // inline styles
-    const listStyle = Style({
-            padding: "0px 25px 34px 25px"
-    });
-    
     // li elements for routes
-    const navRoutes = Object.assign({}, routes);
-    delete navRoutes['/'];
-    const lis = Object.keys(navRoutes).map((k) => `<li onclick="routeto('${k}')">${routes[k].name}</li>`);
+    var lis = Object.keys(routes).map(function(k) {
+        if (k === '/')
+            return ('<li onclick="routeto(\'${key}\')"><img src="${logo}" alt="home"></img></li>'.$({
+                key: k,
+                logo: logo
+            }));
+        return ('<li onclick="routeto(\'${key}\')">${route}</li>'.$({
+            key: k,
+            route: routes[k].name
+        }));
+    });
 
-    const markup = (`
-        ${
-            router
-        }
-        <div id="navbar">
-            <span></span>
-            <ul style="${listStyle}">
-                    <li onclick="routeto('/')"><img src="${logo}" alt="home"></img></li>
-                    ${lis.map((li) => li).join('')}
-            </ul>
-        </div>
-    `);
-    const style = './src/components/NavBar/NavBar.css';
-    const children = [
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children,
-    };
-
+    this.getMarkup = function() {
+        return ('\
+            ${Router}\
+            <div id="navbar">\
+                <span></span>\
+                <ul style="${listStyle}">\
+                    ${items}\
+                </ul>\
+            </div>').$({
+                Router: Router.getMarkup(),
+                listStyle: listStyle,
+                items: lis.map(function(li) { 
+                    return li
+                }).join("")
+            });
+    }
+    this.getStyle = function() {
+        return './src/components/NavBar/NavBar.css';
+    }
 }
-
-export default NavBar;
