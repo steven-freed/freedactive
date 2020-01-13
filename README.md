@@ -3,18 +3,16 @@
 
 ## Purpose?
 There are many great SPA frameworks such as React and Angular. Almost all of them involve
-downloading many external libraries and use ES6 syntax with transpilers. ES5 has many faults
+downloading many external libraries and use ES6 syntax with transpilers. ES5 has its faults
 and foreign programming concepts to many traditional programmers such as; functional programming
 and prototypical inheritance. The goal of Freedactive is to give developers an easy way to
-say goodbye to transpilers and frameworks that require other packages as add ons for vital
-functionality. Freedactive achieves this goal by providing developers an intuitive way to write 
-modular ES5 syntax and help build developers JavaScript skills rather than give them a great
-new syntax (ES6) that requires several libraries to function.\
-Freedactive is very easy to get started with and requires zero installations.\
+say goodbye to transpilers and frameworks that require npm and many other packages for vital
+functionality. Freedactive provides developers with an intuitive way to write modular ES5 syntax
+and get a web application up in minutes. Freedactive is very easy to get started with and
+requires zero installations.\
 Get started now below, happy coding!
 
 ## Quick Start
-### Setup
 In your index.html file you must have: 
 1. freedactive.min.js file from https://steven-freed.github.io/freedactive/freedactive.min.js
 containing the framework
@@ -22,6 +20,7 @@ containing the framework
 3. div with id "app-container"
 4. initialize Freedactive in your entry component
 5. Optional Step: register service worker to cache content for offline use
+
 ```html
 <!DOCTYPE html>
     <head>
@@ -65,13 +64,13 @@ Freedactive.init(App);
 ```
 
 ## API
-
 ### Strings
-Strings in Freedactive are like normal ES5 js strings (single and double quotes).
+Strings in Freedactive are like normal ES5 strings (single and double quotes).
 To overcome the messy string interpolation of ES5, Freedactive extends the String
 prototype by adding the 'cash' method to allow for ES6 backtick *like* string
 interpolation. The cash function also relieves you from needing to escape quotes
-if using them in variables.\
+if using them in variables.
+
 ```js
 // example
 var freedactive = "Freedactive";
@@ -90,14 +89,15 @@ unfortunately we do still need to use backslashes for multi-line strings for
 our components returned markup.
 
 ### Router
-Router is a singleton that provides SPA routing to your application.\
+Router is a singleton that provides SPA routing to your application.
+
 ```js
 /**
 * Initializes the component Router.
 * 
 * @param {Object} comps path, component pairs to initialize router
 */
-set(comps)
+Router.set(comps)
 
 /**
  * Inserts router container to swap out router components
@@ -106,30 +106,29 @@ set(comps)
  * @param {Object} style prop value pairs of camel cased, dashed css 
  * @returns {String} router container to swap out router components
  */
-getMarkup(style)
+Router.getMarkup(style)
 
 /**
  * Event listener for route changes. Should be registered with
  * html element such as a button, li, etc.
  * 
- * @param {string} link the specified route to listen for 
+ * @param {String} link the specified route to listen for 
  */
 routeto(link)
 
 // example
-example:
 var markup = ('<button onclick="routeto(${path})"></button>').$({ path: '/my-path' });
 ```
 
 ### Style
-Style provides a translation from a js object literal prop, value pairs where
-prop is a camel cased css property and value is a normal css value as a string.\
+Style provides a translation from an object literal containing { prop: value } pairs where
+prop is a camel cased css property and value is a normal css value as a string.
 ```js
 /**
  * Inline Style creator, uses camel casing object literals
  * and converts them to standard css dashed conventions.
  *
- * @param {object} style property, value object literal using camel casing 
+ * @param {Object} style property, value object literal using camel casing 
  * @returns {String} inline css style string
  */
 Style(style)
@@ -137,16 +136,17 @@ Style(style)
 
 ## Documentation
 ### Components
-#### Theory
-A component in Freedactive is a first class function that returns an object literal.
-Components are structured in this fashion to allow developers to harness the power
-of access modifiers in JavaScript.
+***Theory***
+A component in Freedactive is a first class function, meaning that functions
+are treated like variables or objects. Since *almost* everything in JavaScript is
+an object we can treat functions like objects as well. Functional components unlock
+the power of access modifiers in JavaScript.\
 
-1. constructor: the function component itself, everything in the Test function
-2. private: any variables or methods declard with var (var is function scoped)
-3. public: any variables or methods declared using this
+A functional component may contain the following...
+- constructor - the function itself creating the component (e.g. function Test())
+- private - any variables or methods declard with var (var is function scoped)
+- public - any variables or methods declared using this
 
-example:
 ```js
 function Test() {
 
@@ -176,20 +176,20 @@ function Test() {
 }
 ```
 
-#### Component Required Properties
-Components also require some properties and methods as well as your choice of
-adding your own for logic or event handlers.
+***Recommended Properties***
+These properties are recommended, meaning that if you do not provide a
+'getStyle' property you will not obtain the style for that component.
+However you may not need any style for that component and that is fine.
 
-1. getMarkup: a string of the components html content
-2. getStyle: the path to your style sheet for that component
-(Note: Freedactive also supports inline styles using the 'Style' object)
-3. getChildren: any components being used in the markup of the component
+- getMarkup - a string of the components html content
+- getStyle - the path to your style sheet for that component
+*Note Freedactive also supports inline styles using the 'Style' object*
+- getChildren - any components being used in the markup of the component
 
-These 3 properties should be private and have getters. This prevents any
-access modification mistakes such as overwriting the markup or style
-sheet src of a component.
+These properties are getters to help encapsulate your components.
+For example, using getters prevents any access modification mistakes
+such as overwriting the markup or style of a component.
 
-example:
 ```js
 function App() {
 
@@ -212,14 +212,13 @@ function App() {
 }
 ```
 
-#### Using Children in a Component
+***Using Components in Components***
 Using a component in another component is simple, we can use Freedactives
-'cash' function to insert a component's markup into another components
+string 'cash' method to insert a component's markup into another components
 markup. First we must invoke our components constructor 'new MyButton()' to obtain
 our components public properties, next we call our 'getMarkup' method to
 insert our 'MyButton' component's html 'new MyButton().getMarkup()'. 
 
-example:
 ```js
 function MyButton() {
     this.getMarkup = function() {
@@ -230,8 +229,6 @@ function MyButton() {
         ');
     this.getStyle = function() {
         return './MyButton.css';
-    }
-    this.getChildren = function() {
     }
 }
 ```
@@ -245,7 +242,7 @@ function App() {
                 <h1>Welcome to Freedactive!</h1>\
                 ${customButton}\
             </div>\
-            ').$({
+        ').$({
             customButton: new MyButton().getMarkup()
         });
     }
@@ -261,11 +258,11 @@ function App() {
 ```
 
 ### Styles
-#### Inline Styles
+***Inline Styles***
 Freedactive inline styles are very similar to React's inline styles. You use
 camel casing of normal css attributes for keys and normal css values for values.
+*Note that Styles is a function rather than an object so we do not want to use new when creating an inline style*
 
-example:
 ```js
 function App() {
 
@@ -278,7 +275,7 @@ function App() {
             <div>\
                 <h1 style=${style}>Welcome to Freedactive!</h1>\
             </div>\
-            ').$({
+        ').$({
             style: headerStyle
         });
     }
@@ -291,13 +288,12 @@ function App() {
 ```
 
 ### Routing
-#### Router Object
-Navigation is a big concern in SPA. With Freedactive you get the framework
-with batteries included (a Router). To setup routing create a 'Router' object
-and pass it an object literal containing your routes.
-(Note: when using the Router object you do not need to include your routing components in the children array of your component (NavBar))
+***Router Object***
+Navigation is a big concern in SPAs. With Freedactive you get the framework, batteries included.
+You first call 'set' to set the routes and their corresponding component. Then use the 'routeto'
+method for the event of your choice to cause that route to be executed.
+*Note when using the Router object you do not need to include your routing components in the children array of your component (NavBar)*
 
-example:
 ```js
 function NavBar() { 
 
@@ -316,14 +312,26 @@ function NavBar() {
         '/hello': Hello
     };
 
-    // create route list items
+    /**
+     * Create the navbar list items.
+     * Have the onclick event call routeto('/yourPath')
+     * to display the corresponding component.
+     * 
+     * @note the 'cash' method being used so you
+     * don't have to escape single or double quotes 
+     * for 'key', the parameter of 'routeto'.
+     */
     var lis = Object.keys(navbarRoutes).map(function(k) {
         return ('<li onclick="routeto(${key})">${route}</li>').$({
-            key: "'${key}'".$({ k }),
+            key: "'${yourPath}'".$({ yourPath: k }),
             route: routes[k].name
         });
     });
 
+    /**
+     * Place the router's markup 'Router.getMarkup()' where you
+     * want to display your components when 'routeto' is called.
+     */
     this.getMarkup = function() {
         return ('\
             <div>\
@@ -333,26 +341,19 @@ function NavBar() {
                 <span></span>\
             </div>\
             ${Router}\
-            ').$({
+        ').$({
             items: lis.map(function(li) { return li; }).join(""),
             Router: Router.getMarkup()
         });
     }
-    this.getStyle = function() {
-    }
-    this.getChildren = function() {
-    }
+
 }
 ```
 
 ### Events
-#### Event Handlers
-Event handlers for components in Freedactive can be asynchronous, arrow,
-anonymous, or named functions. No need to worry about Babel and polyfills.
-Your handlers will be converted to named functions and rendered to the DOM
-as a script element.
+***Event Handlers***
+Event handlers for components in Freedactive are just component methods.
 
-example:
 ```js
 function HelloWorld() {
 
@@ -374,3 +375,6 @@ function HelloWorld() {
     }
 }
 ```
+
+### State
+***Coming Soon...***
