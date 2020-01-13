@@ -136,7 +136,7 @@ Style(style)
 
 ## Documentation
 ### Components
-***Theory***
+***Theory***\
 A component in Freedactive is a first class function, meaning that functions
 are treated like variables or objects. Since *almost* everything in JavaScript is
 an object we can treat functions like objects as well. Functional components unlock
@@ -176,7 +176,7 @@ function Test() {
 }
 ```
 
-***Recommended Properties***
+***Recommended Properties***\
 These properties are recommended, meaning that if you do not provide a
 'getStyle' property you will not obtain the style for that component.
 However you may not need any style for that component and that is fine.
@@ -212,7 +212,7 @@ function App() {
 }
 ```
 
-***Using Components in Components***
+***Using Components in Components***\
 Using a component in another component is simple, we can use Freedactives
 string 'cash' method to insert a component's markup into another components
 markup. First we must invoke our components constructor 'new MyButton()' to obtain
@@ -258,7 +258,7 @@ function App() {
 ```
 
 ### Styles
-***Inline Styles***
+***Inline Styles***\
 Freedactive inline styles are very similar to React's inline styles. You use
 camel casing of normal css attributes for keys and normal css values for values.
 *Note that Styles is a function rather than an object so we do not want to use new when creating an inline style*
@@ -288,7 +288,7 @@ function App() {
 ```
 
 ### Routing
-***Router Object***
+***Router Object***\
 Navigation is a big concern in SPAs. With Freedactive you get the framework, batteries included.
 You first call 'set' to set the routes and their corresponding component. Then use the 'routeto'
 method for the event of your choice to cause that route to be executed.
@@ -351,7 +351,7 @@ function NavBar() {
 ```
 
 ### Events
-***Event Handlers***
+***Event Handlers***\
 Event handlers for components in Freedactive are just component methods.
 
 ```js
@@ -377,4 +377,4 @@ function HelloWorld() {
 ```
 
 ### State
-***Coming Soon...***
+***Coming Soon...***\
