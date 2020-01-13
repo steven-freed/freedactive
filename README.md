@@ -63,8 +63,9 @@ Freedactive.init(App);
 // register();
 ```
 
-## API
-### Strings
+## Documentation
+### API
+***Strings***\
 Strings in Freedactive are like normal ES5 strings (single and double quotes).
 To overcome the messy string interpolation of ES5, Freedactive extends the String
 prototype by adding the 'cash' method to allow for ES6 backtick *like* string
@@ -88,7 +89,7 @@ var html = ('<button onclick="${handler}"></button>').$({
 unfortunately we do still need to use backslashes for multi-line strings for
 our components returned markup.
 
-### Router
+***Router***\
 Router is a singleton that provides SPA routing to your application.
 
 ```js
@@ -120,7 +121,7 @@ routeto(link)
 var markup = ('<button onclick="routeto(${path})"></button>').$({ path: '/my-path' });
 ```
 
-### Style
+***Style***\
 Style provides a translation from an object literal containing { prop: value } pairs where
 prop is a camel cased css property and value is a normal css value as a string.
 ```js
@@ -134,13 +135,12 @@ prop is a camel cased css property and value is a normal css value as a string.
 Style(style)
 ```
 
-## Documentation
 ### Components
 ***Theory***\
 A component in Freedactive is a first class function, meaning that functions
 are treated like variables or objects. Since *almost* everything in JavaScript is
 an object we can treat functions like objects as well. Functional components unlock
-the power of access modifiers in JavaScript.\
+the power of access modifiers in JavaScript.
 
 A functional component may contain the following...
 - constructor - the function itself creating the component (e.g. function Test())
@@ -377,4 +377,4 @@ function HelloWorld() {
 ```
 
 ### State
-***Coming Soon...***\
+***Coming Soon...***
