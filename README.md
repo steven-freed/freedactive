@@ -1,24 +1,24 @@
-# ![Alt text](/assets/favicon.png?raw=true) Freedactive
+# ![Alt text](/examples/assets/favicon.png?raw=true) Freedactive
 *The Single Page Application Framework for JavaScript developers, not framework developers*
 
 ## Purpose?
-The motivation of this framework came about after using all these great SPA frameworks such as: 
-React, Angular, and Vue. After using them I noticed that I knew a lot about these frameworks but
-I didn't feel like I knew a lot about JavaScript. I soon found out that there are many different
-versions (ECMAScript) of JavaScript and many of these frameworks use transpilers for backwards
-compatibility. I just wanted something simple; no transpilers, no more libraries for libraries,
-JUST CODE. This inspired me to create Freedactive, another SPA framework BATTERIES INCLUDED!
-Many modern web browsers today support ES6 so no transpilers are necessary. However you are
-still able to use ES6 or ES5 and use transpiilers or bundlers if you'd like. Get started easily
-now, no downloads required!
+There are many great SPA frameworks such as React and Angular. Almost all of them involve
+downloading many external libraries and use ES6 syntax with transpilers. ES5 has many faults
+and foreign programming concepts to many traditional programmers such as; functional programming
+and prototypical inheritance. The goal of Freedactive is to give developers an easy way to
+say goodbye to transpilers and frameworks that require other packages as add ons for vital
+functionality. Freedactive achieves this goal by providing developers an intuitive way to write 
+modular ES5 syntax and help build developers JavaScript skills rather than give them a great
+new syntax (ES6) that requires several libraries to function.\
+Freedactive is very easy to get started with and requires zero installations.\
+Get started now below, happy coding!
 
-## Documentation
+## Quick Start
 ### Setup
 In your index.html file you must have: 
 1. freedactive.min.js file from https://steven-freed.github.io/freedactive/freedactive.min.js
 containing the framework
-2. your entry component, for example App.js
-(with type "module" if using ECMAScript2015+)
+2. your entry component (for example App.js) and all other components you've created
 3. div with id "app-container"
 4. initialize Freedactive in your entry component
 5. Optional Step: register service worker to cache content for offline use
@@ -27,12 +27,13 @@ containing the framework
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-        <title>Freedactive</title>
-
+        <title>My App</title>
+        
         <!-- 1 -->
         <script src="https://steven-freed.github.io/freedactive/freedactive.min.js"></script>
+        
         <!-- 2 -->
-        <script src="/App.js" type="module"></script>
+        <script src="/src/App.js"></script>
     </head>
     <body>
         <!-- 3 -->
@@ -44,64 +45,106 @@ containing the framework
 ```js
 function App() {
 
-    const markup = (`
-        <div>
-            <h1>Welcome to Freedactive!</h1>
-        </div>
-    `);
-    const style = './src/App.css';
-    const children = [
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children,
+    this.getMarkup = function() {
+        return ('\
+            <div>\
+                <h1>Welcome to Freedactive!</h1>\
+            </div>\
+        ');
+    }
+
+    this.getStyle = function() {
+        return './src/App.css';
     }
 }
-
-export default App;
 
 /**    4    **/
 Freedactive.init(App);
 /**    5    **/
-register();
+// register();
 ```
 
 ## API
-### Router
-1. Router(routes, style): support for routing a single page application\
-*Parameters*\
-routes - { path: component } path to component mappings\
-style - specify an inline style for the router or set to null for default style\
-*Return value*\
-string containing a div container to handle swapping components based on accessed route
-2. routeto(path): event listener that should be registered with elements when using Router.\
-*Parameters*\
-path - string path\
-*Return value*\
-None\
-example:
-```js
-const markup = "<button onclick=`routeto("${path}")`></button>";
-```
-### Style
-1. Style(style): inline style support\
-*Parameters*\
-style - object of camel cased property and dashed string value pairs (very similar to React's inline styles)\
-*Return value*\
-string of css
 
-### Components 
-*ECMAScript2015+ syntax version*
+### Strings
+Strings in Freedactive are like normal ES5 js strings (single and double quotes).
+To overcome the messy string interpolation of ES5, Freedactive extends the String
+prototype by adding the 'cash' method to allow for ES6 backtick *like* string
+interpolation. The cash function also relieves you from needing to escape quotes
+if using them in variables.\
+```js
+// example
+var freedactive = "Freedactive";
+var html = ('<div>Welcome to ${name}!</div>').$({
+    name: freedactive
+});
+// expected output: '<div>Welcome to Freedactive!</div>'
+
+// example - no need to escape quotes
+var html = ('<button onclick="${handler}"></button>').$({
+    handler: alert("Single quotes ' can be used here")
+});
+```
+
+unfortunately we do still need to use backslashes for multi-line strings for
+our components returned markup.
+
+### Router
+Router is a singleton that provides SPA routing to your application.\
+```js
+/**
+* Initializes the component Router.
+* 
+* @param {Object} comps path, component pairs to initialize router
+*/
+set(comps)
+
+/**
+ * Inserts router container to swap out router components
+ * for Events invoking 'routeto'.
+ * 
+ * @param {Object} style prop value pairs of camel cased, dashed css 
+ * @returns {String} router container to swap out router components
+ */
+getMarkup(style)
+
+/**
+ * Event listener for route changes. Should be registered with
+ * html element such as a button, li, etc.
+ * 
+ * @param {string} link the specified route to listen for 
+ */
+routeto(link)
+
+// example
+example:
+var markup = ('<button onclick="routeto(${path})"></button>').$({ path: '/my-path' });
+```
+
+### Style
+Style provides a translation from a js object literal prop, value pairs where
+prop is a camel cased css property and value is a normal css value as a string.\
+```js
+/**
+ * Inline Style creator, uses camel casing object literals
+ * and converts them to standard css dashed conventions.
+ *
+ * @param {object} style property, value object literal using camel casing 
+ * @returns {String} inline css style string
+ */
+Style(style)
+```
+
+## Documentation
+### Components
 #### Theory
 A component in Freedactive is a first class function that returns an object literal.
 Components are structured in this fashion to allow developers to harness the power
 of access modifiers in JavaScript.
 
-1. constructor: the function component itself, in this case everything above
-'return' in the App function.
-2. private: any variables or methods placed above 'return'
-3. public: any variables or methods placed in the returned object literal
+1. constructor: the function component itself, everything in the Test function
+2. private: any variables or methods declard with var (var is function scoped)
+3. public: any variables or methods declared using this
 
 example:
 ```js
@@ -109,20 +152,27 @@ function Test() {
 
     // constructor
 
-    let privateVariable = 5;
-    const privateMethod = function() {
+    // private
+    var privateVariable = 5;
+    var privateMethod = function() {
         // do stuff
-    };
-
-    // public variables and methods
-    return {
-        setPrivateVariable: (x) => privateVariable = x,
-        getPrivateVariable: () => privateVariable,
-        publicVariable: 6,
-        publicMethod: function() {
-            // do more stuff
-        }
     }
+
+    // public
+    this.publicVariable = 6;
+    this.publicMethod = function() {
+        // do stuff
+    }
+
+    // getters and setters
+    this.setPrivateVariable = function(x) {
+        privateVariable = x;
+    }
+    this.getPrivateVariable = function() {
+        return privateVariable;
+    }
+
+    // constructor
 }
 ```
 
@@ -130,88 +180,84 @@ function Test() {
 Components also require some properties and methods as well as your choice of
 adding your own for logic or event handlers.
 
-1. markup: a string of the components html content
-2. style: the path to your style sheet for that component
+1. getMarkup: a string of the components html content
+2. getStyle: the path to your style sheet for that component
 (Note: Freedactive also supports inline styles using the 'Style' object)
-3. children: any components being used in the markup of the component
+3. getChildren: any components being used in the markup of the component
 
-These 3 properties should be private and have getters inside the returned
-object literal. This prevents any access modification mistakes such as overwriting
-the markup or style sheet src of a component.
+These 3 properties should be private and have getters. This prevents any
+access modification mistakes such as overwriting the markup or style
+sheet src of a component.
 
 example:
 ```js
 function App() {
 
-    const markup = (`
-        <div>
-            <h1>Welcome to Freedactive!</h1>
-        </div>
-    `);
-    const style = './App.css';
-    const children = [
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children,
+    this.getMarkup = function() {
+        return ('
+            <div>\
+                <h1>Welcome to Freedactive!</h1>\
+            </div>\
+        ');
+    }
+    this.getStyle = function() {
+        return './App.css';
+    }
+    this.getChildren = function() {
+        return [
+            CustomButton,
+            CustomView
+        ];
     }
 }
-
-export default App;
 ```
 
 #### Using Children in a Component
-Using a component in another component is simple, we can use JavaScripts
-backtick strings to insert a component's markup into another components
-markup. First we must invoke our components constructor 'MyButton()' to obtain
+Using a component in another component is simple, we can use Freedactives
+'cash' function to insert a component's markup into another components
+markup. First we must invoke our components constructor 'new MyButton()' to obtain
 our components public properties, next we call our 'getMarkup' method to
-insert our 'MyButton' component's html 'MyButton().getMarkup()'. 
+insert our 'MyButton' component's html 'new MyButton().getMarkup()'. 
 
 example:
 ```js
 function MyButton() {
-    const markup = (`
-        <div>
-            <button>MyButton</button>
-        </div>
-    `);
-    const style = './MyButton.css';
-    const children = [
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children
+    this.getMarkup = function() {
+        return ('
+            <div>\
+                <button>MyButton</button>\
+            </div>\
+        ');
+    this.getStyle = function() {
+        return './MyButton.css';
+    }
+    this.getChildren = function() {
     }
 }
-
-export default MyButton;
 ```
 
 ```js
-import MyButton from './MyButton.js';
-
 function App() {
 
-    const markup = (`
-        <div>
-            <h1>Welcome to Freedactive!</h1>
-            ${MyButton().getMarkup()}
-        </div>
-    `);
-    const style = './App.css';
-    const children = [
-        MyButton
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children,
+    this.getMarkup = function() {
+        return ('
+            <div>\
+                <h1>Welcome to Freedactive!</h1>\
+                ${customButton}\
+            </div>\
+            ').$({
+            customButton: new MyButton().getMarkup()
+        });
+    }
+    this.getStyle = function() {
+        return './App.css';
+    }
+    this.getChildren = function() {
+        return [
+            MyButton
+        ];
     }
 }
-
-export default App;
 ```
 
 ### Styles
@@ -223,26 +269,25 @@ example:
 ```js
 function App() {
 
-    const headerStyle = Style({
+    var headerStyle = Style({
         color: 'blue'
     });
 
-    const markup = (`
-        <div>
-            <h1 style=${headerStyle}>Welcome to Freedactive!</h1>
-        </div>
-    `);
-    const style = '';
-    const children = [
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children,
+    this.getMarkup = function() {
+        return ('
+            <div>\
+                <h1 style=${style}>Welcome to Freedactive!</h1>\
+            </div>\
+            ').$({
+            style: headerStyle
+        });
+    }
+
+    this.getStyle = function() {
+    }
+    this.getChildren = function() {
     }
 }
-
-export default App;
 ```
 
 ### Routing
@@ -254,45 +299,50 @@ and pass it an object literal containing your routes.
 
 example:
 ```js
-import App from './App.js';
-import About from './About.js';
-import Contact from './Contact.js';
-
 function NavBar() { 
 
-    const routes = {
+    // Sets your routes
+    Router.set({
         '/': App,
-        '/about': About,
-        '/contact': Contact
+        '/docs': Docs,
+        '/hello': Hello,
+        '/hello/world': World
+    });
+
+    // navbar navigation
+    var navbarRoutes = {
+        '/': App,
+        '/docs': Docs,
+        '/hello': Hello
     };
 
     // create route list items
-    const lis = Object.keys(routes).map((path) => {
-        return `<li onclick="routeto('${path}')">${routes[path].name}</li>`
+    var lis = Object.keys(navbarRoutes).map(function(k) {
+        return ('<li onclick="routeto(${key})">${route}</li>').$({
+            key: "'${key}'".$({ k }),
+            route: routes[k].name
+        });
     });
 
-    const markup = (`
-        <div>
-            <ul>
-                    ${lis.map((li) => li).join('')}
-            </ul>
-            ${
-                Router(routes, null)
-            }
-        </div>
-    `);
-    const style = './NavBar.css';
-    const children = [
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children,
-    };
-
+    this.getMarkup = function() {
+        return ('\
+            <div>\
+                <ul>\
+                    ${items}\
+                </ul>\
+                <span></span>\
+            </div>\
+            ${Router}\
+            ').$({
+            items: lis.map(function(li) { return li; }).join(""),
+            Router: Router.getMarkup()
+        });
+    }
+    this.getStyle = function() {
+    }
+    this.getChildren = function() {
+    }
 }
-
-export default NavBar;
 ```
 
 ### Events
@@ -307,27 +357,20 @@ example:
 function HelloWorld() {
 
     // onclick event to invoke the 'notify' function
-    const markup = (`
-        <div>
-            <button onclick="notify()">Press Here</button>
-        </div>
-    `);
-    const style = './HelloWorld.css';
-    const children = [
-    ];
-    return {
-        getMarkup: () => markup,
-        getStyle: () => style,
-        getChildren: () => children,
-        /**
-        *   public method notify to handle onclick event
-        */
-        notify: function() {
-            // any DOM manipulation goes here
-            alert('Hello World!');
-        },
+    this.getMarkup = function() {
+        return ('
+            <div>\
+                <button onclick="notify()">Press Here</button>\
+            </div>\
+        ');
     }
-};
 
-export default HelloWorld;
+    /**
+    *   public method notify to handle onclick event
+    */
+    this.notify = function() {
+        // any DOM manipulation goes here
+        alert('Hello World!');
+    }
+}
 ```

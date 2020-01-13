@@ -1,20 +1,23 @@
 #navbar {
     overflow: hidden;
-    position: fixed;
-    bottom: 0;
-    color: "#9700F8";
+    position: relative;
+    top: 0;
+    background-color: white;
+    color: rgb(113, 47, 242);
     width: 100%;
 }
 
 #navbar ul {
-    padding: 0px 25px 10px 25px;
     list-style-type: none;
-    display: flex;
-    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 #navbar li {
     color: inherit;
+    display: inline-block;
+    padding: 14px 16px;
     outline: none;
 }
 

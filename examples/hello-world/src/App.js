@@ -1,19 +1,20 @@
-
 function App() {
 
     this.getMarkup = function() {
         return ('\
-            <div id="App">\
-                <h1>App</h1>\
-                <p>stuff and more stuff...</p>\
+            <div>\
                 ${NavBar}\
-            </div>').$({
-                NavBar: new NavBar().getMarkup()
-            });
+                <h1 id="phrase">Welcome to Freedactive!</h1>\
+            </div>\
+            ').$({
+            NavBar: new NavBar().getMarkup()
+        });
     }
+
     this.getStyle = function() {
         return './src/App.css';
     }
+    
     this.getChildren = function() {
         return [
             NavBar

@@ -232,11 +232,11 @@ var Freedactive = (function() {
          */
         var getMarkup = function(style) {
             var routerStyle = Style({
-                position: 'relative',
-                top: '0',
-                left: '0',
+                position: 'absolute',
+                textAlign: 'center',
                 width: '100%',
-                height: '100%'
+                height: '100%',
+                backgroundColor: 'rgb(113, 47, 242)'
             });
             style = style ? style : routerStyle;
             return '<div id="${container}" style="${style}"></div>'.$({
@@ -251,7 +251,7 @@ var Freedactive = (function() {
          * @param {Object} comps path, component pairs to initialize router
          */
         var set = function(comps) {
-            components = comps;
+            Object.assign(components, comps);
         };
 
         return {
