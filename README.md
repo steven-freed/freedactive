@@ -1,4 +1,4 @@
-# ![Alt text](/examples/assets/favicon.png?raw=true) Freedactive
+# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive
 *The Single Page Application Framework for JavaScript developers, not framework developers*
 
 ## Purpose?
