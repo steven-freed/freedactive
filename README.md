@@ -377,4 +377,24 @@ function HelloWorld() {
 ```
 
 ### State
-***Coming Soon...***
+***Redux***
+Many libraries have created confusing state models and the standard
+these days is Redux or something similar. Therefore rather than 
+reinventing the wheel Freedactive recommends using the Redux, Vanilla
+JavaScript (ES5) version of the framework. Simply add Redux functionality
+to your web app by adding the script tag with the Redux library location\
+https://unpkg.com/redux@latest/dist/redux.min.js\
+
+Please see Redux documentation vanilla example for more information
+and examples\
+https://redux.js.org/introduction/examples/
+
+```html
+<!doctype html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>        
+    </head>
+    <body>
+    </body>
+</html>
