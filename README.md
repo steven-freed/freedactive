@@ -392,9 +392,10 @@ JavaScript (ES5) version of the framework. Simply add Redux functionality
 to your web app by adding the script tag with the Redux library location\
 https://unpkg.com/redux@latest/dist/redux.min.js
 
-Please see [https://github.com/steven-freed/freedactive/tree/master/examples/state-redux] for examples
+Please see https://github.com/steven-freed/freedactive/tree/master/examples/state-redux for examples
 using Redux.\
-Or see Redux documentation vanilla example for more information\
+Or\
+See Redux documentation vanilla example for more information\
 https://redux.js.org/introduction/examples/
 
 ```html
