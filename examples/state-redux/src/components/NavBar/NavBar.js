@@ -16,15 +16,16 @@ function NavBar() {
     var lis = Object.keys(routes).map(function(k) {
         if (k === '/') {
             return ('\
-                <li onclick="routeto(\'${key}\')"><img src="../../../assets/favicon.png" alt="home"></img></li>\
+                <li onclick="Router.routeto(${key})"><img src="${icon}" alt="home"></img></li>\
                 ').$({
-                    key: k
+                    key: "'${path}'".$({ path: k }),
+                    icon: document.head.querySelector('link[rel="icon"]').href
                 });
         } else { 
             return ('\
-                <li onclick="routeto(\'${key}\')">${route}</li>\
+                <li onclick="Router.routeto(${key})">${route}</li>\
                 ').$({
-                    key: k,
+                    key: "'${path}'".$({ path: k }),
                     route: routes[k].name
                 });
         }

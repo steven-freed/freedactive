@@ -1,5 +1,5 @@
 # ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive
-*The Single Page Application Framework for JavaScript developers, not framework developers*
+*The Single Page Application Framework for Frontend JavaScript Developers, Batteries Included*
 
 ## Purpose?
 There are many great SPA frameworks such as React and Angular. Almost all of them involve
@@ -19,8 +19,7 @@ containing the framework
 2. your entry component (for example App.js) and all other components you've created
 3. div with id "app-container"
 4. initialize Freedactive in your entry component
-5. Optional Step: register service worker to cache content for offline use
-6. run the dev-server using node or your own server
+5. run the dev-server using node or your own server
 *Note your server must always server the index.html file*
  
 ```html
@@ -61,12 +60,10 @@ function App() {
 
 /**    4    **/
 Freedactive.init(App);
-/**    5    **/
-// register();
 ```
 
-6
 ```
+/**    5    **/
 $ node dev-server.js 
 ```
 
@@ -109,7 +106,7 @@ Router.set(comps)
 
 /**
  * Inserts router container to swap out router components
- * for Events invoking 'routeto'.
+ * for Events invoking 'Router.routeto'.
  * 
  * @param {Object} style prop value pairs of camel cased, dashed css 
  * @returns {String} router container to swap out router components
@@ -122,10 +119,10 @@ Router.getMarkup(style)
  * 
  * @param {String} link the specified route to listen for 
  */
-routeto(link)
+Router.routeto(link)
 
 // example
-var markup = ('<button onclick="routeto(${path})"></button>').$({ path: '/my-path' });
+var markup = ('<button onclick="Router.routeto(${path})"></button>').$({ path: '/my-path' });
 ```
 
 ***Style***\
@@ -297,8 +294,8 @@ function App() {
 ### Routing
 ***Router Object***\
 Navigation is a big concern in SPAs. With Freedactive you get the framework, batteries included.
-You first call 'set' to set the routes and their corresponding component. Then use the 'routeto'
-method for the event of your choice to cause that route to be executed.
+You first call 'Router.set' to set the routes and their corresponding component. Then use the 'Router.
+routeto' method for the event of your choice to cause that route to be executed.
 *Note when using the Router object you do not need to include your routing components in the children array of your component (NavBar)*
 
 ```js
@@ -321,15 +318,15 @@ function NavBar() {
 
     /**
      * Create the navbar list items.
-     * Have the onclick event call routeto('/yourPath')
+     * Have the onclick event call Router.routeto('/yourPath')
      * to display the corresponding component.
      * 
      * @note the 'cash' method being used so you
      * don't have to escape single or double quotes 
-     * for 'key', the parameter of 'routeto'.
+     * for 'key', the parameter of 'Router.routeto'.
      */
     var lis = Object.keys(navbarRoutes).map(function(k) {
-        return ('<li onclick="routeto(${key})">${route}</li>').$({
+        return ('<li onclick="Router.routeto(${key})">${route}</li>').$({
             key: "'${yourPath}'".$({ yourPath: k }),
             route: routes[k].name
         });
@@ -337,7 +334,7 @@ function NavBar() {
 
     /**
      * Place the router's markup 'Router.getMarkup()' where you
-     * want to display your components when 'routeto' is called.
+     * want to display your components when 'Router.routeto' is called.
      */
     this.getMarkup = function() {
         return ('\
@@ -392,7 +389,7 @@ JavaScript (ES5) version of the framework. Simply add Redux functionality
 to your web app by adding the script tag with the Redux library location\
 https://unpkg.com/redux@latest/dist/redux.min.js
 
-Please see https://github.com/steven-freed/freedactive/tree/master/examples/state-redux for examples
+Please see https://github.com/steven-freed/freedactive/tree/master/examples/state-redux for an example
 using Redux.\
 Or\
 See Redux documentation vanilla example for more information\
@@ -407,3 +404,9 @@ https://redux.js.org/introduction/examples/
     <body>
     </body>
 </html>
+```
+
+### PWA/HTML Apps
+***Service Workers***\
+Please see https://github.com/steven-freed/freedactive/tree/master/examples/service-worker for an example
+using service workers.\

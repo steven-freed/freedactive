@@ -49,12 +49,9 @@ var Freedactive = (function() {
         });
         
         window.onpopstate = function() {
-            routeto(Utils.parseUrl());
+            Router.routeto(Utils.parseUrl());
         };
     };
-
-    // Freedactive component properties
-
 
     /**
      * Routes SPA by loading entry component and its children on 'load' event
@@ -96,7 +93,7 @@ var Freedactive = (function() {
                 container.innerHTML = rt.getMarkup();
             } catch (e) {
                 throw new Error('Component ${component} does not appear to contain\
-                                the "getMarkup" property.'.$({ component: components[url].name }));
+                the "getMarkup" property.'.$({ component: components[url].name }));
             }
         }
 
@@ -234,7 +231,6 @@ var Freedactive = (function() {
             scriptAndStyle: scriptAndStyle,
             getMethods: getMethods
         };
-
     })();
 
     /**
@@ -273,22 +269,23 @@ var Freedactive = (function() {
             Object.assign(components, comps);
         };
 
+        /**
+         * Event listener for route changes. Should be registered with
+         * html element such as a button, li, etc.
+         * 
+         * @param {string} link the specified route to listen for 
+         */
+        var routeto = function(link) {
+            history.pushState(null, null, location.origin + link);
+            router(ROUTER_CONTAINER);
+        };
+
         return {
+            set: set,
             getMarkup: getMarkup,
-            set: set
+            routeto: routeto
         };
     })();
-
-    /**
-     * Event listener for route changes. Should be registered with
-     * html element such as a button, li, etc.
-     * 
-     * @param {string} link the specified route to listen for 
-     */
-    var routeto = function(link) {
-        history.pushState(null, null, location.origin + link);
-        router(ROUTER_CONTAINER);
-    };
 
     /**
      * Inline Style creator, uses camel casing object literals
@@ -315,15 +312,9 @@ var Freedactive = (function() {
      */
     return {
         init: init,
-        Router: {
-            Router: Router,
-            routeto: routeto
-        },
-        Style: {
-            init: Style
-        }
+        Router: Router,
+        Style: Style
     };
-
 })();
 
 /**
@@ -331,13 +322,9 @@ var Freedactive = (function() {
  */
 
 // Router
-var Router = Freedactive.Router.Router;
-
-var routeto = function(link) {
-    return Freedactive.Router.routeto(link);
-};
+var Router = Freedactive.Router;
 
 // Style
 var Style = function(style) {
-    return Freedactive.Style.init(style);
+    return Freedactive.Style(style);
 };
