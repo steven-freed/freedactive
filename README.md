@@ -20,7 +20,9 @@ containing the framework
 3. div with id "app-container"
 4. initialize Freedactive in your entry component
 5. Optional Step: register service worker to cache content for offline use
-
+6. run the dev-server using node or your own server
+*Note your server must always server the index.html file*
+ 
 ```html
 <!DOCTYPE html>
     <head>
@@ -61,6 +63,11 @@ function App() {
 Freedactive.init(App);
 /**    5    **/
 // register();
+```
+
+6
+```
+$ node dev-server.js 
 ```
 
 ## Documentation
@@ -385,8 +392,9 @@ JavaScript (ES5) version of the framework. Simply add Redux functionality
 to your web app by adding the script tag with the Redux library location\
 https://unpkg.com/redux@latest/dist/redux.min.js\
 
-Please see Redux documentation vanilla example for more information
-and examples\
+Please see [./examples/state-redux/index.html](index.html) for examples
+using Redux.\
+Or see Redux documentation vanilla example for more information\
 https://redux.js.org/introduction/examples/
 
 ```html

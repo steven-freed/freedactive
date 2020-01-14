@@ -1,0 +1,16 @@
+#phrase {
+    position: relative;
+    animation: wrapscreen 8s infinite;
+    -webkit-animation: wrapscreen 8s infinite;
+    animation-play-state: running;
+}
+
+@-webkit-keyframes wrapscreen {
+    from { left: -100vw; }
+    to { left: 100vw; }
+}
+
+@keyframes wrapscreen {
+    from { left: -100vw; }
+    to { left: 100vw; }
+}

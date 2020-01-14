@@ -3,16 +3,13 @@ function NavBar() {
     // Sets your routes
     Router.set({
         '/': App,
-        '/docs': Docs,
-        '/hello': Hello,
-        '/hello/world': World
+        '/counter-view': CounterView
     });
     
     // navbar navigation
     var routes = {
         '/': App,
-        '/docs': Docs,
-        '/hello': Hello
+        '/counter-view': CounterView
     };
 
     // li elements for routes
@@ -45,7 +42,7 @@ function NavBar() {
                 <ul style="${listStyle}">\
                     ${items}\
                 </ul>\
-                <span></span>\
+                <span id="nav-span"></span>\
             </div>\
             ${Router}\
         ').$({
