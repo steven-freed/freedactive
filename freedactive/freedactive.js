@@ -1,4 +1,23 @@
 /**
+ * JavaScript Polyfills
+ */
+
+// extends strings to include splice
+String.prototype.splice = function(start, remove, str) {
+    return this.slice(0, start) + str + this.slice(start + Math.abs(remove));
+};
+
+// support for string interpolation like backticks
+// use ${} to insert your variable into a string
+//
+// ex. 'Hello ${x}'.$({ x: 'World' }) = 'Hello World'
+String.prototype.$ = function (vars) {
+    return this.replace(/\${([^${}]*)}/g, function (a, b) {
+            return typeof vars[b] === 'string' || typeof vars[b] === 'number' ? vars[b] : a;
+        });
+};
+
+/**
  * Main module exposing a subset of public API methods
  */
 var Freedactive = (function() {
@@ -76,8 +95,8 @@ var Freedactive = (function() {
             try {
                 container.innerHTML = rt.getMarkup();
             } catch (e) {
-                throw new Error('Component ${components[url].name} does not appear to contain\
-                                the "getMarkup" property.');
+                throw new Error('Component ${component} does not appear to contain\
+                                the "getMarkup" property.'.$({ component: components[url].name }));
             }
         }
 
@@ -321,23 +340,4 @@ var routeto = function(link) {
 // Style
 var Style = function(style) {
     return Freedactive.Style.init(style);
-};
-
-/**
- * JavaScript prototype modifications
- */
-
-// extends strings to include splice
-String.prototype.splice = function(start, remove, str) {
-    return this.slice(0, start) + str + this.slice(start + Math.abs(remove));
-};
-
-// support for string interpolation like backticks
-// use ${} to insert your variable into a string
-//
-// ex. 'Hello ${x}'.$({ x: 'World' }) = 'Hello World'
-String.prototype.$ = function (vars) {
-    return this.replace(/\${([^${}]*)}/g, function (a, b) {
-            return typeof vars[b] === 'string' || typeof vars[b] === 'number' ? vars[b] : a;
-        });
 };

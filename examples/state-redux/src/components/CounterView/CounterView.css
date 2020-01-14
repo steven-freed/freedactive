@@ -1,12 +1,13 @@
 #counter-view {
     text-align: center;
+    position: relative;
     margin-top: 50vh;
 }
 
-.button {
-    margin-top: 50vh;
+button {
     width: 100px;
     height: 50px;
+    font-size: 1.2em;
     border-radius: 25px;
     outline: none;
 }
