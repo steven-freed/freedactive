@@ -13,14 +13,13 @@ requires zero installations.\
 Get started now below, happy coding!
 
 ## Quick Start
-If you have npm (node package manager) installed get started quickly by installing\
-freedactive-cli https://github.com/steven-freed/freedactive-cli
+If you have npm (node package manager) installed get started quickly by installing freedactive-cli\
+https://github.com/steven-freed/freedactive-cli
 ```
 $ npm install -g freedactive-cli
 ```
 
-If you are strictly a frontend developer or prefer not to use npm you can get started\
-without it as well by following along below...\
+***If you prefer not to use npm you can easily get started below...***
 
 In your index.html file you must have: 
 1. freedactive.min.js file from https://steven-freed.github.io/freedactive/freedactive.min.js
