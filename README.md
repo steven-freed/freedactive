@@ -27,7 +27,7 @@ containing the framework
 2. your entry component (for example App.js) and all other components you've created
 3. div with id "app-container"
 4. initialize Freedactive in your entry component
-5. run your own server or use freedactive-cli to serve your web app
+5. run your own server or use freedactive-cli to serve your web app\
 *Note your server must always server the index.html file*
  
 ```html
