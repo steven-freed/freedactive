@@ -417,4 +417,4 @@ https://redux.js.org/introduction/examples/
 ### PWA/HTML Apps
 ***Service Workers***\
 Please see https://github.com/steven-freed/freedactive/tree/master/examples/service-worker for an example
-using service workers.\
+using service workers.
