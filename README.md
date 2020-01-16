@@ -14,7 +14,7 @@ Get started now below, happy coding!
 
 ## Quick Start
 If you have npm (node package manager) installed get started quickly by installing freedactive-cli\
-https://github.com/steven-freed/freedactive-cli
+https://www.npmjs.com/package/freedactive-cli
 ```
 $ npm install -g freedactive-cli
 ```
@@ -27,7 +27,7 @@ containing the framework
 2. your entry component (for example App.js) and all other components you've created
 3. div with id "app-container"
 4. initialize Freedactive in your entry component
-5. run the dev-server using node or your own server
+5. run your own server or use freedactive-cli to serve your web app
 *Note your server must always server the index.html file*
  
 ```html
@@ -72,7 +72,7 @@ Freedactive.init(App);
 
 ```
 /**    5    **/
-$ node dev-server.js 
+$ freedactive serve
 ```
 
 ## Documentation
