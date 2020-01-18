@@ -12,6 +12,10 @@ and get a web application up in minutes. Freedactive is very easy to get started
 requires zero installations.\
 Get started now below, happy coding!
 
+## Contributions
+If you are interested in contributing to Freedactive please submit a pull request indicating your reason for contribution as well as tests for your contribution.
+TravisCI https://travis-ci.com/steven-freed/freedactive
+
 ## Quick Start
 If you have npm (node package manager) installed get started quickly by installing freedactive-cli\
 https://www.npmjs.com/package/freedactive-cli
