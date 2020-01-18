@@ -1,0 +1,26 @@
+{
+  "name": "freedactive",
+  "version": "1.0.0",
+  "description": "*The Single Page Application Framework for Frontend JavaScript Developers, Batteries Included*",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steven-freed/freedactive.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/steven-freed/freedactive/issues"
+  },
+  "homepage": "https://github.com/steven-freed/freedactive#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}

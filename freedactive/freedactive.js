@@ -328,3 +328,6 @@ var Router = Freedactive.Router;
 var Style = function(style) {
     return Freedactive.Style(style);
 };
+
+// used for node.js testing
+module.exports = Freedactive;
