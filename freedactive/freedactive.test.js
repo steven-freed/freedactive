@@ -1,18 +1,23 @@
 const fa = require('./freedactive.js');
 
 test('Style', () => {
-    expect(fa.Style({
+
+    const testStyle = fa.Style({
         fontSize: '24px',
         color: 'blue',
         backgroundColor: 'green'
-    })).toBe('font-size:24px;color:blue;background-color:green;');
+    });
+    const style = 'font-size:24px;color:blue;background-color:green;';
+    expect(testStyle).toBe(style);
 });
 
 test('Cash Function', () => {
-    expect('Hi my name is ${name} and my job is ${job}'.$({
+    const testStr = 'Hi my name is ${name} and my job is ${job}'.$({
         name: 'steve',
         job: (function() { return 'making freedactive'; })()
-    })).toBe('Hi my name is steve and my job is making freedactive');
+    });
+    const str = 'Hi my name is steve and my job is making freedactive';
+    expect(testStr).toBe(str);
 });
 
 test('Router', () => {
@@ -24,10 +29,11 @@ test('Router', () => {
         height: '100%',
         backgroundColor: 'rgb(113, 47, 242)'
     });
-    expect(fa.Router.getMarkup()).toBe('<div id="${container}" style="${style}"></div>'.$({
+    const routerMarkup = '<div id="${container}" style="${style}"></div>'.$({
         container: ROUTER_CONTAINER,
         style: routerStyle
-    }));
+    });
+    expect(fa.Router.getMarkup()).toBe(routerMarkup);
 });
 
 test('State', () => {

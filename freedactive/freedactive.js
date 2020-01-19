@@ -360,4 +360,4 @@ var Style = function(style) {
 var State = Freedactive.State;
 
 // used for node.js testing
-//module.exports = Freedactive;
+module.exports = Freedactive;
