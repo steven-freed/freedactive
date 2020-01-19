@@ -1,6 +1,6 @@
 {
   "name": "freedactive",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "*The Single Page Application Framework for Frontend JavaScript Developers, Batteries Included*",
   "main": "index.js",
   "directories": {
