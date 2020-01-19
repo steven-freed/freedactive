@@ -1,4 +1,4 @@
-# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive
+# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive [![Build Status](https://travis-ci.com/steven-freed/freedactive.svg?branch=master)](https://travis-ci.com/steven-freed/freedactive)
 *The Single Page Application Framework for Frontend JavaScript Developers, Batteries Included*
 
 ## Purpose?
@@ -11,6 +11,10 @@ functionality. Freedactive provides developers with an intuitive way to write mo
 and get a web application up in minutes. Freedactive is very easy to get started with and
 requires zero installations.\
 Get started now below, happy coding!
+
+## Contributions
+If you are interested in contributing to Freedactive please submit a pull request indicating your reason for contribution as well as tests for your contribution.
+TravisCI https://travis-ci.com/steven-freed/freedactive
 
 ## Quick Start
 If you have npm (node package manager) installed get started quickly by installing freedactive-cli\
