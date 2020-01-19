@@ -164,9 +164,9 @@ State instances are created by passing them a reducer function.
  * State managment
  * 
  * @param {Function} reducer reducer function
- * @param {Object} state optional starting state 
+ * @param {Object} initState optional starting state 
  */
-var state = new State(style);
+var state = new State(reducer, initState);
 
 /**
  * Gets the current state for your instance
