@@ -496,8 +496,8 @@ Creator.incrementCounter;
 ```
 
 ***Methods***\
-*sub*: subscribes an event handler function to execute when a state change for your instance occurs
-*pub*: publishes an action to change the state of your state instance and invoke your subscribers
+*sub*: subscribes an event handler function to execute when a state change for your instance occurs\
+*pub*: publishes an action to change the state of your state instance and invoke your subscribers\
 *getState*: retrieves the current state of your state instance
 
 Please see https://github.com/steven-freed/freedactive/tree/master/examples/state-management for a full example.
