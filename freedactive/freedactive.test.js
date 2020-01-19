@@ -1,6 +1,6 @@
 const fa = require('./freedactive.js');
 
-test('Inline Style', () => {
+test('Style', () => {
     expect(fa.Style({
         fontSize: '24px',
         color: 'blue',
@@ -28,4 +28,23 @@ test('Router', () => {
         container: ROUTER_CONTAINER,
         style: routerStyle
     }));
+});
+
+test('State', () => {
+    const reducer = function (state, action) {
+        if (typeof state === 'undefined')
+          return 1;
+        switch (action.type) {
+          case 'INCREMENT':
+            return state + 1;
+          default:
+            return state;
+        }
+    };
+    const state = new fa.State(reducer, 0);
+    expect(state.getState()).toBe(0);
+    
+    var action = { type: 'INCREMENT' };
+    expect(state.pub(action)).toBe(action);
+    expect(state.getState()).toBe(1);
 });

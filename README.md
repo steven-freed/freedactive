@@ -141,6 +141,7 @@ var markup = ('<button onclick="Router.routeto(${path})"></button>').$({ path: '
 ***Style***\
 Style provides a translation from an object literal containing { prop: value } pairs where
 prop is a camel cased css property and value is a normal css value as a string.
+
 ```js
 /**
  * Inline Style creator, uses camel casing object literals
@@ -150,6 +151,42 @@ prop is a camel cased css property and value is a normal css value as a string.
  * @returns {String} inline css style string
  */
 Style(style)
+```
+
+***State***\
+State instances are created by passing them a reducer function.
+
+```js
+/**
+ * State managment
+ * 
+ * @param {Function} reducer reducer function
+ * @param {Object} state optional starting state 
+ */
+var state = new State(style);
+
+/**
+ * Gets the current state for your instance
+ * 
+ * @returns your instances state
+ */
+state.getState();
+
+/**
+ * Publishes an action to your state instance
+ * 
+ * @param {Object} action your action
+ * @returns {Object} your action
+ */
+state.pub(action);
+
+/**
+ * Subscribes your state instance to a callback
+ * event handler.
+ * 
+ * @param {Function} eventHandler your listener for publishes
+ */
+state.sub(eventHandler);
 ```
 
 ### Components
@@ -394,30 +431,73 @@ function HelloWorld() {
 ```
 
 ### State
-***Redux***\
-Many libraries have created confusing state models and the standard
-these days is Redux or something similar. Therefore rather than 
-reinventing the wheel Freedactive recommends using the Redux, Vanilla
-JavaScript (ES5) version of the framework. Simply add Redux functionality
-to your web app by adding the script tag with the Redux library location\
-https://unpkg.com/redux@latest/dist/redux.min.js
+Freedactive offers a simple interface to state management.
 
-Please see https://github.com/steven-freed/freedactive/tree/master/examples/state-redux for an example
-using Redux.\
-Or\
-See Redux documentation vanilla example for more information\
-https://redux.js.org/introduction/examples/
-
-```html
-<!doctype html>
-    <head>
-        <meta charset="utf-8">
-        <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>        
-    </head>
-    <body>
-    </body>
-</html>
+***Actions***\
+*Action Types*: different types of actions
+```js
+var Type = {
+    INCREMENT: 'INCREMENT',
+    DECREMENT: 'DECREMENT'
+};
 ```
+
+*Action Creators*: helper functions to create new actions if those actions take parameters
+```js
+var Creator = (function() {
+    function incrementCounter() {
+        return { type: Type.INCREMENT };
+    };
+
+    function decrementCounter() {
+        return { type: Type.DECREMENT };
+    };
+
+    return {
+        incrementCounter,
+        decrementCounter
+    };
+})();
+```
+
+***Reducers***\
+*Reducers*: changes the state of your instance given the current state and an action
+```js
+var Reducer = (function() {
+
+  function counter(state, action) {
+      if (typeof state === 'undefined')
+        return 1;
+      switch (action.type) {
+        case Type.INCREMENT:
+          return state + 1;
+        case Type.DECREMENT:
+          return state - 1;
+        default:
+          return state;
+      }
+  };
+
+  return {
+    counter
+  };
+})();
+```
+
+Action Types, Action Creators, and Reducers SHOULD BE KEPT in a self invoking function to reduce
+clutter in the global namespace. They should be accessed like so...
+```js
+Reducer.counter;
+Type.INCREMENT;
+Creator.incrementCounter;
+```
+
+***Methods***\
+*sub*: subscribes an event handler function to execute when a state change for your instance occurs
+*pub*: publishes an action to change the state of your state instance and invoke your subscribers
+*getState*: retrieves the current state of your state instance
+
+Please see https://github.com/steven-freed/freedactive/tree/master/examples/state-management for a full example.
 
 ### PWA/HTML Apps
 ***Service Workers***\

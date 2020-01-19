@@ -39,7 +39,7 @@ var Freedactive = (function() {
      * 
      * @param {Function} root functional component 
      */
-    var init = function(root) {
+    function init(root) {
         App = root;
         ENTRY_COMPONENT = root.name ? root.name : ENTRY_COMPONENT;
         components['/'] = App;
@@ -59,11 +59,11 @@ var Freedactive = (function() {
      * 
      * @param {String} root name of component container to be swapped during route changes
      */
-    var router = function (root) {
+    function router(root) {
         // set up mutation observer to observe if 'app-router-container'
         // is added to DOM. This allows for displaying the correct component
         // for the corresponding url.
-        var callback = function() {
+        function callback() {
             if (document.getElementById(ROUTER_CONTAINER)) {
                 router(ROUTER_CONTAINER);
                 observer.disconnect();
@@ -120,52 +120,32 @@ var Freedactive = (function() {
          * 
          * @returns {String} the parsed url mapping to a Router component
          */
-        var parseUrl = function () {
+        function parseUrl() {
             var url = location.href;
             url = url.slice(url.indexOf('/', 8));
             return url;
         };
 
         /**
-         * Converts anonymous functions and arrow functions
-         * to traditional named fuctions. Works for async functions
-         * as well.
+         * Converts anonymous functions to traditional named fuctions.
          * 
          * @param {Array} userMethods methods of any kind
          * @returns {String} all non-library component methods concatenated
          */
-        var aton = function (userMethods) {
+        function aton(userMethods) {
             return Object.keys(userMethods).map(function(method) {
                     var FUNCTION = 'function';
-                    var ASYNC = 'async';
-                    var ARROW = '=>';
                     var SPACE = ' ';
-                    // function body without '=>'
                     var funcBody = userMethods[method].toString();
-                    funcBody = funcBody.replace(ARROW, '');
                     // function signature, everything before first '('
                     var sig = funcBody.slice(0, funcBody.indexOf('{'));
-                    sig = sig.replace(ARROW, '');
                     sig = sig.slice(0, funcBody.indexOf('('));
-            
                     var f = sig.indexOf(FUNCTION);
-                    var a = sig.indexOf(ASYNC);
                     // if method has keyword 'function'
-                    if (f > -1) {
+                    if (f > -1)
                         funcBody = funcBody.splice(f + FUNCTION.length, 0, SPACE + method + SPACE);
-                    } else {
-                        // if method is an arrow function
-                        // normal arrow function
-                        if (a < 0) { 
-                            funcBody = funcBody.splice(0, 0, FUNCTION + SPACE + method + SPACE);
-                        } else {
-                            // async arrow function
-                            funcBody = funcBody.splice(a + ASYNC.length, 0, SPACE + FUNCTION + SPACE + method + SPACE)
-                        }
-                    }
-                
                     return funcBody;
-                }).join(' ');
+                }).join(';');
         };
 
         /**
@@ -175,7 +155,7 @@ var Freedactive = (function() {
          * @param {Function} component user defined component
          * @returns {Object} non-library function props 
          */
-        var getMethods = function (component, props) {
+        function getMethods(component, props) {
             var componentProps = Object.assign({}, component);
             Object.keys(componentProps).map(function(prop) {
                 if (props.includes(prop))
@@ -194,7 +174,7 @@ var Freedactive = (function() {
          * @param {Array} userMethods user defined public methods
          * @param {Object} component routing component
          */
-        var scriptAndStyle = function (container, userMethods, component) {
+        function scriptAndStyle(container, userMethods, component) {
             // insert user component methods as a script
             if (Object.keys(userMethods).length) {
                 var methodsScript = Utils.aton(userMethods);
@@ -245,7 +225,7 @@ var Freedactive = (function() {
          * @param {Object} style prop value pairs of camel cased, dashed css 
          * @returns {String} router container to swap out router components
          */
-        var getMarkup = function(style) {
+        function getMarkup(style) {
             var routerStyle = Style({
                 position: 'absolute',
                 textAlign: 'center',
@@ -265,7 +245,7 @@ var Freedactive = (function() {
          * 
          * @param {Object} comps path, component pairs to initialize router
          */
-        var set = function(comps) {
+        function set(comps) {
             Object.assign(components, comps);
         };
 
@@ -275,7 +255,7 @@ var Freedactive = (function() {
          * 
          * @param {string} link the specified route to listen for 
          */
-        var routeto = function(link) {
+        function routeto(link) {
             history.pushState(null, null, location.origin + link);
             router(ROUTER_CONTAINER);
         };
@@ -308,12 +288,59 @@ var Freedactive = (function() {
     };
 
     /**
+     * State managment
+     * 
+     * @param {Function} reducer reducer function
+     * @param {Object} state optional starting state 
+     */
+    var State = function(reducer, state) {
+        var reducer = reducer;
+        var state = state;
+        var listeners = [];
+
+        /**
+         * Gets the current state for your instance
+         * 
+         * @returns your instances state
+         */
+        this.getState = function() { return state; }
+
+        /**
+         * Publishes an action to your state instance
+         * 
+         * @param {Object} action your action
+         * @returns {Object} your action
+         */
+        this.pub = function(action) {
+            state = reducer(state, action);
+            listeners.forEach(function(listener) {
+                listener();
+            });
+            return action;
+        }
+
+        /**
+         * Subscribes your state instance to a callback
+         * event handler.
+         * 
+         * @param {Function} eventHandler your listener for publishes
+         */
+        this.sub = function(eventHandler) {
+            listeners.push(eventHandler);
+            return function unsub() {
+                listeners.splice(listeners.indexOf(eventHandler), 1);
+            };
+        }
+    };
+
+    /**
      * Public API methods
      */
     return {
         init: init,
         Router: Router,
-        Style: Style
+        Style: Style,
+        State: State,
     };
 })();
 
@@ -329,5 +356,8 @@ var Style = function(style) {
     return Freedactive.Style(style);
 };
 
+// State
+var State = Freedactive.State;
+
 // used for node.js testing
-module.exports = Freedactive;
+//module.exports = Freedactive;
