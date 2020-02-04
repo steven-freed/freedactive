@@ -1,16 +1,18 @@
-function Hello() {
+var Hello = function() {
+}
 
-    this.getMarkup = function() {
-        return ('\
-            <div id="hello">\
-                <button id="hw-button" onclick="Router.routeto(${comp});">Hello?</button>\
-            </div>\
-        ').$({
-            comp: "'/hello/world'"
-        });
-    }
+Hello.prototype = Object.create(Component.prototype);
 
-    this.getStyle = function() {
-        return './src/components/Hello/Hello.css';
-    }
-};
+Hello.prototype.getMarkup = function() {
+    return ('\
+        <div id="hello">\
+            <button id="hw-button" onclick="Router.routeto(${comp});">Hello?</button>\
+        </div>\
+    ').$({
+        comp: "'/hello/world'"
+    });
+}
+
+Hello.prototype.getStyle = function() {
+    return './src/components/Hello/Hello.css';
+}

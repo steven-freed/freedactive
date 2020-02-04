@@ -1,25 +1,27 @@
-function App() {
+var App = function App() {
+}
 
-    this.getMarkup = function() {
-        return ('\
-            <div>\
-                ${NavBar}\
-                <h1 id="phrase">Welcome to Freedactive!</h1>\
-            </div>\
-        ').$({
-            NavBar: new NavBar().getMarkup()
-        });
-    }
+App.prototype = Object.create(Component.prototype);
 
-    this.getStyle = function() {
-        return './src/App.css';
-    }
+App.prototype.getMarkup = function() {
+    return ('\
+        <div>\
+            ${NavBar}\
+            <h1 id="phrase">Welcome to Freedactive!</h1>\
+        </div>\
+    ').$({
+        NavBar: new NavBar().getMarkup()
+    });
+}
+
+App.prototype.getStyle = function() {
+    return './src/App.css';
+}
     
-    this.getChildren = function() {
-        return [
-            NavBar
-        ];
-    }
+App.prototype.getChildren = function() {
+    return [
+        NavBar
+    ];
 }
 
 Freedactive.init(App);

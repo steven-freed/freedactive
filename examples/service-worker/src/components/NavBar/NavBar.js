@@ -1,5 +1,9 @@
-function NavBar() { 
+var NavBar = function NavBar() { 
+}
 
+NavBar.prototype = Object.create(Component.prototype);
+
+NavBar.prototype.getMarkup = function() {
     // Sets your routes
     Router.set({
         '/': App,
@@ -40,25 +44,23 @@ function NavBar() {
         bottom: '0'
     });
 
-    this.getMarkup = function() {
-        return ('\
-            <div id="navbar">\
-                <ul style="${listStyle}">\
-                    ${items}\
-                </ul>\
-                <span></span>\
-            </div>\
-            ${Router}\
-        ').$({
-            Router: Router.getMarkup(),
-            listStyle: listStyle,
-            items: lis.map(function(li) { 
-                return li;
-            }).join("")
-        });
-    }
+    return ('\
+        <div id="navbar">\
+            <ul style="${listStyle}">\
+                ${items}\
+            </ul>\
+            <span></span>\
+        </div>\
+        ${Router}\
+    ').$({
+        Router: Router.getMarkup(),
+        listStyle: listStyle,
+        items: lis.map(function(li) { 
+            return li;
+        }).join("")
+    });
+}
     
-    this.getStyle = function() {
-        return './src/components/NavBar/NavBar.css';
-    }
+NavBar.prototype.getStyle = function() {
+    return './src/components/NavBar/NavBar.css';
 }
