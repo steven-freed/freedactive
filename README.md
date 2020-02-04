@@ -122,10 +122,10 @@ Freedactive.init(App);
 ```
 
 **Note: For both ES5 and ES6**
-*- your server must always serve the index.html file*
-*- if you have npm (node package manager) installed,*
-*install freedactive-cli to easily serve your app*
-*https://www.npmjs.com/package/freedactive-cli*
+- your server must always serve the index.html file\
+- if you have npm (node package manager) installed,\
+install freedactive-cli to easily serve your app\
+https://www.npmjs.com/package/freedactive-cli
 ```
 $ npm install -g freedactive-cli
 ```
@@ -134,6 +134,10 @@ $ npm install -g freedactive-cli
 If you are interested in contributing to Freedactive please submit a pull request indicating your reason for contribution as well as tests for your contribution.
 
 ## Documentation
+
+All documentation follows the ES5 syntax because it is more widely accepted
+on the web. To view ES6 examples please visit https://github.com/steven-freed/freedactive/tree/master/examples/js-modules
+
 ### API
 ***Strings***\
 Strings in Freedactive are like normal ES5 strings (single and double quotes).
