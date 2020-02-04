@@ -27,12 +27,7 @@ var Freedactive = (function() {
     var ENTRY_COMPONENT = 'App';                    // entry component identifier
     var App;                                        // entry component
     var components = {};                            // router components store
-    var props = [                                   // component props
-        'getMarkup',  // required
-        'getStyle',   // required
-        'getChildren' // optional
-    ];
-
+    
     /**
      * Initializes user's application by setting the 
      * 'load' event listener and 'popstate' event listener.
@@ -82,7 +77,7 @@ var Freedactive = (function() {
         // if route is unknown just load 'ENTRY_COMPONENT' component
         if (!rt) 
             rt = new App();
-
+        
         // prevents page reloads when using Router if ENTRY_COMPONENT is the route 
         if (components[url] && root === ROUTER_CONTAINER && components[url].name === ENTRY_COMPONENT) {
             container.innerHTML = '';
@@ -98,15 +93,15 @@ var Freedactive = (function() {
         }
 
         // loads scripts and styles for child components of current route
-        if (rt.hasOwnProperty('getChildren')) {
+        if (rt.getChildren().length > 0) {
             rt.getChildren().map(function(child) {
                 child = new child();
-                Utils.scriptAndStyle(container, Utils.getMethods(child, props), child);
+                Utils.scriptAndStyle(container, Utils.getMethods(child, Object.keys(Component.prototype)), child);
             });
         }
     
         // loads scripts and styles for current route
-        Utils.scriptAndStyle(container, Utils.getMethods(rt, props), rt);
+        Utils.scriptAndStyle(container, Utils.getMethods(rt, Object.keys(Component.prototype)), rt);
     };
 
 
@@ -145,7 +140,7 @@ var Freedactive = (function() {
                     if (f > -1)
                         funcBody = funcBody.splice(f + FUNCTION.length, 0, SPACE + method + SPACE);
                     return funcBody;
-                }).join(';');
+                }).join('\n');
         };
 
         /**
@@ -187,7 +182,7 @@ var Freedactive = (function() {
             // insert user component style as a link if component
             // style does not exist already
             if (
-                component.hasOwnProperty('getStyle') &&
+                component.getStyle() !== undefined &&
                 !document.getElementById(component.getStyle()) &&
                 component.getStyle() !== ''
                 ) {
@@ -348,6 +343,14 @@ var Freedactive = (function() {
  * Pubic API
  */
 
+// Component
+var Component = function Component() {
+    // constructor
+};
+Component.prototype.getMarkup = function() { return ''; }
+Component.prototype.getStyle = function() { return ''; }
+Component.prototype.getChildren = function() { return []; }
+
 // Router
 var Router = Freedactive.Router;
 
@@ -360,4 +363,4 @@ var Style = function(style) {
 var State = Freedactive.State;
 
 // used for node.js testing
-module.exports = Freedactive;
+//module.exports = Freedactive;
