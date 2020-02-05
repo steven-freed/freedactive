@@ -33,7 +33,7 @@ test('Router', () => {
         container: ROUTER_CONTAINER,
         style: routerStyle
     });
-    expect(fa.Router.getMarkup()).toBe(routerMarkup);
+    expect(fa.Router.markup).toBe(routerMarkup);
 });
 
 test('State', () => {
