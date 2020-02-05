@@ -5,8 +5,8 @@
 Freedactive is a light weight all in one (batteries included) framework with no package manager requirements to allow for a quick easy set up to create great Single Page Web Applications. Freedactive supports ES5 as well as ES6 syntax, the choice is yours!
 Get started now below, happy coding!
 
-*Tired of coding out components and other files?*
-Try downloading the freedactive-cli to quickly serve apps, auto create components and projects, and more.
+*Tired of coding out components and other files?*\
+Try downloading the freedactive-cli to quickly serve apps, auto create components and projects, and more.\
 https://www.npmjs.com/package/freedactive-cli
 ```
 $ npm install -g freedactive-cli
@@ -17,13 +17,14 @@ $ npm install -g freedactive-cli
 ### Quick Start ES5
 *(older, more widely supported syntax)*
 
-In your index.html file you must have: 
+Create an index.html file and an App.js file
 1. import the Freedactive framework
 2. import your entry component (e.g. App.js) and all other components you've created
 3. create div with id "app-container"
 4. initialize Freedactive in your entry component
-5. run server; copy our 'dev-server.js' node server code or use freedactive-cli to serve your web app\
+5. run server; copy our 'dev-server.js' node server code or use freedactive-cli to serve your web app
  
+index.html
 ```html
 <!DOCTYPE html>
     <head>
@@ -44,6 +45,7 @@ In your index.html file you must have:
 </html>
 ```
 
+App.js
 ```js
 App.prototype = new Component;
 
@@ -70,13 +72,14 @@ $ freedactive serve
 ### Quick Start ES6
 *(newer, easier, not as widely supported syntax)*
 
-In your index.html file you must have: 
+Create an index.html file and an App.js file
 1. import the Freedactive framework
 2. import your entry component only (e.g. App.js)
 3. create div with id "app-container"
 4. initialize Freedactive in your entry component
-5. run server; copy our 'dev-server.js' node server code or use freedactive-cli to serve your web app\
+5. run server; copy our 'dev-server.js' node server code or use freedactive-cli to serve your web app
 
+index.html
 ```html
 <!DOCTYPE html>
     <head>
@@ -97,6 +100,7 @@ In your index.html file you must have:
 </html>
 ```
 
+App.js
 ```js
 export default class App extends Component {
     constructor() {
@@ -122,7 +126,7 @@ OR
 $ freedactive serve
 ```
 
-**Note: Freedactive requires that your server must always serve the index.html file**\
+**Note: If using your own server, Freedactive requires that your server must always serve the index.html file**
 
 ## Contributions
 If you are interested in contributing to Freedactive please submit a pull request indicating your reason for contribution as well as tests for your contribution.
@@ -130,7 +134,7 @@ If you are interested in contributing to Freedactive please submit a pull reques
 ## Documentation
 
 Freedactive documentation follows the ES5 syntax because it is more widely accepted
-on the web. However you may use ES6 syntax too, it is supported by many browsers today.
+on the web. However you may use ES6 syntax too, it is supported by many browsers today.\
 ES6 example https://github.com/steven-freed/freedactive/tree/master/examples/js-modules
 
 ### API
@@ -238,7 +242,7 @@ state.sub(eventHandler);
 ```
 
 ### Components
-***Theory***\
+***Theory***
 * Components in Freedactive are first class functions, meaning that functions
 are treated like variables or objects
 * Components inherit from the Freedactive Component object
@@ -305,8 +309,8 @@ function App() {
 Using a component in another component is simple, we can use Freedactives
 string 'cash' method to insert a component's markup into another components
 markup. First we must invoke our components constructor 'new MyButton()' to obtain
-our components public properties, next we call our 'getMarkup' method to
-insert our 'MyButton' component's html 'new MyButton().getMarkup()'. 
+our components public properties, next we access our 'markup' property to
+insert our 'MyButton' component's html 'new MyButton().markup'. 
 
 ```js
 MyButton.prototype = new Component;
@@ -331,7 +335,7 @@ function App() {
             ${customButton}\
         </div>\
     ').$({
-        customButton: new MyButton().getMarkup()
+        customButton: new MyButton().markup
     });
     this.style = './App.css';
     this.children = [
@@ -367,7 +371,7 @@ function App() {
 ### Routing
 ***Router Object***\
 Navigation is a big concern in SPAs. With Freedactive you get the framework, batteries included.
-You first call 'Router.set' to set the routes and their corresponding component. Then use the 'Router.
+You first call 'Router.init' to set the routes and their corresponding component. Then use the 'Router.
 routeto' method for the event of your choice to cause that route to be executed.
 *Note when using the Router object you do not need to include your routing components in the children array of your component (NavBar)*
 
