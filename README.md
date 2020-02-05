@@ -62,6 +62,7 @@ function App() {
 Freedactive.init(App);
 ```
 
+Terminal
 ```
 /**    5    **/
 $ node dev-server.js
@@ -119,6 +120,7 @@ export default class App extends Component {
 Freedactive.init(App);
 ```
 
+Terminal
 ```
 /**    5    **/
 $ node dev-server.js
