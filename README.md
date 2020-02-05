@@ -244,12 +244,12 @@ state.sub(eventHandler);
 ```
 
 ### Components
-***Theory***
+*Theory*
 * Components in Freedactive are first class functions, meaning that functions
 are treated like variables or objects
 * Components inherit from the Freedactive Component object
 
-***Component:***
+*Component*
 * constructor - the function itself creating the component (e.g. function Test())
 * private - variables or methods declard with var inside a function (var is function scoped)
 * public - variables or methods declared using this inside a function
