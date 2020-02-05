@@ -1,13 +1,13 @@
 export default class World extends Component {
-    getMarkup() {
-        return (`
+
+    constructor() {
+        super();
+        this.markup = (`
             <div id="world">
                 <h1>World!</h1>
             </div>
         `);
+        this.style = './src/components/Hello/World/World.css';
     }
-
-    getStyle() {
-        return './src/components/Hello/World/World.css';
-    }
+   
 }

@@ -5,10 +5,34 @@ import World from '../Hello/World/World.js';
 
 export default class NavBar extends Component { 
 
-    getMarkup() {
+    constructor() {
+        super();
 
-         // Sets your routes
-         Router.set({
+        // inline styles
+        const listStyle = Style({
+            padding: "0px",
+            bottom: '0'
+        });
+
+        this.markup = (`
+            <div id="navbar">
+                <ul style="${listStyle}">
+                    ${
+                    this.getItems().map((li) => { 
+                        return li;
+                    }).join("")
+                    }
+                </ul>
+                <span></span>
+            </div>
+            ${Router.markup}
+        `);
+        this.style = './src/components/NavBar/NavBar.css';
+    }
+
+    getItems() {
+        // Sets your routes
+        Router.init({
             '/': App,
             '/docs': Docs,
             '/hello': Hello,
@@ -37,28 +61,7 @@ export default class NavBar extends Component {
             }
         });
 
-        // inline styles
-        const listStyle = Style({
-            padding: "0px",
-            bottom: '0'
-        });
+        return lis;
+    }
 
-        return (`
-            <div id="navbar">
-                <ul style="${listStyle}">
-                    ${
-                    lis.map((li) => { 
-                        return li;
-                    }).join("")
-                    }
-                </ul>
-                <span></span>
-            </div>
-            ${Router.getMarkup()}
-        `);
-    }
-    
-    getStyle() {
-        return './src/components/NavBar/NavBar.css';
-    }
 }

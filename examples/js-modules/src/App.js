@@ -2,24 +2,20 @@ import NavBar from './components/NavBar/NavBar.js';
 
 export default class App extends Component {
 
-    getMarkup() {
-        return (`
+    constructor() {
+        super();
+        this.markup = (`
             <div>
-                ${new NavBar().getMarkup()}
+                ${new NavBar().markup}
                 <h1 id="phrase">Welcome to Freedactive!</h1>
             </div>
         `);
-    }
-
-    getStyle() {
-        return './src/App.css';
-    }
-    
-    getChildren() {
-        return [
+        this.style = './src/App.css';
+        this.children = [
             NavBar
         ];
     }
+
 }
 
 Freedactive.init(App);

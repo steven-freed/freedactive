@@ -2,23 +2,27 @@
 *The Single Page Application Framework for Frontend JavaScript Developers, Batteries Included*
 
 ## Purpose?
-There are many great SPA frameworks such as React and Angular. Almost all of them involve
-downloading many external libraries and use transpilers. The goal of Freedactive is to give
-developers an easy way to say goodbye to transpilers and frameworks that require npm and many
-other packages for vital functionality. Freedactive provides developers with an intuitive way
-to write idiomatic ES5 syntax or ES6 syntax and get a web application up in minutes.
-Freedactive is very easy to get started with and requires zero installations.\
+Freedactive is a light weight all in one (batteries included) framework with no package manager requirements to allow for a quick easy set up to create great Single Page Web Applications. Freedactive supports ES5 as well as ES6 syntax, the choice is yours!
 Get started now below, happy coding!
 
-## Quick Start ES5
+*Tired of coding out components and other files?*
+Try downloading the freedactive-cli to quickly serve apps, auto create components and projects, and more.
+https://www.npmjs.com/package/freedactive-cli
+```
+$ npm install -g freedactive-cli
+```
+
+## Quick Start
+
+### Quick Start ES5
 *(older, more widely supported syntax)*
 
 In your index.html file you must have: 
 1. import the Freedactive framework
-2. your entry component (for example App.js) and all other components you've created
-3. div with id "app-container"
+2. import your entry component (e.g. App.js) and all other components you've created
+3. create div with id "app-container"
 4. initialize Freedactive in your entry component
-5. run your own server, copy our 'dev-server.js' node server code, or use freedactive-cli to serve your web app\
+5. run server; copy our 'dev-server.js' node server code or use freedactive-cli to serve your web app\
  
 ```html
 <!DOCTYPE html>
@@ -41,21 +45,15 @@ In your index.html file you must have:
 ```
 
 ```js
-var App = App() {
-}
+App.prototype = new Component;
 
-App.prototype = Object.create(Component.prototype);
-
-App.prototype.getMarkup = function() {
-    return ('\
+function App() {
+    this.markup = ('\
         <div>\
             <h1>Welcome to Freedactive!</h1>\
         </div>\
     ');
-}
-
-App.prototype.getStyle = function() {
-    return './src/App.css';
+    this.style = './src/App.css';
 }
 
 /**    4    **/
@@ -65,23 +63,20 @@ Freedactive.init(App);
 ```
 /**    5    **/
 $ node dev-server.js
-```
 OR
-```
-/**    5    **/
 $ freedactive serve
 ```
 
-## Quick Start ES6
+### Quick Start ES6
 *(newer, easier, not as widely supported syntax)*
 
 In your index.html file you must have: 
 1. import the Freedactive framework
-2. your entry component only (for example App.js)
-3. div with id "app-container"
+2. import your entry component only (e.g. App.js)
+3. create div with id "app-container"
 4. initialize Freedactive in your entry component
-5. run your own server, copy our 'dev-server.js' node server code, or use freedactive-cli to serve your web app\
- 
+5. run server; copy our 'dev-server.js' node server code or use freedactive-cli to serve your web app\
+
 ```html
 <!DOCTYPE html>
     <head>
@@ -104,42 +99,42 @@ In your index.html file you must have:
 
 ```js
 export default class App extends Component {
-    getMarkup() {
-        return (`
+    constructor() {
+        super();
+        this.markup = (`
             <div>
                 <h1>Welcome to Freedactive!</h1>
             </div>
         `);
+        this.style = './src/App.css';
     }
 
-    getStyle() {
-        return './src/App.css';
-    }
 }
 
 /**    4    **/
 Freedactive.init(App);
 ```
 
-**Note: For both ES5 and ES6**
-- your server must always serve the index.html file\
-- if you have npm (node package manager) installed,\
-install freedactive-cli to easily serve your app\
-https://www.npmjs.com/package/freedactive-cli
 ```
-$ npm install -g freedactive-cli
+/**    5    **/
+$ node dev-server.js
+OR
+$ freedactive serve
 ```
 
-### Contributions
+**Note: Freedactive requires that your server must always serve the index.html file**\
+
+## Contributions
 If you are interested in contributing to Freedactive please submit a pull request indicating your reason for contribution as well as tests for your contribution.
 
 ## Documentation
 
-All documentation follows the ES5 syntax because it is more widely accepted
-on the web. To view ES6 examples please visit https://github.com/steven-freed/freedactive/tree/master/examples/js-modules
+Freedactive documentation follows the ES5 syntax because it is more widely accepted
+on the web. However you may use ES6 syntax too, it is supported by many browsers today.
+ES6 example https://github.com/steven-freed/freedactive/tree/master/examples/js-modules
 
 ### API
-***Strings***\
+***ES5 Strings***\
 Strings in Freedactive are like normal ES5 strings (single and double quotes).
 To overcome the messy string interpolation of ES5, Freedactive extends the String
 prototype by adding the 'cash' method to allow for ES6 backtick *like* string
@@ -172,16 +167,12 @@ Router is a singleton that provides SPA routing to your application.
 * 
 * @param {Object} comps path, component pairs to initialize router
 */
-Router.set(comps)
+Router.init(comps)
 
 /**
- * Inserts router container to swap out router components
- * for Events invoking 'Router.routeto'.
- * 
- * @param {Object} style prop value pairs of camel cased, dashed css 
- * @returns {String} router container to swap out router components
+ * Gets and Sets Router container's markup
  */
-Router.getMarkup(style)
+Router.markup
 
 /**
  * Event listener for route changes. Should be registered with
@@ -248,71 +239,62 @@ state.sub(eventHandler);
 
 ### Components
 ***Theory***\
-A component in Freedactive is a first class function, meaning that functions
-are treated like variables or objects.
+* Components in Freedactive are first class functions, meaning that functions
+are treated like variables or objects
+* Components inherit from the Freedactive Component object
 
-Component:
-- constructor - the function itself creating the component (e.g. function Test())
-- private - variables or methods declard with var inside a function (var is function scoped)
-- public - variables or methods declared using this inside a function
-
-Prototypical Inheritance:
-- inheriting properties - Object.create allows you to inherit from the prototype of another function or object
-- overriding properties - modifying the prototype of your component allows you to override properties in your parent function or object
+***Component:***
+* constructor - the function itself creating the component (e.g. function Test())
+* private - variables or methods declard with var inside a function (var is function scoped)
+* public - variables or methods declared using this inside a function
 
 ```js
-var Test = Test() {
+// inherit properties from Component
+Test.prototype = new Component;
+
+// component
+function Test() {
     /* constructor */
 
     /* properties */
     // public
     this.publicVariable = 6;
     this.publicFunc = function() { }
+    // calls the markup setter of Component
+    this.markup = ('\
+        <div>Freedactive</div>\
+    ');
+
     // private
     var privateVariable = 7;
     var privateFunc = function() { }
 
-     /* constructor */
-}
-
-// inherit properties from Component
-Test.prototype = Object.create(Component.prototype);
-
-// override the Component getMarkup property
-Test.prototype.getMarkup = function() {
-    return 'your markup';
+    /* constructor */
 }
 ```
 
 ***Component Properties***\
-These properties are populated to your component when you inherit from the Component object
+These properties are populated to your component when you inherit from the Component object.
+The following properties contain getters and setters in the Component object. When you set
+one of the properties to a value, you are in fact invoking that properties' setter in the
+Component object. Likewise when you access one of these properties you are invoking that
+properties' getter in the Component object.
 
-- getMarkup - a string of the components html content
-- getStyle - the path to your style sheet for that component
-*Note Freedactive also supports inline styles using the 'Style' object*
-- getChildren - any components being used in the markup of the component
-
-These properties are getters to help encapsulate your components.
-For example, using getters prevents any access modification mistakes
-such as overwriting the markup or style of a component.
+* markup - a string of the components html content
+* style - the path to your style sheet for that component
+* children - any components being used in the markup of the component
 
 ```js
-var App = App() {
-}
-App.prototype = Object.create(Component.prototype);
+App.prototype = new Component;
 
-App.prototype.getMarkup = function() {
-    return ('
+function App() {
+    this.markup = ('
         <div>\
             <h1>Welcome to Freedactive!</h1>\
         </div>\
     ');
-}
-App.prototype.getStyle = function() {
-    return './App.css';
-}
-App.prototype.getChildren = function() {
-    return [
+    this.style = './App.css';
+    this.children = [
         CustomButton,
         CustomView
     ];
@@ -327,30 +309,23 @@ our components public properties, next we call our 'getMarkup' method to
 insert our 'MyButton' component's html 'new MyButton().getMarkup()'. 
 
 ```js
-var MyButton = function MyButton() {
-}
-MyButton.prototype = Object.create(Component.prototype);
+MyButton.prototype = new Component;
 
-MyButton.prototype.getMarkup = function() {
-    return ('
+function MyButton() {
+    this.markup = ('
         <div>\
             <button>MyButton</button>\
         </div>\
     ');
-}
-
-MyButton.prototype.getStyle = function() {
-    return './MyButton.css';
+    this.style = './MyButton.css';
 }
 ```
 
 ```js
-var App = function App() {
-}
-App.prototype = Object.create(Component.prototype);
+App.prototype = new Component;
 
-App.prototype.getMarkup = function() {
-    return ('
+function App() {
+    this.markup = ('
         <div>\
             <h1>Welcome to Freedactive!</h1>\
             ${customButton}\
@@ -358,14 +333,8 @@ App.prototype.getMarkup = function() {
     ').$({
         customButton: new MyButton().getMarkup()
     });
-}
-
-App.prototype.getStyle = function() {
-    return './App.css';
-}
-
-App.prototype.getChildren = function() {
-    return [
+    this.style = './App.css';
+    this.children = [
         MyButton
     ];
 }
@@ -378,17 +347,14 @@ camel casing of normal css attributes for keys and normal css values for values.
 *Note that Styles is a function rather than an object so we do not want to use new when creating an inline style*
 
 ```js
-var App = function App() {
-}
-App.prototype = Object.create(Component.prototype);
+App.prototype = new Component;
 
-App.prototype.getMarkup = function() {
-
+function App() {
     var headerStyle = Style({
         color: 'blue'
     });
 
-    return ('
+    this.markup = ('
         <div>\
             <h1 style=${style}>Welcome to Freedactive!</h1>\
         </div>\
@@ -406,18 +372,18 @@ routeto' method for the event of your choice to cause that route to be executed.
 *Note when using the Router object you do not need to include your routing components in the children array of your component (NavBar)*
 
 ```js
-var NavBar = function NavBar() { 
+NavBar.prototype = new Component;
+
+function NavBar() {
+
     // Sets your routes
-    Router.set({
+    Router.init({
         '/': App,
         '/docs': Docs,
         '/hello': Hello,
         '/hello/world': World
     });
-}
-NavBar.prototype = Object.create(Component.prototype);
 
-NavBar.prototype.getMarkup = function() {
     // navbar navigation
     var navbarRoutes = {
         '/': App,
@@ -442,10 +408,10 @@ NavBar.prototype.getMarkup = function() {
     });
 
     /**
-     * Place the router's markup 'Router.getMarkup()' where you
+     * Place the router's markup 'Router.markup' where you
      * want to display your components when 'Router.routeto' is called.
      */
-    return ('\
+    this.markup = ('\
         <div>\
             <ul>\
                 ${items}\
@@ -455,7 +421,7 @@ NavBar.prototype.getMarkup = function() {
         ${Router}\
     ').$({
         items: lis.map(function(li) { return li; }).join(""),
-        Router: Router.getMarkup()
+        Router: Router.markup
     });
 }
 ```
@@ -465,7 +431,9 @@ NavBar.prototype.getMarkup = function() {
 Event handlers for components in Freedactive are just component methods.
 
 ```js
-var HelloWorld = function HelloWorld() {
+HelloWorld.prototype = new Component;
+
+function HelloWorld() {
     /**
     *   public method notify to handle onclick event
     */
@@ -473,12 +441,8 @@ var HelloWorld = function HelloWorld() {
         // any DOM manipulation goes here
         alert('Hello World!');
     }
-}
-HelloWorld.prototype = Object.create(Component.prototype);
 
-// onclick event to invoke the 'notify' function
-HelloWorld.prototype.getMarkup = function() {
-    return ('
+    this.markup = ('
         <div>\
             <button onclick="notify()">Press Here</button>\
         </div>\

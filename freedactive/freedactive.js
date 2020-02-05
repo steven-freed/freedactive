@@ -85,16 +85,16 @@ var Freedactive = (function() {
         } else {
             // sets container with current route's markup
             try {
-                container.innerHTML = rt.getMarkup();
+                container.innerHTML = rt.markup;
             } catch (e) {
                 throw new Error('Component ${component} does not appear to contain\
-                the "getMarkup" property.'.$({ component: components[url].name }));
+                a defined "markup" property.'.$({ component: components[url].name }));
             }
         }
 
         // loads scripts and styles for child components of current route
-        if (rt.getChildren().length > 0) {
-            rt.getChildren().map(function(child) {
+        if (rt._children.length > 0) {
+            rt._children.map(function(child) {
                 child = new child();
                 Utils.scriptAndStyle(container, Utils.getMethods(child, Object.keys(Component.prototype)), child);
             });
@@ -182,20 +182,20 @@ var Freedactive = (function() {
             // insert user component style as a link if component
             // style does not exist already
             if (
-                component.getStyle() !== undefined &&
-                !document.getElementById(component.getStyle()) &&
-                component.getStyle() !== ''
+                component._style !== undefined &&
+                !document.getElementById(component._style) &&
+                component._style !== ''
                 ) {
                 var styleLink = document.createElement('link');
                 styleLink.type = 'text/css';
                 styleLink.rel = 'stylesheet';
-                styleLink.id = component.getStyle();
+                styleLink.id = component._style;
                 // calculates directory of css by going back by 
                 // number of slashes in url
                 var dir = Utils.parseUrl().split("/").length - 1;
                 var dirUp = "";
                 while (--dir) dirUp += ".";
-                styleLink.href = dirUp + component.getStyle();
+                styleLink.href = dirUp + component._style;
                 document.head.appendChild(styleLink);
             }
         };
@@ -212,35 +212,15 @@ var Freedactive = (function() {
      * Singleton Router to route different components to different routes.
      */
     var Router = (function() {
-
-        /**
-         * Inserts router container to swap out router components
-         * for Events invoking 'routeto'.
-         * 
-         * @param {Object} style prop value pairs of camel cased, dashed css 
-         * @returns {String} router container to swap out router components
-         */
-        function getMarkup(style) {
-            var routerStyle = Style({
-                position: 'absolute',
-                textAlign: 'center',
-                width: '100%',
-                height: '100%',
-                backgroundColor: 'rgb(113, 47, 242)'
-            });
-            style = style ? style : routerStyle;
-            return '<div id="${container}" style="${style}"></div>'.$({
-                container: ROUTER_CONTAINER,
-                style: style
-            });
-        };
+        var style = '';
 
         /**
          * Initializes the component Router.
          * 
          * @param {Object} comps path, component pairs to initialize router
+         * @param {Object} style optional style or router container
          */
-        function set(comps) {
+        function init(comps) {
             Object.assign(components, comps);
         };
 
@@ -256,9 +236,32 @@ var Freedactive = (function() {
         };
 
         return {
-            set: set,
-            getMarkup: getMarkup,
-            routeto: routeto
+            init: init,
+            routeto: routeto,
+            set style(style) {
+                this.style = style
+            },
+            /**
+             * Inserts router container to swap out router components
+             * for Events invoking 'routeto'.
+             * 
+             * @param {Object} style prop value pairs of camel cased, dashed css 
+             * @returns {String} router container to swap out router components
+             */
+            get markup() {
+                var routerStyle = Style({
+                    position: 'absolute',
+                    textAlign: 'center',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgb(113, 47, 242)'
+                });
+                style = this.style ? this.style : routerStyle;
+                return '<div id="${container}" style="${style}"></div>'.$({
+                    container: ROUTER_CONTAINER,
+                    style: style
+                })
+            }
         };
     })();
 
@@ -346,10 +349,35 @@ var Freedactive = (function() {
 // Component
 var Component = function Component() {
     // constructor
+    this._markup = '';
+    this._style = '';
+    this._children = [];
 };
-Component.prototype.getMarkup = function() { return ''; }
-Component.prototype.getStyle = function() { return ''; }
-Component.prototype.getChildren = function() { return []; }
+// Component getters and setters for properties
+Object.defineProperty(Component.prototype, 'markup', {
+    set: function(markup) {
+        this._markup = markup;
+    },
+    get: function() {
+      return this._markup;
+    }
+});
+Object.defineProperty(Component.prototype, 'style', {
+    set: function(style) {
+        this._style = style;
+    },
+    get: function() {
+      return this._style;
+    }
+});
+Object.defineProperty(Component.prototype, 'children', {
+    set: function(children) {
+        this._children = children;
+    },
+    get: function() {
+      return this._children;
+    }
+});
 
 // Router
 var Router = Freedactive.Router;

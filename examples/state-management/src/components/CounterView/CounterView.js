@@ -1,4 +1,19 @@
-var CounterView = function CounterView() {
+CounterView.prototype = new Component;
+
+function CounterView() {
+
+    this.markup = ('\
+        <div id="counter-view">\
+            <p>Count <span id="value">${count}</span></p>\
+                <button onclick="increment()">+</button>\
+                <button onclick="decrement()">-</button>\
+        </div>\
+    ').$({
+        count: String(state.getState())
+    });
+
+    this.style = './src/components/CounterView/CounterView.css';
+
      /**
      * subscribes your state instance to any actions published to
      * your state instance
@@ -20,22 +35,4 @@ var CounterView = function CounterView() {
     this.decrement = function() {
         state.pub(Creator.decrementCounter())
     }
-};
-
-CounterView.prototype = Object.create(Component.prototype);
-
-CounterView.prototype.getMarkup = function() {
-    return ('\
-        <div id="counter-view">\
-            <p>Count <span id="value">${count}</span></p>\
-                <button onclick="increment()">+</button>\
-                <button onclick="decrement()">-</button>\
-        </div>\
-    ').$({
-        count: String(state.getState())
-    });
-}
-
-CounterView.prototype.getStyle = function() {
-    return './src/components/CounterView/CounterView.css';
 }

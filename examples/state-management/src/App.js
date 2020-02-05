@@ -1,25 +1,18 @@
-var App = function App() {
-}
+App.prototype = new Component;
 
-App.prototype = Object.create(Component.prototype);
+function App() {
 
-App.prototype.getMarkup = function() {
-    return ('\
+    this.markup = ('\
         <div>\
             ${NavBar}\
             <h1 id="phrase">Welcome to Freedactive!</h1>\
         </div>\
     ').$({
-        NavBar: new NavBar().getMarkup()
+        NavBar: new NavBar().markup
     });
-}
 
-App.prototype.getStyle = function() {
-    return './src/App.css';
-}
-    
-App.prototype.getChildren = function() {
-    return [
+    this.style = './src/App.css';
+    this.children = [
         NavBar
     ];
 }
