@@ -1,4 +1,4 @@
-# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive &middot; ![Build Status](https://travis-ci.com/steven-freed/freedactive.svg?branch=master)(https://travis-ci.com/steven-freed/freedactive) ![npm version](https://img.shields.io/npm/v/freedactive.svg?style=flat-square)(https://www.npmjs.com/package/freedactive) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/steven-freed/freedactive#contributions)
+# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive &middot; [![Build Status](https://travis-ci.com/steven-freed/freedactive.svg?branch=master)](https://travis-ci.com/steven-freed/freedactive) [![npm version](https://img.shields.io/npm/v/freedactive.svg?style=flat-square)](https://www.npmjs.com/package/freedactive) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/steven-freed/freedactive#contributions)
 *The Single Page Application Framework for Frontend JavaScript Developers, Batteries Included*
 
 ## Purpose?
