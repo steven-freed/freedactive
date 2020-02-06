@@ -1,4 +1,6 @@
-# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive [![Build Status](https://travis-ci.com/steven-freed/freedactive.svg?branch=master)](https://travis-ci.com/steven-freed/freedactive)
+# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive
+[![Build Status](https://travis-ci.com/steven-freed/freedactive.svg?branch=master)](https://travis-ci.com/
+[![npm version](https://img.shields.io/npm/v/freedactive.svg?style=flat-square)](https://www.npmjs.com/package/freedactive)steven-freed/freedactive)
 *The Single Page Application Framework for Frontend JavaScript Developers, Batteries Included*
 
 ## Purpose?
@@ -529,3 +531,30 @@ Please see https://github.com/steven-freed/freedactive/tree/master/examples/stat
 ***Service Workers***\
 Please see https://github.com/steven-freed/freedactive/tree/master/examples/service-worker for an example
 using service workers.
+
+# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive CLI
+Freedactive CLI for creating projects, components, serving your web apps and more.
+
+## Commands
+- **create**: creates a boilerplate project given a name\
+**args**\
+project: your projects name
+```
+$ freedactive create MyApp
+```
+
+- **component**: creates the JavaScript function with methods for your component, as well as the style
+css file for your component.\
+**args**\
+name: your components name
+```
+$ freedactive component CustomButton
+```
+
+- **serve**: serves your web app from your working directory (should be ran where your index.html file is located)\
+**flags**\
+-p: port number, defaults to port 8080
+```
+MyApp$ freedactive serve
+MyApp$ freedactive serve -p 3000
+```

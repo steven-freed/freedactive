@@ -18,9 +18,7 @@ export default class NavBar extends Component {
             <div id="navbar">
                 <ul style="${listStyle}">
                     ${
-                    this.getItems().map((li) => { 
-                        return li;
-                    }).join("")
+                    this.getItems().map((li) => li).join("")
                     }
                 </ul>
                 <span></span>

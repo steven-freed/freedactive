@@ -1,25 +1,46 @@
 {
   "name": "freedactive",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "*The Single Page Application Framework for Frontend JavaScript Developers, Batteries Included*",
-  "main": "index.js",
-  "directories": {
-    "example": "examples"
-  },
-  "scripts": {
-    "test": "jest"
-  },
+  "license": "MIT",
+  "homepage": "https://github.com/steven-freed/freedactive#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/steven-freed/freedactive.git"
   },
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "freedactive",
+    "spa",
+    "state management",
+    "es5",
+    "es6"
+  ],
+  "author": "Steve Freed (https://github.com/steven-freed)",
+  "main": "lib/freedactive.js",
+  "unpkg": "dist/freedactive.js",
+  "files": [
+    "lib/freedactive.js",
+    "dist",
+    "cli"
+  ],
+  "scripts": {
+    "test": "jest",
+    "start": "node ./cli/freedactive-cli.js",
+    "create": "node ./cli/freedactive-cli.js create",
+    "component": "node ./cli/freedactive-cli.js component",
+    "serve": "node ./cli/freedactive-cli.js serve"
+  },
+  "bin": {
+    "freedactive": "./cli/freedactive-cli.js"
+  },
   "bugs": {
     "url": "https://github.com/steven-freed/freedactive/issues"
   },
-  "homepage": "https://github.com/steven-freed/freedactive#readme",
-  "dependencies": {},
+  "dependencies": {
+    "colors": "^1.4.0",
+    "express": "^4.17.1",
+    "tar": "^5.0.5"
+  },
   "devDependencies": {
     "jest": "^24.9.0"
   }
