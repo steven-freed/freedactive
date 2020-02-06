@@ -1,6 +1,4 @@
-# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive
-[![Build Status](https://travis-ci.com/steven-freed/freedactive.svg?branch=master)](https://travis-ci.com/
-[![npm version](https://img.shields.io/npm/v/freedactive.svg?style=flat-square)](https://www.npmjs.com/package/freedactive)steven-freed/freedactive)
+# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive [![Build Status](https://travis-ci.com/steven-freed/freedactive.svg?branch=master)](https://travis-ci.com/ [![npm version](https://img.shields.io/npm/v/freedactive.svg?style=flat-square)](https://www.npmjs.com/package/freedactive)steven-freed/freedactive)
 *The Single Page Application Framework for Frontend JavaScript Developers, Batteries Included*
 
 ## Purpose?
