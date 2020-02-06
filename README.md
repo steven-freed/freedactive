@@ -6,10 +6,10 @@ Freedactive is a light weight all in one (batteries included) framework with no 
 Get started now below, happy coding!
 
 *Tired of coding out components and other files?*\
-Try downloading the freedactive-cli to quickly serve apps, auto create components and projects, and more.\
-https://www.npmjs.com/package/freedactive-cli
+Try downloading the freedactive cli to; quickly serve web apps, auto create projects, auto create components, use the freedactive node package with Webpack and more.\
+https://www.npmjs.com/package/freedactive
 ```
-$ npm install -g freedactive-cli
+$ npm -g install freedactive
 ```
 
 ## Quick Start
@@ -33,7 +33,7 @@ index.html
         <title>My App</title>
         
         <!-- 1 -->
-        <script src="https://steven-freed.github.io/freedactive/freedactive.min.js"></script>
+        <script src="https://unpkg.com/freedactive@latest/dist/freedactive.min.js"></script>
         
         <!-- 2 -->
         <script src="/src/App.js"></script>
@@ -89,7 +89,7 @@ index.html
         <title>My App</title>
         
         <!-- 1 -->
-        <script src="https://steven-freed.github.io/freedactive/freedactive.min.js"></script>
+        <script src="https://unpkg.com/freedactive@latest/dist/freedactive.min.js"></script>
         
         <!-- 2 -->
         <script src="/src/App.js" type="module"></script>
