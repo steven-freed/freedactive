@@ -25,7 +25,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "uglify": "node makeugly.js", 
+    "uglify": "node makeugly.js",
     "start": "node ./cli/freedactive-cli.js",
     "create": "node ./cli/freedactive-cli.js create",
     "component": "node ./cli/freedactive-cli.js component",
@@ -41,7 +41,8 @@
     "colors": "^1.4.0",
     "express": "^4.17.1",
     "tar": "^5.0.5",
-    "uglify-js": "^3.7.7"
+    "uglify-js": "^3.7.7",
+    "uglifycss": "0.0.29"
   },
   "devDependencies": {
     "jest": "^24.9.0"
