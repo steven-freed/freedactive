@@ -1,6 +1,28 @@
 .fa-button {
     font-size: 16px;
     border-radius: 10px;
+    cursor: pointer;
     outline: none;
     padding: 10px 20px;
+}
+
+.fa-button:hover {
+    box-shadow: 0 0 10px 0 white;
+}
+
+.fa-button:active {
+    transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+}
+
+.fa-checkbox-container label {
+    background: rgb(113, 47, 242);
+    width: 25px;
+    height: 25px;
+    display: block;
+}
+
+.fa-checkbox input {
+    width: 25px;
+    height: 25px;
 }
