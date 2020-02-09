@@ -20,6 +20,8 @@
   "unpkg": "dist/freedactive.js",
   "files": [
     "lib/freedactive.js",
+    "lib/fa-ui.js",
+    "lib/fa-ui.css",
     "dist",
     "cli"
   ],
