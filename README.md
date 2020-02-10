@@ -148,16 +148,25 @@ interpolation. The cash function also relieves you from needing to escape quotes
 if using them in variables.
 
 ```js
-// example
+// example - properties
 var freedactive = "Freedactive";
 var html = ('<div>Welcome to ${name}!</div>').$({
     name: freedactive
 });
-// expected output: '<div>Welcome to Freedactive!</div>'
 
-// example - no need to escape quotes
+// example - functions
 var html = ('<button onclick="${handler}"></button>').$({
-    handler: alert("Single quotes ' can be used here")
+    handler: function() {
+        alert('Freedactive is great!');
+    }
+});
+
+// example - no temp vars, ${} uses ordering given, must have unique keys
+var html = ('<button onclick="${}">${}</button>').$({
+    0: function() {
+        alert('Freedactive is great!');
+    },
+    1: 'Press'
 });
 ```
 
@@ -529,6 +538,9 @@ Please see https://github.com/steven-freed/freedactive/tree/master/examples/stat
 ***Service Workers***\
 Please see https://github.com/steven-freed/freedactive/tree/master/examples/service-worker for an example
 using service workers.
+
+# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Fa-ui Components Library
+***Coming Soon...***
 
 # ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive CLI
 Freedactive CLI for creating projects, components, serving your web apps and more.

@@ -1,28 +1,298 @@
-.fa-button {
+/**
+ *  FaButton
+ */
+ .fa-button {
     font-size: 16px;
     border-radius: 10px;
+    color: blue;
     cursor: pointer;
     outline: none;
     padding: 10px 20px;
 }
 
 .fa-button:hover {
-    box-shadow: 0 0 10px 0 white;
+    box-shadow: 0 0 10px 0 gray;
 }
 
 .fa-button:active {
-    transform: translateY(2px);
-    -webkit-transform: translateY(2px);
+    transform: translateY(2.5px);
+    -webkit-transform: translateY(2.5px);
+    -ms-transform: translateY(2.5px);
+    -moz-transform: translateY(2.5px);
 }
 
-.fa-checkbox-container label {
-    background: rgb(113, 47, 242);
-    width: 25px;
+/**
+ *  FaCheckbox
+ */
+.fa-checkbox {
+    display: block;
+    position: relative;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+  
+.fa-checkbox input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+  
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 25px;
+    width: 25px;
+    border: solid lightgray;
+    border-width: 2px;
+}
+
+
+.fa-checkbox input:checked ~ .checkmark {
+    background-color: blue;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.fa-checkbox input:checked ~ .checkmark:after {
     display: block;
 }
 
-.fa-checkbox input {
-    width: 25px;
-    height: 25px;
+.fa-checkbox .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
+
+/**
+ *  FaRadio
+ */
+.radio {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    border: solid lightgray;
+    border-radius: 50%;
+    border-width: 2px;
+}
+
+.radio:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.fa-radio {
+    display: block;
+    position: relative;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+  
+.fa-radio input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.fa-radio input:checked ~ .radio {
+    background-color: blue;
+}
+
+.fa-radio input:checked ~ .radio:after {
+    display: block;
+}
+
+.fa-radio .radio:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+}
+
+/**
+ *  FaGroup
+ */
+ .fa-group button {
+    border: 1px solid lightgray;
+    cursor: pointer;
+    float: left;
+    border-radius: 0;
+}
+
+.fa-group button:active {
+    transform: none;
+    -webkit-transform: none;
+    -ms-transform: none;
+    -moz-transform: none;
+}
+
+/* Prevents double borders */
+.fa-group button:not(:last-child) {
+    border-right: none;
+}
+
+.fa-group button:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.fa-group button:first-child {
+    border-radius: 10px 0 0 10px;
+}
+
+/**
+ *  FaFAB
+ */
+ .fa-fab {
+    background-color: blue;
+    font-size: 18px;
+    padding: 10px;
+    width: 75px;
+    height: 75px;
+    border-radius: 100%;
+    border: none;
+    outline: none;
+    color: white;
+    box-shadow: 0 2px 6px gray, 0 2px 6px gray;
+}
+
+ .fa-fab:active {
+    transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+    -ms-transform: translateY(4px);
+    -moz-transform: translateY(4px);
+    box-shadow: none;
+}
+
+/**
+ *  FaRadio
+ */
+.fa-radio {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/**
+ *  FaSelect
+
+ .fa-select {
+    position: relative;
+    user-select: none;
+    width: 100%;
+}
+.custom-select {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-width: 0 2px 0 2px;
+    border-style: solid;
+    border-color: #394a6d;
+}
+.custom-select__trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+    font-size: 20px;
+    font-weight: 300;
+    color: #3b3b3b;
+    height: 60px;
+    line-height: 60px;
+    cursor: pointer;
+    border-width: 2px 0 2px 0;
+    border-style: solid;
+    border-color: #394a6d;
+}
+.custom-options {
+    position: absolute;
+    display: block;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 2px solid #394a6d;
+    border-top: 0;
+    transition: all 0.5s;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 2;
+}
+.custom-select.open .custom-options {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+.fa-option {
+    position: relative;
+    display: block;
+    padding: 0 22px 0 22px;
+    font-size: 22px;
+    font-weight: 300;
+    color: #3b3b3b;
+    line-height: 60px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+.fa-option:hover {
+    cursor: pointer;
+    background-color: #b2b2b2;
+}
+.fa-option.selected {
+    background-color: #305c91;
+}
+
+.arrow {
+    position: relative;
+    height: 15px;
+    width: 15px;
+}
+.arrow::before, .arrow::after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    width: 0.15rem;
+    height: 100%;
+    transition: all 0.5s;
+}
+.arrow::before {
+    left: -5px;
+    transform: rotate(45deg);
+    background-color: #394a6d;
+}
+.arrow::after {
+    left: 5px;
+    transform: rotate(-45deg);
+    background-color: #394a6d;
+}
+.open .arrow::before {
+    left: -5px;
+    transform: rotate(-45deg);
+}
+.open .arrow::after {
+    left: 5px;
+    transform: rotate(45deg);
+}
+*/
