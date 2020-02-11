@@ -7,6 +7,15 @@ const tar = require('tar');
 const client = require('https');
 const serve = require('./dev-server');
 
+const gulp = require('gulp'); 
+const del = require('del');
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
+const babel = require('gulp-babel');
+const less = require('gulp-less');
+const grename = require('gulp-rename');
+const cleanCSS = require('gulp-clean-css');
+
 const HOST = 'steven-freed.github.io';
 const PATH = '/freedactive/cli/hello-world.tar.gz';
 const CREATE = colors.rainbow('THANK YOU ') +
@@ -91,15 +100,98 @@ const createComponent = function(name, callback) {
         generateComponent(name, (res) => console.log(res));
 };
 
+const createBuild = async function(args) {
+    var dir = args['-d'] ? args['-d'] : '.';
+    minifyCode(dir, parseInt(args['-es']));
+};
+
+function minifyCode(dir, es=5) {
+    var outputDir = 'prod/';
+    var paths = {
+        assets: {
+            src: dir + '/**/*.{jpg,gif,png,bmp}',
+            dest: outputDir
+        },
+        markup: {
+            src: dir + '/**/*.html',
+            dest: outputDir
+        },
+        styles: {
+          src: dir + '/**/*.css',
+          dest: outputDir
+        },
+        scripts: {
+          src: dir + '/**/*.js',
+          dest: outputDir
+        }
+    };
+
+    gulp.task('script', function() {
+        return gulp.src(paths.scripts.src, { sourcemaps: true })
+            .pipe(babel())
+            .pipe(concat(paths.scripts.dest))
+            .pipe(uglify())
+            .pipe(grename({
+                basename: 'main',
+                suffix: '.min',
+                extname: '.js'
+            }))
+            .pipe(gulp.dest(paths.scripts.dest));
+    });
+
+    gulp.task('style', function() {
+        return gulp.src(paths.styles.src)
+            .pipe(concat(paths.scripts.dest))
+            .pipe(less())
+            .pipe(cleanCSS())
+            .pipe(grename({
+                basename: 'main',
+                suffix: '.min'
+            }))
+            .pipe(gulp.dest(paths.styles.dest));
+    });
+
+    gulp.task('markup', function() {
+        return gulp.src(paths.markup.src)
+            .pipe(gulp.dest(paths.markup.dest));
+    });
+
+    gulp.task('assets', function() {
+        return gulp.src(paths.assets.src)
+            .pipe(gulp.dest(paths.assets.dest));
+    });
+
+    gulp.task('clean', function() {
+        return del([outputDir]);
+    });
+
+    gulp.series(gulp.task('clean'), gulp.parallel(gulp.task('style'),
+                                    gulp.task('script'),
+                                    gulp.task('markup'),
+                                    gulp.task('assets')))();
+    console.log(colors.magenta('Production bundle ready in directory "' + outputDir + '" ') + '🤙');
+}
+
+var args = {};
 switch(process.argv[2]) {
     case 'create':
         createApp(process.argv[3], (err) => err ? console.log(colors.red(err)) : null);
         break;
     case 'serve':
-        if(process.argv[3] === '-p' && process.argv[4])
-            serve(parseInt(process.argv[4]));
+        args = {
+            '-p': process.argv[4]
+        }
+        if(args['-p'])
+            serve(parseInt(args['-p']));
         else
             serve();
+        break;
+    case 'build':
+        args = {
+            '-d': process.argv[3] === '-d' ? process.argv[4] : process.argv[6],
+            '-es': process.argv[3] === '-es' ? process.argv[4] : process.argv[6]
+        }
+        createBuild(args);
         break;
     case 'component':
         createComponent(process.argv[3], (err) => err ? console.log(colors.red(err)) : null);

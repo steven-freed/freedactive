@@ -31,7 +31,8 @@
     "start": "node ./cli/freedactive-cli.js",
     "create": "node ./cli/freedactive-cli.js create",
     "component": "node ./cli/freedactive-cli.js component",
-    "serve": "node ./cli/freedactive-cli.js serve"
+    "serve": "node ./cli/freedactive-cli.js serve",
+    "build": "node ./cli/freedactive-cli.js build"
   },
   "bin": {
     "freedactive": "./cli/freedactive-cli.js"
@@ -39,14 +40,22 @@
   "bugs": {
     "url": "https://github.com/steven-freed/freedactive/issues"
   },
-  "dependencies": {
-    "colors": "^1.4.0",
-    "express": "^4.17.1",
-    "tar": "^5.0.5",
-    "uglify-js": "^3.7.7",
-    "uglifycss": "0.0.29"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "jest": "^24.9.0"
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "babel-preset-es2015": "^6.24.1",
+    "colors": "^1.4.0",
+    "del": "^5.1.0",
+    "express": "^4.17.1",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-less": "^4.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
+    "jest": "^24.9.0",
+    "tar": "^6.0.1"
   }
 }

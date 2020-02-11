@@ -568,3 +568,15 @@ $ freedactive component CustomButton
 MyApp$ freedactive serve
 MyApp$ freedactive serve -p 3000
 ```
+
+- **build**: creates a production build of your web app\
+**flags**\
+-es: *currently working on es6 implementation*, defaults to es5
+-d: project directory to bundle
+```
+$ freedactive build -d MyProject
+$ freedactive build -d MyProject -es 5
+```
+
+After running the 'build' command, open 'index.html' and remove all of your component script tags\
+and your component stylesheet links. Replace those with one script tag for importing your minified js code and one link tag for importing your minified css code.
