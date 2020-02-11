@@ -1,18 +1,29 @@
 'use strict';
 
 /**
- * JavaScript Polyfills
+ * JavaScript Syntax Add On's
  */
 
-// extends strings to include splice
+/**
+ * Splice method for strings
+ */
 String.prototype.splice = function(start, remove, str) {
     return this.slice(0, start) + str + this.slice(start + Math.abs(remove));
 };
 
-// support for string interpolation like backticks
-// use ${} to insert your variable into a string
-//
-// ex. 'Hello ${x}'.$({ x: 'World' }) = 'Hello World'
+/**
+ * Support for es6 like backtick syntax
+ *  - replaces temporary variable names
+ *  ex.
+ *      'Hello ${temp}'.$({ temp: 'World' });
+ *  - replaces curly cash braces
+ *  ex.
+ *      'Hello ${}'.$({ 0: 'World' })
+ * 
+ * Note: if multiple curly cash without temporary
+ *  variables, then it will use order you give it.
+ *  Object keys must also be unique (convention 0,1,2,etc.)
+ */
 String.prototype.$ = function (vars) {
     if (vars === undefined) return;
     var i = -1;
@@ -45,11 +56,13 @@ String.prototype.$ = function (vars) {
     });
 };
 
+
 /**
- * Main module exposing a subset of public API methods
+ * Freedactive Library
  */
 var Freedactive = (function() {
 
+    // Constants and closures
     var APP_CONTAINER = 'app-container';            // app root container
     var ROUTER_CONTAINER = 'app-router-container';  // router container
     var ENTRY_COMPONENT = 'App';                    // entry component identifier
@@ -57,46 +70,61 @@ var Freedactive = (function() {
     var components = {};                            // components store
     
     /**
-     * Interprets strings as 'JSX' syntax 
+     * Interprets strings as 'JSX' syntax and returns
+     * a string of normal html. Requires closing tag like
+     * JSX.
+     *  - supports new lines and spaces
+     *   ex.
+     *      <App/>, <App />, <App
+     *                          />
+     *  - supports properties like html elements
+     *   ex.
+     *      <App name="Freedactive" hello="world" />
+     *  
      */
-    String.prototype._jsx = function (curComp) {
-        var normalHtml = '';
-        var todo = {};
+    String.prototype._JSX = function () {
+        components['_router'] = Router;
+        var html = '';
+        var jsxComponents = {};
+        // finds all JSX component declarations in markup
         for (var c of Object.keys(components)) {
-            // if component name is null
+            // if component name is null, skip it
+            console.log(components[c].name);
             if (!components[c].name) continue; 
             var regex = new RegExp('<' + components[c].name + '.*?\/>', 'gms');
             var matches = this.toString().match(regex);
-            if (components[c].name !== ENTRY_COMPONENT) {
-                normalHtml = this.toString().replace(regex, new components[c]().markup);
-            }
-            // if no match exists
+            // if no matches exist
             if (!matches) continue;
-            // maps indices of jsx to jsx
+            if (components[c].name !== ENTRY_COMPONENT) {
+                if (typeof components[c] === 'function') { 
+                    html = this.toString().replace(regex, new components[c]().markup);
+                    console.log('NOT Routerr');
+                } else {
+                    html = this.toString().replace(regex, components[c].markup);
+                    console.log('Routerrr', html);
+                }
+            }
+            // maps indices of JSX components to JSX component strings
             var that = this;
             matches.map(function(val) {
-                todo[that.toString().indexOf(val)] = val; 
+                jsxComponents[that.toString().indexOf(val)] = val; 
             });
         }
 
         // populates properties of component
-        for (var c in todo) {
+        for (var c in jsxComponents) {
             var CLOSING_TAG = '/>';
             var DELIMETER = ';';
-            var indexOfComp = todo[c].search(/\s/ms);
-            var comp = todo[c].slice(1, indexOfComp);
-            comp = window[comp];
-            if (comp === undefined) continue;
-            var propStr = todo[c].slice(indexOfComp);
+            var indexOfComp = jsxComponents[c].search(/\s/ms);
+            var component = jsxComponents[c].slice(1, indexOfComp);
+            component = window[component];
+            if (component === undefined) continue;
+            var propStr = jsxComponents[c].slice(indexOfComp);
             propStr = propStr.replace(CLOSING_TAG, '');
             propStr = propStr.replace(/\s+/gms, DELIMETER);
-            // removes first and last delimeter
-            if (propStr[0] === DELIMETER) {
-                propStr = propStr.slice(1);
-            }
-            if (propStr[propStr.length - 1] === DELIMETER) {
-                propStr = propStr.slice(0, propStr.length - 1);
-            }
+            // removes first and last delimeter if they exist
+            if (propStr[0] === DELIMETER) propStr = propStr.slice(1);
+            if (propStr[propStr.length - 1] === DELIMETER) propStr = propStr.slice(0, propStr.length - 1);
             // turns props into array of strings
             propStr = propStr.includes(DELIMETER) ? propStr.split(DELIMETER) : [];
             // turns props strings into object prop key, val pairs
@@ -107,24 +135,29 @@ var Freedactive = (function() {
                 var val = p.slice(firstQuote + 1, p.length - 1);
                 props[key] = val;
             }
-            comp.prototype.props = props;
+            // sets props property for component
+            component.prototype.props = props;
         }
 
-        return normalHtml;
+        return html;
     };
 
-    // Component
+    /**
+     * Component Prototype to inherit from
+     */
     var Component = function Component() {
-        // constructor
         this._markup = '';
         this._style = '';
         this._router = null; 
+        // for router to run '_JSX' function on markup
         this._jsx = function(component) {
-            this._markup = component.markup._jsx(component);
+            this._markup = component.markup._JSX();
         }
     };
     
-    // Component getters and setters for properties
+    /**
+     * Markup is a string of html
+     */
     Object.defineProperty(Component.prototype, 'markup', {
         set: function(markup) {
             this._markup = markup;
@@ -133,6 +166,9 @@ var Freedactive = (function() {
             return this._markup;
         }
     });
+    /**
+     * Style is the location of your style sheet
+     */
     Object.defineProperty(Component.prototype, 'style', {
         set: function(style) {
             this._style = style;
@@ -141,25 +177,32 @@ var Freedactive = (function() {
             return this._style;
         }
     });
+    /**
+     * Router is set ideally in the entry component 'App'
+     * and only provides a setter
+     */
     Object.defineProperty(Component.prototype, 'router', {
         set: function(router) {
-            components['_'] = router;
+            components['_navigation'] = router;
             this._router = router
         }
     });
 
     /**
-     * Initializes user's application by setting the 
-     * 'load' event listener and 'popstate' event listener.
+     * Initializes entry component and imports
+     * any component listed in 'comps' as a script tag.
+     * Adds window and popstate listeners and initializes 
+     * the Router.
      * 
-     * @param {Function} root functional component 
+     * @param {function} root 'App' component 
+     * @param {Array} comps paths to all components
      */
-    function init(root, comps) {
+    function init(root, comps, options) {
         App = root;
         ENTRY_COMPONENT = root.name ? root.name : ENTRY_COMPONENT;
         components['/'] = App;
 
-        importScripts(comps, function(err) {
+        importScripts(comps, options.modules ? options.modules : false, function(err) {
             if (err) {
                 throw err;
             } else {
@@ -174,11 +217,19 @@ var Freedactive = (function() {
         });
     };
 
-    function importScripts(comps, cb) {
+    /**
+     * Turns all paths of non-entry components into
+     * script tags so user doesn't need to touch html.
+     * 
+     * @param {Array} comps all non-entry components
+     * @param {function} cb callback to start router when done
+     */
+    function importScripts(comps, modules, cb) {
         if (!comps || comps.length === 0) return cb(new Error('Missing Component imports.'));
         for (var path of comps) {
             var script = document.createElement('script');
             script.src = path;
+            if (modules) script.type = 'module';
             document.head.appendChild(script);
             setTimeout(function() {
             }, 100);
@@ -192,21 +243,7 @@ var Freedactive = (function() {
      * 
      * @param {String} root name of component container to be swapped during route changes
      */
-    function router(root) {
-        // set up mutation observer to observe if 'app-router-container'
-        // is added to DOM. This allows for displaying the correct component
-        // for the corresponding url.
-        
-        /*function callback() {
-            if (document.getElementById(ROUTER_CONTAINER)) {
-                router(ROUTER_CONTAINER);
-                observer.disconnect();
-            }
-        }
-        var observer = new MutationObserver(callback);
-        observer.observe(document.getElementById(APP_CONTAINER), { 
-            childList: true,
-        });*/
+    function router(root) {        
 
         // get current component
         var container = null || document.getElementById(root);
@@ -236,7 +273,7 @@ var Freedactive = (function() {
             }
         }
 
-        // loads scripts and styles for child components of current route
+        // loads scripts and styles for routing component
         if (rt._router) {
             var _router = new rt._router();
             Utils.scriptAndStyle(container, Utils.getMethods(_router, Object.getOwnPropertyNames(Component.prototype)), _router);
@@ -397,6 +434,7 @@ var Freedactive = (function() {
         };
 
         return {
+            name: 'Router',
             init: init,
             routeto: routeto,
             _style: '',
@@ -510,18 +548,11 @@ var Freedactive = (function() {
  * Pubic API
  */
 
-// Component
 var Component = Freedactive.Component;
-
-// Router
 var Router = Freedactive.Router;
-
-// Style
 var Style = function(style) {
     return Freedactive.Style(style);
 };
-
-// State
 var State = Freedactive.State;
 
 // used for node.js testing

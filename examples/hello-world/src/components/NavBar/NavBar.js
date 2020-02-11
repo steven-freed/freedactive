@@ -49,9 +49,8 @@ function NavBar() {
             </ul>\
             <span></span>\
         </div>\
-        ${Router}\
+        <Router />\
     ').$({
-        Router: Router.markup,
         listStyle: listStyle,
         items: lis.map(function(li) { 
             return li;
