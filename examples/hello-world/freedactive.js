@@ -45,15 +45,6 @@ String.prototype.$ = function (vars) {
     });
 };
 
-var components = [
-    App,
-    Hello,
-    NavBar
-];
-String.prototype.jxs = function() {
-    
-};
-
 /**
  * Main module exposing a subset of public API methods
  */
@@ -63,27 +54,137 @@ var Freedactive = (function() {
     var ROUTER_CONTAINER = 'app-router-container';  // router container
     var ENTRY_COMPONENT = 'App';                    // entry component identifier
     var App;                                        // entry component
-    var components = {};                            // router components store
+    var components = {};                            // components store
     
+    /**
+     * Interprets strings as 'JSX' syntax 
+     */
+    String.prototype._jsx = function (curComp) {
+        var normalHtml = '';
+        var todo = {};
+        for (var c of Object.keys(components)) {
+            // if component name is null
+            if (!components[c].name) continue; 
+            var regex = new RegExp('<' + components[c].name + '.*?\/>', 'gms');
+            var matches = this.toString().match(regex);
+            if (components[c].name !== ENTRY_COMPONENT) {
+                normalHtml = this.toString().replace(regex, new components[c]().markup);
+            }
+            // if no match exists
+            if (!matches) continue;
+            // maps indices of jsx to jsx
+            var that = this;
+            matches.map(function(val) {
+                todo[that.toString().indexOf(val)] = val; 
+            });
+        }
+
+        // populates properties of component
+        for (var c in todo) {
+            var CLOSING_TAG = '/>';
+            var DELIMETER = ';';
+            var indexOfComp = todo[c].search(/\s/ms);
+            var comp = todo[c].slice(1, indexOfComp);
+            comp = window[comp];
+            if (comp === undefined) continue;
+            var propStr = todo[c].slice(indexOfComp);
+            propStr = propStr.replace(CLOSING_TAG, '');
+            propStr = propStr.replace(/\s+/gms, DELIMETER);
+            // removes first and last delimeter
+            if (propStr[0] === DELIMETER) {
+                propStr = propStr.slice(1);
+            }
+            if (propStr[propStr.length - 1] === DELIMETER) {
+                propStr = propStr.slice(0, propStr.length - 1);
+            }
+            // turns props into array of strings
+            propStr = propStr.includes(DELIMETER) ? propStr.split(DELIMETER) : [];
+            // turns props strings into object prop key, val pairs
+            var props = {};
+            for (var p of propStr) {
+                var firstQuote = p.indexOf('"');
+                var key = p.slice(0, p.indexOf('='));
+                var val = p.slice(firstQuote + 1, p.length - 1);
+                props[key] = val;
+            }
+            comp.prototype.props = props;
+        }
+
+        return normalHtml;
+    };
+
+    // Component
+    var Component = function Component() {
+        // constructor
+        this._markup = '';
+        this._style = '';
+        this._router = null; 
+        this._jsx = function(component) {
+            this._markup = component.markup._jsx(component);
+        }
+    };
+    
+    // Component getters and setters for properties
+    Object.defineProperty(Component.prototype, 'markup', {
+        set: function(markup) {
+            this._markup = markup;
+        },
+        get: function() {
+            return this._markup;
+        }
+    });
+    Object.defineProperty(Component.prototype, 'style', {
+        set: function(style) {
+            this._style = style;
+        },
+        get: function() {
+            return this._style;
+        }
+    });
+    Object.defineProperty(Component.prototype, 'router', {
+        set: function(router) {
+            components['_'] = router;
+            this._router = router
+        }
+    });
+
     /**
      * Initializes user's application by setting the 
      * 'load' event listener and 'popstate' event listener.
      * 
      * @param {Function} root functional component 
      */
-    function init(root) {
+    function init(root, comps) {
         App = root;
         ENTRY_COMPONENT = root.name ? root.name : ENTRY_COMPONENT;
         components['/'] = App;
-        
-        window.addEventListener('load', function() {
-            router(APP_CONTAINER);
+
+        importScripts(comps, function(err) {
+            if (err) {
+                throw err;
+            } else {
+                window.addEventListener('load', function() {
+                    router(APP_CONTAINER);
+                });
+                
+                window.onpopstate = function() {
+                    Router.routeto(Utils.parseUrl());
+                };
+            }
         });
-        
-        window.onpopstate = function() {
-            Router.routeto(Utils.parseUrl());
-        };
     };
+
+    function importScripts(comps, cb) {
+        if (!comps || comps.length === 0) return cb(new Error('Missing Component imports.'));
+        for (var path of comps) {
+            var script = document.createElement('script');
+            script.src = path;
+            document.head.appendChild(script);
+            setTimeout(function() {
+            }, 100);
+        }
+        return cb(null);
+    }
 
     /**
      * Routes SPA by loading entry component and its children on 'load' event
@@ -95,7 +196,8 @@ var Freedactive = (function() {
         // set up mutation observer to observe if 'app-router-container'
         // is added to DOM. This allows for displaying the correct component
         // for the corresponding url.
-        function callback() {
+        
+        /*function callback() {
             if (document.getElementById(ROUTER_CONTAINER)) {
                 router(ROUTER_CONTAINER);
                 observer.disconnect();
@@ -104,16 +206,12 @@ var Freedactive = (function() {
         var observer = new MutationObserver(callback);
         observer.observe(document.getElementById(APP_CONTAINER), { 
             childList: true,
-        });
+        });*/
 
         // get current component
         var container = null || document.getElementById(root);
         var url = Utils.parseUrl();
         var rt = components[url] ? new components[url]() : null;
-
-        // if route is unknown just load 'ENTRY_COMPONENT' component
-        if (!rt) 
-            rt = new App();
         
         // prevents page reloads when using Router if ENTRY_COMPONENT is the route 
         if (components[url] && root === ROUTER_CONTAINER && components[url].name === ENTRY_COMPONENT) {
@@ -122,25 +220,31 @@ var Freedactive = (function() {
         } else {
             // sets container with current route's markup
             try {
-                container.innerHTML = rt.markup;
+                // if route is currently unknown and is not the root route
+                if (!rt && url !== '/') { 
+                    rt = new App();
+                    rt._jsx(rt);
+                    container.innerHTML = rt.markup;
+                    router(ROUTER_CONTAINER);
+                } else {
+                    // routes are known and we can load routed component
+                    rt._jsx(rt);
+                    container.innerHTML = rt.markup;
+                }
             } catch (e) {
-                throw new Error('Component ${component} does not appear to contain\
-                a defined "markup" property.'.$({ component: components[url].name }));
+                throw e;
             }
         }
 
         // loads scripts and styles for child components of current route
-        if (rt._children.length > 0) {
-            rt._children.map(function(child) {
-                child = new child();
-                Utils.scriptAndStyle(container, Utils.getMethods(child, Object.keys(Component.prototype)), child);
-            });
+        if (rt._router) {
+            var _router = new rt._router();
+            Utils.scriptAndStyle(container, Utils.getMethods(_router, Object.getOwnPropertyNames(Component.prototype)), _router);
         }
     
         // loads scripts and styles for current route
-        Utils.scriptAndStyle(container, Utils.getMethods(rt, Object.keys(Component.prototype)), rt);
+        Utils.scriptAndStyle(container, Utils.getMethods(rt, Object.getOwnPropertyNames(Component.prototype)), rt);
     };
-
 
     /**
      * Utils Module
@@ -193,6 +297,8 @@ var Freedactive = (function() {
                 if (props.includes(prop))
                     delete componentProps[prop];
                 if (typeof(componentProps[prop]) !== 'function')
+                    delete componentProps[prop];
+                if (prop[0] === '_')
                     delete componentProps[prop];
             }); 
             return componentProps;
@@ -274,7 +380,9 @@ var Freedactive = (function() {
          * @param {Object} style optional style or router container
          */
         function init(comps) {
-            Object.assign(components, comps);
+            for (var path in comps) {
+                components[path] = comps[path];
+            }
         };
 
         /**
@@ -393,7 +501,8 @@ var Freedactive = (function() {
         init: init,
         Router: Router,
         Style: Style,
-        State: State
+        State: State,
+        Component: Component
     };
 })();
 
@@ -402,64 +511,7 @@ var Freedactive = (function() {
  */
 
 // Component
-var Component = function Component() {
-    // constructor
-    this._markup = '';
-    this._style = '';
-    this._children = [];
-    
-    // calculates directory of css by going back by 
-    // number of slashes in url
-    var dir = Utils.parseUrl().split("/").length - 1;
-    var fileloc = "";
-    while (--dir) fileloc += ".";
-    fileloc += component._style;
-
-    if (reqs[fileloc]) return;
-    // check if css file exists before linking
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        var resHdr = this.getResponseHeader('content-type');
-        if (!resHdr) return;
-        var type = resHdr.slice(0, resHdr.indexOf(';'));
-        if (type.includes('css')) {
-            var styleLink = document.createElement('link');
-            styleLink.type = 'text/css';
-            styleLink.rel = 'stylesheet';
-            styleLink.id = component._style;
-            styleLink.href = fileloc;
-            document.head.appendChild(styleLink);
-        }
-        reqs[fileloc] = true;
-    };
-    xhr.open('HEAD', fileloc);
-    xhr.send();
-};
-// Component getters and setters for properties
-Object.defineProperty(Component.prototype, 'markup', {
-    set: function(markup) {
-        this._markup = markup;
-    },
-    get: function() {
-      return this._markup;
-    }
-});
-Object.defineProperty(Component.prototype, 'style', {
-    set: function(style) {
-        this._style = style;
-    },
-    get: function() {
-      return this._style;
-    }
-});
-Object.defineProperty(Component.prototype, 'children', {
-    set: function(children) {
-        this._children = children;
-    },
-    get: function() {
-      return this._children;
-    }
-});
+var Component = Freedactive.Component;
 
 // Router
 var Router = Freedactive.Router;
@@ -473,8 +525,9 @@ var Style = function(style) {
 var State = Freedactive.State;
 
 // used for node.js testing
+/*
 global.Freedactive = Freedactive;
 global.State = State;
 global.Style = Style;
 global.Router = Router;
-global.Component = Component;
+global.Component = Component;*/

@@ -1,7 +1,7 @@
 NavBar.prototype = new Component;
 
 function NavBar() {
-
+    
     // Sets your routes
     Router.init({
         '/': App,
