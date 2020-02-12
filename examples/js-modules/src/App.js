@@ -15,12 +15,14 @@ export default class App extends Component {
     }
 }
 
-Freedactive.init(
-    App, [
-        '/src/components/NavBar/NavBar.js',
-        '/src/components/Docs/Docs.js',
-        '/src/components/Hello/Hello.js',
-        '/src/components/Hello/World/World.js'
+Freedactive.init(App, [
+    /**
+     * Components
+     */
+    '/src/components/NavBar/NavBar.js',
+    '/src/components/Docs/Docs.js',
+    '/src/components/Hello/Hello.js',
+    '/src/components/Hello/World/World.js'
     ], {
         modules: true
     }

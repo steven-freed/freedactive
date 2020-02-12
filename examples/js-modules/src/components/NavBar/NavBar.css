@@ -15,6 +15,7 @@
 }
 
 #navbar li {
+    cursor: pointer;
     color: inherit;
     display: inline-block;
     padding: 14px 16px;

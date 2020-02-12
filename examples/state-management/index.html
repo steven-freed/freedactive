@@ -2,30 +2,21 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        
+        <!-- SEO optimization -->
         <meta name="description" content="The Single Page Application Framework for Frontend JavaScript Developers, Batteries Included">
+        
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="icon" href="/assets/favicon.png" />
         <title>My SPA</title>
 
-        <!--
-            freedactive spa component framework
-        -->
-        <link rel="stylesheet" href="/index.css" />
+        <!-- freedactive spa component framework -->
         <script src="https://unpkg.com/freedactive@latest/dist/freedactive.min.js"></script>
 
-        <!--
-            Components
-        -->
+        <!-- Entry Component and global style -->
         <script src="/src/App.js"></script>
-        <script src="/src/components/NavBar/NavBar.js"></script>
-        <script src="/src/components/CounterView/CounterView.js"></script>
+        <link rel="stylesheet" href="/index.css" />
 
-        <!--
-            Actions and Reducers
-        -->
-        <script src="/src/actions/index.js"></script>
-        <script src="/src/reducers/index.js"></script>
-        
     </head>
     <body>
         <div id="app-container"></div>

@@ -23,7 +23,7 @@ export default class NavBar extends Component {
                 </ul>
                 <span></span>
             </div>
-            ${Router.markup}
+            <Router />
         `);
         this.style = './src/components/NavBar/NavBar.css';
     }

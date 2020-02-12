@@ -4,12 +4,12 @@ function CounterView() {
 
     this.markup = ('\
         <div id="counter-view">\
-            <p>Count <span id="value">${count}</span></p>\
+            <p>Count <span id="value">${}</span></p>\
                 <button onclick="increment()">+</button>\
                 <button onclick="decrement()">-</button>\
         </div>\
     ').$({
-        count: String(state.getState())
+        0: String(state.getState())
     });
 
     this.style = './src/components/CounterView/CounterView.css';

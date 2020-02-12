@@ -4,17 +4,21 @@ function App() {
 
     this.markup = ('\
         <div>\
-            ${NavBar}\
+            <NavBar />\
             <h1 id="phrase">Welcome to Freedactive!</h1>\
         </div>\
-    ').$({
-        NavBar: new NavBar().markup
-    });
+    ');
 
     this.style = './src/App.css';
-    this.children = [
-        NavBar
-    ];
+    this.router = NavBar;
 }
 
-Freedactive.init(App);
+Freedactive.init(App, [
+    /**
+     * Components
+     */
+    '/src/components/NavBar/NavBar.js',
+    '/src/components/Docs/Docs.js',
+    '/src/components/Hello/Hello.js',
+    '/src/components/Hello/World/World.js'
+]);

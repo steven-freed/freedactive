@@ -4,8 +4,7 @@ function App() {
 
     this.markup = ('\
         <div>\
-            <div></div>\
-            <NavBar prop1="sup" prop2="you" />\
+            <NavBar />\
             <h1 id="phrase">Welcome to Freedactive!</h1>\
         </div>\
     ');
@@ -15,6 +14,9 @@ function App() {
 }
 
 Freedactive.init(App, [
+    /**
+     * Components
+     */
     '/src/components/NavBar/NavBar.js',
     '/src/components/Docs/Docs.js',
     '/src/components/Hello/Hello.js',

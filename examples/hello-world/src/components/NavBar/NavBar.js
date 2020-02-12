@@ -9,7 +9,7 @@ function NavBar() {
         '/hello': Hello,
         '/hello/world': World
     });
-    
+        
     // navbar navigation
     var routes = {
         '/': App,
@@ -21,17 +21,17 @@ function NavBar() {
     var lis = Object.keys(routes).map(function(k) {
         if (k === '/') {
             return ('\
-                <li onclick="Router.routeto(${key})"><img src="${icon}" alt="home"></img></li>\
+                <li onclick="Router.routeto(${})"><img src="${}" alt="home"></img></li>\
                 ').$({
-                    key: "'${path}'".$({ path: k }),
-                    icon: document.head.querySelector('link[rel="icon"]').href
+                    0: "'${}'".$({ 0: k }),
+                    1: document.head.querySelector('link[rel="icon"]').href
                 });
         } else { 
             return ('\
-                <li onclick="Router.routeto(${key})">${route}</li>\
+                <li onclick="Router.routeto(${})">${}</li>\
                 ').$({
-                    key: "'${path}'".$({ path: k }),
-                    route: routes[k].name
+                    0: "'${}'".$({ 0: k }),
+                    1: routes[k].name
                 });
         }
     });
@@ -44,15 +44,15 @@ function NavBar() {
 
     this.markup = ('\
         <div id="navbar">\
-            <ul style="${listStyle}">\
-                ${items}\
+            <ul style="${}">\
+                ${}\
             </ul>\
             <span></span>\
         </div>\
         <Router />\
     ').$({
-        listStyle: listStyle,
-        items: lis.map(function(li) { 
+        0: listStyle,
+        1: lis.map(function(li) { 
             return li;
         }).join("")
     });
