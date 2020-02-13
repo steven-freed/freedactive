@@ -7,5 +7,4 @@ function World() {
         </div>\
     ');
 
-    this.style = './src/components/Hello/World/World.css';
 }

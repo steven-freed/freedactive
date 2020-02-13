@@ -57,5 +57,4 @@ function NavBar() {
         }).join("")
     });
 
-    this.style = './src/components/NavBar/NavBar.css';
 }

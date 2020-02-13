@@ -8,5 +8,4 @@ function Docs() {
         </div>\
     ');
 
-    this.style = './src/components/Docs/Docs.css';
 }
