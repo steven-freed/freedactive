@@ -6,6 +6,4 @@ function World() {
             <h1>World!</h1>\
         </div>\
     ');
-
-    this.style = './src/components/Hello/World/World.css';
 }

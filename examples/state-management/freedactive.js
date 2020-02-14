@@ -608,8 +608,9 @@ var Link = Freedactive.Link;
 var Routes = Freedactive.Routes;
 
 // used for node.js testing
-
+/*
 global.Freedactive = Freedactive;
 global.State = State;
 global.Style = Style;
-global.Component = Component;
+global.Router = Router;
+global.Component = Component;*/

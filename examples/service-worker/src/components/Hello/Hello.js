@@ -3,11 +3,14 @@ Hello.prototype = new Component;
 function Hello() {
     this.markup = ('\
         <div id="hello">\
-            <button id="hw-button" onclick="Router.routeto(${});">Hello?</button>\
+            <Link \
+                id="hw-button"\
+                class="fa-link"\
+                path="${}"\
+                name="Hello"\
+                />\
         </div>\
     ').$({
-        0: "'/hello/world'"
+        0: '/hello/world'
     });
-
-    this.style = './src/components/Hello/Hello.css';
 }

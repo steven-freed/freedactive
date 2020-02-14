@@ -1,7 +1,6 @@
 App.prototype = new Component;
 
 function App() {
-
     this.markup = ('\
         <div id="app">\
             <NavBar />\
@@ -10,13 +9,20 @@ function App() {
     ');
 }
 
+// initialize with entry component
 Freedactive.init(App, {
+    /**
+     * Paths to all components
+     */
     scripts: [
         '/src/components/NavBar/NavBar.js',
         '/src/components/Docs/Docs.js',
         '/src/components/Hello/Hello.js',
         '/src/components/Hello/World/World.js'
     ],
+    /**
+     * Paths to all styles
+     */
     styles: [
         '/src/App.css',
         '/src/components/NavBar/NavBar.css',

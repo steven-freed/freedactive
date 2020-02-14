@@ -2,6 +2,9 @@ body {
   margin: 0;
 }
 
+/*
+  Fits app container to whole screen
+*/
 #app-container {
   min-width: 100vw;
   min-height: 100vh;

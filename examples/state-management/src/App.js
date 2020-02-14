@@ -8,20 +8,28 @@ function App() {
             <h1 id="phrase">Welcome to Freedactive!</h1>\
         </div>\
     ');
-
-    this.style = './src/App.css';
-    this.router = NavBar;
 }
 
-Freedactive.init(App, [
+// initialize with entry component
+Freedactive.init(App, {
+    scripts: [
+        /**
+         * Paths to all components
+         */
+        '/src/components/NavBar/NavBar.js',
+        '/src/components/CounterView/CounterView.js',
+        /**
+         * Paths to all Actions and Reducers
+         */
+        '/src/actions/index.js',
+        '/src/reducers/index.js'
+    ],
     /**
-     * Components
+     * Paths to all styles
      */
-    '/src/components/NavBar/NavBar.js',
-    '/src/components/CounterView/CounterView.js',
-    /**
-     * Actions and Reducers
-     */
-    '/src/actions/index.js',
-    '/src/reducers/index.js'
-]);
+    styles: [
+        '/src/App.css',
+        '/src/components/NavBar/NavBar.css',
+        '/src/components/CounterView/CounterView.css',
+    ]
+});

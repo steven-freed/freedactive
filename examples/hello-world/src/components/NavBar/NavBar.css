@@ -15,11 +15,12 @@
 }
 
 .fa-link {
+    color: rgb(113, 47, 242);
     text-decoration: none;
+    cursor: pointer;
 }
 
 #navbar li {
-    cursor: pointer;
     color: inherit;
     display: inline-block;
     padding: 14px 16px;

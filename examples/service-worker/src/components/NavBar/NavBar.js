@@ -1,61 +1,64 @@
 NavBar.prototype = new Component;
 
 function NavBar() {
-    
-    // Sets your routes
-    Router.init({
-        '/': App,
-        '/docs': Docs,
-        '/hello': Hello,
-        '/hello/world': World
-    });
         
-    // navbar navigation
+    // navbar navigation list items
     var routes = {
         '/': App,
         '/docs': Docs,
         '/hello': Hello
     };
 
-    // li elements for routes
+    // generate list item elements for routes
     var lis = Object.keys(routes).map(function(k) {
         if (k === '/') {
             return ('\
-                <li onclick="Router.routeto(${})"><img src="${}" alt="home"></img></li>\
-                ').$({
-                    0: "'${}'".$({ 0: k }),
-                    1: document.head.querySelector('link[rel="icon"]').href
-                });
+                <li>\
+                    <Link path="${}" class="fa-link" >\
+                        <img src="${}" alt="home"></img>\
+                    </Link>\
+                </li>\
+            ').$({
+                0: k,
+                1: document.head.querySelector('link[rel="icon"]').href,
+            });
         } else { 
             return ('\
-                <li onclick="Router.routeto(${})">${}</li>\
-                ').$({
-                    0: "'${}'".$({ 0: k }),
-                    1: routes[k].name
-                });
+                <li><Link path="${}" name="${}" class="fa-link"/></li>\
+            ').$({
+                0: k,
+                1: routes[k].name
+            });
         }
     });
 
-    // inline styles
+    // inline style for list
     var listStyle = Style({
         padding: "0px",
         bottom: '0'
     });
 
     this.markup = ('\
-        <div id="navbar">\
-            <ul style="${}">\
-                ${}\
-            </ul>\
-            <span></span>\
+        <div>\
+            <div id="navbar">\
+                <ul style="${}">\
+                    ${}\
+                </ul>\
+            </div>\
+            <Switch routes="${}" />\
         </div>\
-        <Router />\
     ').$({
         0: listStyle,
+        // concatinates all list items
         1: lis.map(function(li) { 
             return li;
-        }).join("")
+        }).join(""),
+        // gives switch all routes
+        2: Routes({
+            '/hello': Hello,
+            '/docs': Docs,
+            '/hello/world': World
+        })
     });
 
-    this.style = './src/components/NavBar/NavBar.css';
 }
