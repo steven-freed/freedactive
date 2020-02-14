@@ -3,9 +3,9 @@ Hello.prototype = new Component;
 function Hello() {
     this.markup = ('\
         <div id="hello">\
-            <button id="hw-button">Hello?</button>\
+            <Link path="${}" name="Hello" id="hw-button"/>\
         </div>\
     ').$({
-        0: "'/hello/world'"
+        0: '/hello/world'
     });
 }

@@ -4,8 +4,7 @@ function App() {
 
     this.markup = ('\
         <div id="app">\
-            <Link to="/hello" name="Hello"/>\
-            <Switch routes="{ \"/hello\": \"Hello\" }" />\
+            <NavBar />\
             <h1 id="phrase">Welcome to Freedactive!</h1>\
         </div>\
     ');

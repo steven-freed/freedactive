@@ -1,9 +1,10 @@
 #hw-button {
     margin-top: 50vh;
     width: 100px;
-    height: 50px;
-    border-radius: 25px;
-    outline: none;
-    cursor: pointer;
-    color: rgb(113, 47, 242);
+    height: 25px;
+    background-color: white;  
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
 }

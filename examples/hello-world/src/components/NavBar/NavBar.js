@@ -1,14 +1,6 @@
 NavBar.prototype = new Component;
 
 function NavBar() {
-    
-    // Sets your routes
-    Router.init({
-        '/': App,
-        '/docs': Docs,
-        '/hello': Hello,
-        '/hello/world': World
-    });
         
     // navbar navigation
     var routes = {
@@ -21,16 +13,20 @@ function NavBar() {
     var lis = Object.keys(routes).map(function(k) {
         if (k === '/') {
             return ('\
-                <li onclick="Router.routeto(${})"><img src="${}" alt="home"></img></li>\
+                <li>\
+                    <Link path="${}" class="fa-link" >\
+                        <img src="${}" alt="home"></img>\
+                    </Link>\
+                </li>\
                 ').$({
-                    0: "'${}'".$({ 0: k }),
-                    1: document.head.querySelector('link[rel="icon"]').href
+                    0: k,
+                    1: document.head.querySelector('link[rel="icon"]').href,
                 });
         } else { 
             return ('\
-                <li onclick="Router.routeto(${})">${}</li>\
+                <li><Link path="${}" name="${}" class="fa-link"/></li>\
                 ').$({
-                    0: "'${}'".$({ 0: k }),
+                    0: k,
                     1: routes[k].name
                 });
         }
@@ -43,18 +39,20 @@ function NavBar() {
     });
 
     this.markup = ('\
-        <div id="navbar">\
-            <ul style="${}">\
-                ${}\
-            </ul>\
-            <span></span>\
+        <div>\
+            <div id="navbar">\
+                <ul style="${}">\
+                    ${}\
+                </ul>\
+            </div>\
+            <Switch routes="${}" />\
         </div>\
-        <Router />\
     ').$({
         0: listStyle,
         1: lis.map(function(li) { 
             return li;
-        }).join("")
+        }).join(""),
+        2: '{ \"/hello\": \"Hello\", \"/docs\": \"Docs\", \"/hello/world\": \"World\" }'
     });
 
 }
