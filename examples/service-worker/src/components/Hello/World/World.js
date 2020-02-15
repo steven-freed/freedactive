@@ -1,9 +1,19 @@
 World.prototype = new Component;
     
 function World() {
+
     this.markup = ('\
         <div id="world">\
-            <h1>World!</h1>\
+            <button id="message" onclick="changeColor()">World!</button>\
         </div>\
     ');
+    
+}
+
+World.prototype.changeColor = function() {
+    if (document.getElementById('message').style.color === 'red') {
+        document.getElementById('message').style.color = 'white';
+    } else {
+        document.getElementById('message').style.color = 'red';
+    }
 }

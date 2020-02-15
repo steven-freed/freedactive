@@ -1,65 +1,57 @@
-import App from '../../App.js';
-import Docs from '../Docs/Docs.js';
-import Hello from '../Hello/Hello.js';
-import World from '../Hello/World/World.js';
-
-export default class NavBar extends Component { 
-
+class NavBar extends Component {
+        
     constructor() {
         super();
-
-        // inline styles
+        // inline style for list
         const listStyle = Style({
             padding: "0px",
             bottom: '0'
         });
 
-        this.markup = (`
-            <div id="navbar">
-                <ul style="${listStyle}">
-                    ${
-                    this.getItems().map((li) => li).join("")
-                    }
-                </ul>
-                <span></span>
-            </div>
-            <Router />
-        `);
-        this.style = './src/components/NavBar/NavBar.css';
-    }
-
-    getItems() {
-        // Sets your routes
-        Router.init({
-            '/': App,
-            '/docs': Docs,
+        const routes = Route({
             '/hello': Hello,
+            '/docs': Docs,
             '/hello/world': World
         });
-        
-        // navbar navigation
-        const routes = {
-            '/': App,
-            '/docs': Docs,
-            '/hello': Hello
-        };
 
-        // li elements for routes
-        const lis = Object.keys(routes).map((k) => {
-            if (k === '/') {
-                return (`
-                    <li onclick="Router.routeto('${k}')">
-                        <img src="${document.head.querySelector('link[rel="icon"]').href}" alt="home"></img>
-                    </li>
-                `);
-            } else { 
-                return (`
-                    <li onclick="Router.routeto('${k}')">${routes[k].name}</li>
-                `);
-            }
-        });
+        this.markup = (`
+            <div>
+                <div id="navbar">
+                    <ul style="${listStyle}">
+                        ${
+                        getItems({
+                            '/': App,
+                            '/docs': Docs,
+                            '/hello': Hello
+                        })
+                        }
+                    </ul>
+                </div>
+                <Switch routes="${routes}" />
+            </div>
+        `);
 
-        return lis;
+        function getItems(routes) {
+            const listItems = Object.keys(routes).map(function(k) {
+                if (k === '/') {
+                    return (`
+                        <li>
+                            <Link path="${k}" class="fa-link" >
+                                <img src="${document.head.querySelector('link[rel="icon"]').href}"
+                                    alt="home">
+                                    </img>
+                            </Link>
+                        </li>
+                    `);
+                } else { 
+                    return (`
+                        <li><Link path="${k}" name="${routes[k].name}" class="fa-link"/></li>
+                    `);
+                }
+            });
+    
+            return listItems.map((li) => li).join('');
+        }
     }
 
 }

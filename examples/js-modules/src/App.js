@@ -1,29 +1,36 @@
-import NavBar from './components/NavBar/NavBar.js';
-
-export default class App extends Component {
+class App extends Component {
 
     constructor() {
         super();
         this.markup = (`
-            <div>
+            <div id="app">
                 <NavBar />
                 <h1 id="phrase">Welcome to Freedactive!</h1>
             </div>
         `);
-        this.style = './src/App.css';
-        this.router = NavBar;
     }
+    
 }
 
-Freedactive.init(App, [
+// initialize with entry component
+Freedactive.init(App, {
     /**
-     * Components
+     * Paths to all components
      */
-    '/src/components/NavBar/NavBar.js',
-    '/src/components/Docs/Docs.js',
-    '/src/components/Hello/Hello.js',
-    '/src/components/Hello/World/World.js'
-    ], {
-        modules: true
-    }
-);
+    scripts: [
+        '/src/components/NavBar/NavBar.js',
+        '/src/components/Docs/Docs.js',
+        '/src/components/Hello/Hello.js',
+        '/src/components/Hello/World/World.js'
+    ],
+    /**
+     * Paths to all styles
+     */
+    styles: [
+        '/src/App.css',
+        '/src/components/NavBar/NavBar.css',
+        '/src/components/Docs/Docs.css',
+        '/src/components/Hello/Hello.css',
+        '/src/components/Hello/World/World.css'
+    ]
+});

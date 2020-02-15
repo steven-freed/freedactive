@@ -52,8 +52,8 @@ function NavBar() {
         1: lis.map(function(li) { 
             return li;
         }).join(""),
-        // gives switch all routes
-        2: Routes({
+        // passes routes to switch
+        2: Route({
             '/counter-view': CounterView
         })
     });

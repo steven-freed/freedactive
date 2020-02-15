@@ -1,11 +1,11 @@
 var fs = require('fs');
 var uglify = require('uglify-js');
-var uglifycss = require('uglifycss');
+//var uglifycss = require('uglifycss');
 
 var code = {
-    './lib/freedactive.js': null,
-    './lib/fa-ui.js': null,
-    './lib/fa-ui.css': null
+    './lib/freedactive.js': null
+    //'./lib/fa-ui.js': null,
+    //'./lib/fa-ui.css': null
 };
 
 for (key in code) {
@@ -18,8 +18,6 @@ for (key in code) {
     var minicode;
     if (fileType === 'js') {
         minicode = uglify.minify(code[key]);
-    } else if (fileType === 'css') {
-        minicode = uglifycss.processFiles([key]);
-    }
+    } 
     fs.writeFileSync(newFile, minicode.code ? minicode.code : minicode);
 }

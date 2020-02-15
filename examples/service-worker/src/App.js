@@ -1,12 +1,14 @@
 App.prototype = new Component;
 
 function App() {
+
     this.markup = ('\
         <div id="app">\
             <NavBar />\
             <h1 id="phrase">Welcome to Freedactive!</h1>\
         </div>\
     ');
+    
 }
 
 // initialize with entry component

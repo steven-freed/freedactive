@@ -19,18 +19,19 @@ function CounterView() {
     state.sub(function() {
         document.getElementById('value').innerHTML = state.getState().toString();
     });
+    
+}
 
-    /**
-     * publishes the increment action to your state instance
-     */
-    this.increment = function() {
-        state.pub(Creator.incrementCounter())
-    }
+/**
+ * publishes the increment action to your state instance
+ */
+CounterView.prototype.increment = function() {
+    state.pub(Creator.incrementCounter())
+}
 
-    /**
-     * publishes the decrement action to your state instance
-     */
-    this.decrement = function() {
-        state.pub(Creator.decrementCounter())
-    }
+ /**
+ * publishes the decrement action to your state instance
+ */
+CounterView.prototype.decrement = function() {
+    state.pub(Creator.decrementCounter())
 }

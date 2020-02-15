@@ -1,6 +1,7 @@
 Docs.prototype = new Component;
     
 function Docs() {
+
     this.markup = ('\
         <div id="docs">\
             <h3>Documentation:</h3>\

@@ -54,7 +54,7 @@ function NavBar() {
             return li;
         }).join(""),
         // gives switch all routes
-        2: Routes({
+        2: Route({
             '/hello': Hello,
             '/docs': Docs,
             '/hello/world': World

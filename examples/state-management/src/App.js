@@ -8,6 +8,7 @@ function App() {
             <h1 id="phrase">Welcome to Freedactive!</h1>\
         </div>\
     ');
+    
 }
 
 // initialize with entry component
