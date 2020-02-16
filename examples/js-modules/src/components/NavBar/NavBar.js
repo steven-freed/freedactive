@@ -2,11 +2,9 @@ class NavBar extends Component {
         
     constructor() {
         super();
-        // inline style for list
-        const listStyle = Style({
-            padding: "0px",
-            bottom: '0'
-        });
+    }
+
+    markup() {
 
         const routes = Route({
             '/hello': Hello,
@@ -14,12 +12,18 @@ class NavBar extends Component {
             '/hello/world': World
         });
 
-        this.markup = (`
+        // inline style for list
+        const listStyle = Style({
+            padding: "0px",
+            bottom: '0'
+        });
+
+        return (`
             <div>
                 <div id="navbar">
                     <ul style="${listStyle}">
                         ${
-                        getItems({
+                        this.getItems({
                             '/': App,
                             '/docs': Docs,
                             '/hello': Hello
@@ -30,28 +34,28 @@ class NavBar extends Component {
                 <Switch routes="${routes}" />
             </div>
         `);
-
-        function getItems(routes) {
-            const listItems = Object.keys(routes).map(function(k) {
-                if (k === '/') {
-                    return (`
-                        <li>
-                            <Link path="${k}" class="fa-link">
-                                <img src="${document.head.querySelector('link[rel="icon"]').href}"
-                                    alt="home">
-                                    </img>
-                            </Link>
-                        </li>
-                    `);
-                } else { 
-                    return (`
-                        <li><Link path="${k}" class="fa-link">${routes[k].name}</Link></li>
-                    `);
-                }
-            });
-    
-            return listItems.map((li) => li).join('');
-        }
     }
 
+    getItems(routes) {
+        const listItems = Object.keys(routes).map(function(k) {
+            if (k === '/') {
+                return (`
+                    <li>
+                        <Link path="${k}" class="fa-link">
+                            <img src="${document.head.querySelector('link[rel="icon"]').href}"
+                                alt="home">
+                                </img>
+                        </Link>
+                    </li>
+                `);
+            } else { 
+                return (`
+                    <li><Link path="${k}" class="fa-link">${routes[k].name}</Link></li>
+                `);
+            }
+        });
+
+        return listItems.map((li) => li).join('');
+    }
+    
 }

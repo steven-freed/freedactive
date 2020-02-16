@@ -1,13 +1,15 @@
 World.prototype = new Component;
     
 function World() {
+    
+}
 
-    this.markup = ('\
+World.prototype.markup = function() {
+    return ('\
         <div id="world">\
             <button id="message" onclick="changeColor()">World!</button>\
         </div>\
     ');
-    
 }
 
 World.prototype.changeColor = function() {

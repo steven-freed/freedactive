@@ -2,7 +2,10 @@ class World extends Component {
     
     constructor() {
         super();
-        this.markup = (`
+    }
+
+    markup() {
+        return (`
             <div id="world">
                 <button id="message" onclick="changeColor()">World!</button>
             </div>

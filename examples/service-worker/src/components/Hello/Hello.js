@@ -2,7 +2,10 @@ Hello.prototype = new Component;
 
 function Hello() {
 
-    this.markup = ('\
+}
+
+Hello.prototype.markup = function() {
+    return ('\
         <div id="hello">\
             <Link \
                 id="hw-button" \
@@ -12,5 +15,4 @@ function Hello() {
     ').$({
         0: '/hello/world'
     });
-
 }

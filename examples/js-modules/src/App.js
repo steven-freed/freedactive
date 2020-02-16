@@ -2,7 +2,10 @@ class App extends Component {
 
     constructor() {
         super();
-        this.markup = (`
+    }
+
+    markup() {
+        return (`
             <div id="app">
                 <NavBar />
                 <h1 id="phrase">Welcome to Freedactive!</h1>

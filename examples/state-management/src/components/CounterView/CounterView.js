@@ -1,17 +1,6 @@
 CounterView.prototype = new Component;
 
 function CounterView() {
-
-    this.markup = ('\
-        <div id="counter-view">\
-            <p>Count <span id="value">${}</span></p>\
-            <button onclick="increment()">+</button>\
-            <button onclick="decrement()">-</button>\
-        </div>\
-    ').$({
-        0: String(state.getState())
-    });
-
      /**
      * subscribes your state instance to any actions published to
      * your state instance
@@ -20,6 +9,18 @@ function CounterView() {
         document.getElementById('value').innerHTML = state.getState().toString();
     });
     
+}
+
+CounterView.prototype.markup = function() {
+    return ('\
+        <div id="counter-view">\
+            <p>Count <span id="value">${}</span></p>\
+            <button onclick="increment()">+</button>\
+            <button onclick="decrement()">-</button>\
+        </div>\
+    ').$({
+        0: String(state.getState())
+    });
 }
 
 /**

@@ -2,7 +2,10 @@ class Hello extends Component {
 
     constructor() {
         super();
-        this.markup = (`
+    }
+
+    markup() {
+        return (`
             <div id="hello">
             <Link 
                 id="hw-button"
