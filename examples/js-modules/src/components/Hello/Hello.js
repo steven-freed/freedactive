@@ -8,8 +8,7 @@ class Hello extends Component {
                 id="hw-button"
                 class="fa-link"
                 path="/hello/world"
-                name="Hello"
-                />
+                >Hello</Link>
             </div>
         `);
     }

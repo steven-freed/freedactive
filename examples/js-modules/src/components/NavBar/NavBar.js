@@ -36,7 +36,7 @@ class NavBar extends Component {
                 if (k === '/') {
                     return (`
                         <li>
-                            <Link path="${k}" class="fa-link" >
+                            <Link path="${k}" class="fa-link">
                                 <img src="${document.head.querySelector('link[rel="icon"]').href}"
                                     alt="home">
                                     </img>
@@ -45,7 +45,7 @@ class NavBar extends Component {
                     `);
                 } else { 
                     return (`
-                        <li><Link path="${k}" name="${routes[k].name}" class="fa-link"/></li>
+                        <li><Link path="${k}" class="fa-link">${routes[k].name}</Link></li>
                     `);
                 }
             });

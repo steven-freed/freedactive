@@ -24,7 +24,9 @@ function NavBar() {
             });
         } else { 
             return ('\
-                <li><Link path="${}" name="${}" class="fa-link"/></li>\
+                <li>\
+                    <Link path="${}" class="fa-link">${}</Link>\
+                </li>\
             ').$({
                 0: k,
                 1: routes[k].name
