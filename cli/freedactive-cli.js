@@ -121,13 +121,6 @@ switch(process.argv[2]) {
         else
             serve();
         break;
-    /*case 'build':
-        args = {
-            '-d': process.argv[3] === '-d' ? process.argv[4] : process.argv[6],
-            '-es': process.argv[3] === '-es' ? process.argv[4] : process.argv[6]
-        }
-        createBuild(args);
-        break;*/
     case 'component':
         args = {
             'component': process.argv[2] == 'component' ? process.argv[3] : process.argv[5],
@@ -138,79 +131,3 @@ switch(process.argv[2]) {
     default:
         break;
 };
-
-
-
-
-/*
-const createBuild = async function(args) {
-    var dir = args['-d'] ? args['-d'] : '.';
-    minifyCode(dir, parseInt(args['-es']));
-};
-
-function minifyCode(dir, es=5) {
-    var outputDir = 'prod/';
-    var paths = {
-        assets: {
-          */ // src: dir + '/**/*.{jpg,gif,png,bmp}', 
-           /* dest: outputDir
-        },
-        markup: {
-          */ // src: dir + '/**/*.html',
-          /*  dest: outputDir
-        },
-        styles: {
-         */ // src: dir + '/**/*.css',
-         /* dest: outputDir
-        },
-        scripts: {
-        */ // src: dir + '/**/*.js',
-         /* dest: outputDir
-        }
-    };
-    
-    gulp.task('script', function() {
-        return gulp.src(paths.scripts.src, { sourcemaps: true })
-            .pipe(babel())
-            .pipe(concat(paths.scripts.dest))
-            .pipe(uglify())
-            .pipe(grename({
-                basename: 'main',
-                suffix: '.min',
-                extname: '.js'
-            }))
-            .pipe(gulp.dest(paths.scripts.dest));
-    });
-
-    gulp.task('style', function() {
-        return gulp.src(paths.styles.src)
-            .pipe(concat(paths.scripts.dest))
-            .pipe(less())
-            .pipe(cleanCSS())
-            .pipe(grename({
-                basename: 'main',
-                suffix: '.min'
-            }))
-            .pipe(gulp.dest(paths.styles.dest));
-    });
-
-    gulp.task('markup', function() {
-        return gulp.src(paths.markup.src)
-            .pipe(gulp.dest(paths.markup.dest));
-    });
-
-    gulp.task('assets', function() {
-        return gulp.src(paths.assets.src)
-            .pipe(gulp.dest(paths.assets.dest));
-    });
-
-    gulp.task('clean', function() {
-        return del([outputDir]);
-    });
-
-    gulp.series(gulp.task('clean'), gulp.parallel(gulp.task('style'),
-                                    gulp.task('script'),
-                                    gulp.task('markup'),
-                                    gulp.task('assets')))();
-    console.log(colors.magenta('Production bundle ready in directory "' + outputDir + '" ') + '🤙');
-}*/

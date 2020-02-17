@@ -1,21 +1,20 @@
-var fs = require('fs');
-var uglify = require('uglify-js');
+const fs = require('fs');
+const uglify = require('uglify-js');
 
-var code = {
-    './lib/freedactive.js': null,
-    './lib/fa-ui.js': null
+const code = {
+    './lib/freedactive.js': null
 };
 
 for (key in code) {
-    var fileType = key.slice(key.lastIndexOf('.') + 1);
-    var content = fs.readFileSync(key, 'utf8');
+    const fileType = key.slice(key.lastIndexOf('.') + 1);
+    let content = fs.readFileSync(key, 'utf8');
     code[key] = content.slice(0, content.indexOf('global.'));
-    var newFile = './dist' + key.slice(key.lastIndexOf('/'), key.lastIndexOf('.')) +
+    let newFile = './dist' + key.slice(key.lastIndexOf('/'), key.lastIndexOf('.')) +
     '.min' + key.slice(key.lastIndexOf('.'));
 
-    var minicode;
+    let minicode;
     if (fileType === 'js') {
-        minicode = uglify.minify(code[key]);
+        minicode = uglify.minify(code[key], { mangle: false });
     } 
     fs.writeFileSync(newFile, minicode.code ? minicode.code : minicode);
 }

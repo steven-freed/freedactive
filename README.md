@@ -13,7 +13,7 @@ $ npm -g install freedactive
 ```
 
 ## Quick Start
-### Quick Start ES6
+### ES6
 
 1. import the Freedactive framework
 2. import your entry component (e.g. App.js) and global styles
@@ -77,7 +77,7 @@ OR
 $ freedactive serve
 ```
 
-### Quick Start ES5
+### ES5
 
 1. import the Freedactive framework
 2. import your entry component (e.g. App.js) and global styles
@@ -142,9 +142,6 @@ $ freedactive serve
 ```
 
 **Note: If using your own server, Freedactive requires that your server must always serve the index.html file**
-
-## Contributions
-If you are interested in contributing to Freedactive please submit a pull request indicating your reason for contribution as well as tests for your contribution.
 
 ## Documentation
 
@@ -451,7 +448,7 @@ class HelloWorld extends Component {
     markup() {
         return (`
             <div>
-                <button onclick="notify(e)">Press Here</button>
+                <button onclick="notify(event)">Press Here</button>
             </div>
         `);
     }
@@ -680,6 +677,9 @@ state.pub(action);
 state.sub(eventHandler);
 ```
 
+## Contributions
+If you are interested in contributing to Freedactive please submit a pull request indicating your reason for contribution as well as tests for your contribution.
+
 # ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive cli
 Freedactive CLI for creating projects, components, serving your web apps and more.
 
@@ -699,6 +699,7 @@ name: your components name
 -es: es version, defaults to es5
 ```
 $ freedactive component CustomButton
+$ freedactive component CustomButton -es 6
 ```
 
 - **serve**: serves your web app from your working directory (should be ran where your index.html file is located)\
