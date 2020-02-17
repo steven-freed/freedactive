@@ -147,6 +147,40 @@ $ freedactive serve
 If you are interested in contributing to Freedactive please submit a pull request indicating your reason for contribution as well as tests for your contribution.
 
 ## Documentation
+
+### Initializing Freedactive
+Freedactive is initialized by calling the 'init' method in the same file as 
+your entry component. The first argument of init is your entry component, the
+second is an object containing all other component script paths and css style
+paths. If you have no imports simply pass an empty object literal as the
+second argument.
+
+```js
+class App extends Component {
+    constructor() {
+        super();
+    }
+
+    markup() {
+        return (`
+            <div>Welcome to Freedactive</div>
+        `);
+    }
+}
+
+Freedactive.init(App, {
+    scripts: [
+        '/src/components/Button.js',
+        '/src/components/View.js'
+    ],
+    styles: [
+        '/src/App.css',
+        '/src/components/Button.css',
+        '/src/components/View.css'
+    ]
+})
+```
+
 ### Components
 Components can be JavaScript functions or classes. Components provide a mechanism for
 allowing html and JavaScript code reuse.
@@ -243,7 +277,7 @@ class App extends Component {
 
 
 ***You Can Even Pass Your Own Properties!***\
-Properties are a set of *read only* attributes of components. Any property
+Properties are a set of **read only** attributes of components. Any property
 can be passed to a JSXS component and retrieved via the 'props' property.
 
 Example:
@@ -325,7 +359,7 @@ class ImageLink extends Component {
 ### Styles
 ***Inline Styles***\
 Freedactive inline styles are very similar to React's inline styles. You use
-camel casing of normal css attributes for keys and normal css values for values.
+camel casing of normal css attributes for keys and normal css values for values.\
 *Note that Styles is a function rather than an object so we do not want to use new when creating an inline style*
 
 ```js
@@ -431,7 +465,7 @@ class HelloWorld extends Component {
 ### State
 Freedactive offers a simple interface to state management.
 
-***Actions***\
+***Actions***
 * Action Types - different types of actions
 ```js
 const Type = {
@@ -458,7 +492,7 @@ const Creator = (function() {
 })();
 ```
 
-***Reducers***\
+***Reducers***
 * Reducers - changes the state of your instance given the current state and an action
 ```js
 const Reducer = (function() {
@@ -482,8 +516,7 @@ const Reducer = (function() {
 })();
 ```
 
-Action Types, Action Creators, and Reducers SHOULD BE KEPT in a self invoking function to reduce
-clutter in the global namespace. They should be accessed like so...
+Action Types, Action Creators, and Reducers are **strongly recommended** to be kept in a self invoking function to reduce clutter in the global namespace. They should be accessed like so...
 ```js
 Reducer.counter;
 Type.INCREMENT;
