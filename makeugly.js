@@ -1,11 +1,9 @@
 var fs = require('fs');
 var uglify = require('uglify-js');
-//var uglifycss = require('uglifycss');
 
 var code = {
-    './lib/freedactive.js': null
-    //'./lib/fa-ui.js': null,
-    //'./lib/fa-ui.css': null
+    './lib/freedactive.js': null,
+    './lib/fa-ui.js': null
 };
 
 for (key in code) {

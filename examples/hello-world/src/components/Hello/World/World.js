@@ -1,7 +1,7 @@
 World.prototype = new Component;
     
 function World() {
-    
+
 }
 
 World.prototype.markup = function() {

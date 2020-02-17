@@ -6,7 +6,7 @@ Freedactive is a light weight all in one (batteries included) framework with no 
 Get started now below, happy coding!
 
 *Tired of coding out components and other files?*\
-Try downloading the freedactive cli to; quickly serve web apps, auto create projects, auto create components, use the freedactive node package with Webpack and more.\
+Try downloading the freedactive cli to; quickly serve web apps, auto create projects, auto create components, and more.\
 https://www.npmjs.com/package/freedactive
 ```
 $ npm -g install freedactive
@@ -19,9 +19,9 @@ $ npm -g install freedactive
 
 Create an index.html file and an App.js file
 1. import the Freedactive framework
-2. import your entry component (e.g. App.js) and all other components you've created
+2. import your entry component (e.g. App.js) and global styles
 3. create div with id "app-container"
-4. initialize Freedactive in your entry component
+4. initialize Freedactive in your entry component and paths to all other js scripts and css styles
 5. run server; copy our 'dev-server.js' node server code or use freedactive-cli to serve your web app
  
 index.html
@@ -37,6 +37,8 @@ index.html
         
         <!-- 2 -->
         <script src="/src/App.js"></script>
+        <link rel="stylesheet" href="/index.css" />
+
     </head>
     <body>
         <!-- 3 -->
@@ -50,16 +52,24 @@ App.js
 App.prototype = new Component;
 
 function App() {
-    this.markup = ('\
+    // constructor
+}
+
+App.prototype.markup = function() {
+    return ('\
         <div>\
             <h1>Welcome to Freedactive!</h1>\
         </div>\
     ');
-    this.style = './src/App.css';
 }
 
 /**    4    **/
-Freedactive.init(App);
+Freedactive.init(App, {
+    scripts: [],
+    styles: [
+        '/index.css'
+    ]
+});
 ```
 
 Terminal
@@ -75,9 +85,9 @@ $ freedactive serve
 
 Create an index.html file and an App.js file
 1. import the Freedactive framework
-2. import your entry component only (e.g. App.js)
+2. import your entry component (e.g. App.js) and global styles
 3. create div with id "app-container"
-4. initialize Freedactive in your entry component
+4. initialize Freedactive with your entry component and paths to all other js scripts and css styles
 5. run server; copy our 'dev-server.js' node server code or use freedactive-cli to serve your web app
 
 index.html
@@ -92,7 +102,9 @@ index.html
         <script src="https://unpkg.com/freedactive@latest/dist/freedactive.min.js"></script>
         
         <!-- 2 -->
-        <script src="/src/App.js" type="module"></script>
+        <script src="/src/App.js"></script>
+        <link rel="stylesheet" href="/index.css" />
+
     </head>
     <body>
         <!-- 3 -->
@@ -103,21 +115,27 @@ index.html
 
 App.js
 ```js
-export default class App extends Component {
+class App extends Component {
     constructor() {
         super();
-        this.markup = (`
+    }
+
+    markup() {
+        return (`
             <div>
                 <h1>Welcome to Freedactive!</h1>
             </div>
         `);
-        this.style = './src/App.css';
     }
-
 }
 
 /**    4    **/
-Freedactive.init(App);
+Freedactive.init(App, {
+    scripts: [],
+    styles: [
+        '/index.css'
+    ]
+});
 ```
 
 Terminal
@@ -137,15 +155,390 @@ If you are interested in contributing to Freedactive please submit a pull reques
 
 Freedactive documentation follows the ES5 syntax because it is more widely accepted
 on the web. However you may use ES6 syntax too, it is supported by many browsers today.\
-ES6 example https://github.com/steven-freed/freedactive/tree/master/examples/js-modules
+ES6 example https://github.com/steven-freed/freedactive/tree/master/examples/js-classes
+
+### Components
+Components can be JavaScript functions or classes. Components provide a mechanism for
+allowing html and JavaScript code reuse.
+
+*Inheritance*
+All components inherit from the Freedactive Component prototype. JavaScript uses
+the prototypical inheritance model.
+
+*Component Life Cycle Methods*
+* constructor - called when an instance of the component has been created
+* markup - called when rendering an instance of the component to the DOM
+* componentMounted - called when the component has been successfully rendered to the DOM
+* componentUnmounted - called right before the component is removed from the DOM 
+
+Example:
+```js
+/**
+ *  ES6
+ */
+class Test extends Component {
+
+    constructor() {
+        super();
+    }
+
+    markup() {
+        return (`
+            <div>Freedactive</div>
+        `);
+    }
+
+    componentMounted() {
+    }
+
+    componentUnmounted() {
+    }
+}
+
+/**
+ *  ES5
+ */
+Test.prototype = new Component;
+function Test() {
+    // constructor
+}
+
+Test.prototype.markup = function() {
+    return ('\
+        <div>Freedactive</div>\
+    ');
+}
+
+Test.prototype.componentMounted = function() {
+}
+Test.prototype.componentUnmounted = function() {
+}
+```
+
+***JSXStrings (JSXS)***\
+Similar to React you can use a JSX *like* syntax called JSXS, JSX Strings
+that work just like JSX. JSXS components are **always** capitalized and
+may contain a set of required properties and optional properties. JSXS works
+with both ES5 and ES6 syntax.
+
+Example:
+```js
+class Button extends Component {
+    constructor() {
+        super();
+    }
+
+    markup() {
+        return (`
+            <button>Big Red Button</button>
+        `);
+    }
+}
+
+class App extends Component {
+    constructor() {
+        super();
+    }
+
+    markup() {
+        return (`
+            <div id="app">
+                <h1>Welcome to Freedactive</h1>
+                <Button />
+            </div>
+        `);
+    }
+}
+```
+
+You Can Even Pass Your Own Properties!
+Properties are a set of *read only* attributes of components. Any property
+can be passed to a JSXS component and retrieved via the 'props' property.
+
+Example:
+```js
+class App extends Component {
+    constructor() {
+        super();
+    }
+
+    markup() {
+        // using the inline Style function
+        const style = Style({
+            backgroundColor: 'red'
+        });
+
+        return (`
+            <div id="app">
+                <h1>Welcome to Freedactive</h1>
+                <Button style=${style} />
+            </div>
+        `);
+    }
+}
+
+class Button extends Component {
+    constructor() {
+        super();
+    }
+
+    markup() {
+        return (`
+            <button style=${this.props.style}>Big Red Button</button>
+        `);
+    }
+}
+```
+
+We've Looked at Self Closing JSXS Tags, Now Lets See Opening and Closing Tag Components
+Opening and closing tag components use the 'innerHTML' prop (similar to React's children prop) to
+nest any other HTML tags, JSXS component tags, or just text in the component.
+
+Example:
+```js
+class App extends Component {
+    constructor() {
+        super();
+    }
+
+    markup() {
+        // using the inline Style function
+        const style = Style({
+            backgroundColor: 'red'
+        });
+
+        return (`
+            <div id="app">
+                <h1>Welcome to Freedactive</h1>
+                <ImageLink>
+                    <img src="image.png"></img>
+                </ImageLink>
+            </div>
+        `);
+    }
+}
+
+class ImageLink extends Component {
+    constructor() {
+        super();
+    }
+
+    markup() {
+        return (`
+            <a href="#">${this.props.innerHTML}</a>
+        `);
+    }
+}
+```
+
+### Styles
+***Inline Styles***\
+Freedactive inline styles are very similar to React's inline styles. You use
+camel casing of normal css attributes for keys and normal css values for values.
+*Note that Styles is a function rather than an object so we do not want to use new when creating an inline style*
+
+```js
+class App extends Component {
+    constructor() {
+        super();
+    }
+
+    markup() {
+        const headerStyle = Style({
+            color: 'blue'
+        });
+
+        return (`
+            <div>
+                <h1 style=${style}>Welcome to Freedactive!</h1>
+            </div>
+        `);
+    }
+}
+```
+
+### Routing
+***Switch and Link***\
+Switch and Link provide the solution to routing a single page application.
+
+***Switch***\
+(Self-Closing Tag)
+Requires a property called 'routes' which must be formatted using the 'Route' function,
+this allows Switch to understand your routing mapping.
+
+***Link***\
+(Open-Close or Self-Closing Tag)
+Requires a Switch JSXS tag set with the 'routes' property and has a required property
+called 'path' with the path you want the Link to route to. Link has a class property called
+'fa-link' that may be used to style your Links.
+
+```js
+class Navigator extends Component {
+        
+    constructor() {
+        super();
+
+        this.routes = Route({
+            '/hello': Hello,
+            '/docs': Docs,
+            '/hello/world': World
+        });
+
+        this.listItems = Object.keys(this.routes).map(function(path) {
+            return (`
+                <li>
+                    <Link path="${path}">${this.routes[path].name}</Link>
+                </li>
+            `);
+        });
+    }
+
+    markup() {
+        return (`
+            <div id="navigator">
+                <div>
+                    <ul>
+                        ${
+                            this.listItems.map((li) => li).join('')
+                        }
+                    </ul>
+                </div>
+                <Switch routes="${this.routes}" />
+            </div>
+        `);
+    }
+
+}
+```
+
+### Events
+***Event Handlers***\
+Event handlers for components in Freedactive are component methods.
+Event handler functions are currently not able to bind to another context.
+This means that variables outside of your event handler function will be
+undefined.
+
+```js
+class HelloWorld extends Component {
+    constructor() {
+        super();
+    }
+
+    markup() {
+        return (`
+            <div>
+                <button onclick="notify(e)">Press Here</button>
+            </div>
+        `);
+    }
+
+    notify(e) {
+        alert('Hello World');
+    }
+}
+```
+
+### State
+Freedactive offers a simple interface to state management.
+
+***Actions***\
+*Action Types*: different types of actions
+```js
+const Type = {
+    INCREMENT: 'INCREMENT',
+    DECREMENT: 'DECREMENT'
+};
+```
+
+*Action Creators*: helper functions to create new actions if those actions take parameters
+```js
+const Creator = (function() {
+    function incrementCounter() {
+        return { type: Type.INCREMENT };
+    };
+
+    function decrementCounter() {
+        return { type: Type.DECREMENT };
+    };
+
+    return {
+        incrementCounter,
+        decrementCounter
+    };
+})();
+```
+
+***Reducers***\
+*Reducers*: changes the state of your instance given the current state and an action
+```js
+const Reducer = (function() {
+
+  function counter(state, action) {
+      if (typeof state === 'undefined')
+        return 1;
+      switch (action.type) {
+        case Type.INCREMENT:
+          return state + 1;
+        case Type.DECREMENT:
+          return state - 1;
+        default:
+          return state;
+      }
+  };
+
+  return {
+    counter
+  };
+})();
+```
+
+Action Types, Action Creators, and Reducers SHOULD BE KEPT in a self invoking function to reduce
+clutter in the global namespace. They should be accessed like so...
+```js
+Reducer.counter;
+Type.INCREMENT;
+Creator.incrementCounter;
+```
+
+***Methods***\
+* sub - subscribes an event handler function to execute when a state change for your instance occurs\
+* pub - publishes an action to change the state of your state instance and invoke your subscribers\
+* getState - retrieves the current state of your state instance
+
+Please see https://github.com/steven-freed/freedactive/tree/master/examples/state-management for a full example.
+
+### PWA/HTML Apps
+***Service Workers***\
+Please see https://github.com/steven-freed/freedactive/tree/master/examples/service-worker for an example
+using service workers.
 
 ### API
-***ES5 Strings***\
+***Component***\
+Life Cycle Methods
+```js
+/**
+ * Called when component is created
+ */
+constructor
+/**
+ * Renders components markup
+ */
+markup
+/**
+ * Component has rendered to DOM
+ */
+componentMounted
+/**
+ * Component is about to be removed from DOM
+ */
+componentUnmounted
+```
+
+***ES5 String Templating***\
 Strings in Freedactive are like normal ES5 strings (single and double quotes).
 To overcome the messy string interpolation of ES5, Freedactive extends the String
 prototype by adding the 'cash' method to allow for ES6 backtick *like* string
-interpolation. The cash function also relieves you from needing to escape quotes
-if using them in variables.
+templating.
 
 ```js
 // example - properties
@@ -173,34 +566,6 @@ var html = ('<button onclick="${}">${}</button>').$({
 unfortunately we do still need to use backslashes for multi-line strings for
 our components returned markup.
 
-***Router***\
-Router is a singleton that provides SPA routing to your application.
-
-```js
-/**
-* Initializes the component Router.
-* 
-* @param {Object} comps path, component pairs to initialize router
-*/
-Router.init(comps)
-
-/**
- * Gets and Sets Router container's markup
- */
-Router.markup
-
-/**
- * Event listener for route changes. Should be registered with
- * html element such as a button, li, etc.
- * 
- * @param {String} link the specified route to listen for 
- */
-Router.routeto(link)
-
-// example
-var markup = ('<button onclick="Router.routeto(${path})"></button>').$({ path: '/my-path' });
-```
-
 ***Style***\
 Style provides a translation from an object literal containing { prop: value } pairs where
 prop is a camel cased css property and value is a normal css value as a string.
@@ -210,10 +575,50 @@ prop is a camel cased css property and value is a normal css value as a string.
  * Inline Style creator, uses camel casing object literals
  * and converts them to standard css dashed conventions.
  *
- * @param {Object} style property, value object literal using camel casing 
- * @returns {String} inline css style string
+ * @param {object} style property, value object literal using camel casing 
+ * @returns {string} inline css style string
  */
 Style(style)
+```
+
+***Route***\
+Allows the JSXS Switch component to understand your routes.
+
+```js
+/**
+* Stringifys routes object so that Switch can interpret it correctly.
+* 
+* @param {object} routes { path: component } pairs of paths and their associated component
+* @returns {string} string representation that Switch understands
+*/
+Route({
+    '/': App,
+    '/hello': Hello,
+    '/world': World,
+    '/hello/world': HelloWorld
+});
+```
+
+***Switch***\
+Holds all routes that Links route to and displays the corresponding component
+for that route.
+
+```js
+/**
+ * @prop {required} routes your formatted routes returned by the 'Route' function
+ */ 
+<Switch routes />
+```
+
+***Link***\
+Routes web app to a route given to Switch
+
+```js
+/**
+ * @prop {required} path the path in Switch to route to
+ */ 
+<Link path />
+<Link path></Link>
 ```
 
 ***State***\
@@ -252,296 +657,6 @@ state.pub(action);
 state.sub(eventHandler);
 ```
 
-### Components
-*Theory*
-* Components in Freedactive are first class functions, meaning that functions
-are treated like variables or objects
-* Components inherit from the Freedactive Component object
-
-*Component*
-* constructor - the function itself creating the component (e.g. function Test())
-* private - variables or methods declard with var inside a function (var is function scoped)
-* public - variables or methods declared using this inside a function
-
-```js
-// inherit properties from Component
-Test.prototype = new Component;
-
-// component
-function Test() {
-    /* constructor */
-
-    /* properties */
-    // public
-    this.publicVariable = 6;
-    this.publicFunc = function() { }
-    // calls the markup setter of Component
-    this.markup = ('\
-        <div>Freedactive</div>\
-    ');
-
-    // private
-    var privateVariable = 7;
-    var privateFunc = function() { }
-
-    /* constructor */
-}
-```
-
-***Component Properties***\
-These properties are populated to your component when you inherit from the Component object.
-The following properties contain getters and setters in the Component object. When you set
-one of the properties to a value, you are in fact invoking that properties' setter in the
-Component object. Likewise when you access one of these properties you are invoking that
-properties' getter in the Component object.
-
-* markup - a string of the components html content
-* style - the path to your style sheet for that component
-* children - any components being used in the markup of the component
-
-```js
-App.prototype = new Component;
-
-function App() {
-    this.markup = ('
-        <div>\
-            <h1>Welcome to Freedactive!</h1>\
-        </div>\
-    ');
-    this.style = './App.css';
-    this.children = [
-        CustomButton,
-        CustomView
-    ];
-}
-```
-
-***Using Components in Components***\
-Using a component in another component is simple, we can use Freedactives
-string 'cash' method to insert a component's markup into another components
-markup. First we must invoke our components constructor 'new MyButton()' to obtain
-our components public properties, next we access our 'markup' property to
-insert our 'MyButton' component's html 'new MyButton().markup'. 
-
-```js
-MyButton.prototype = new Component;
-
-function MyButton() {
-    this.markup = ('
-        <div>\
-            <button>MyButton</button>\
-        </div>\
-    ');
-    this.style = './MyButton.css';
-}
-```
-
-```js
-App.prototype = new Component;
-
-function App() {
-    this.markup = ('
-        <div>\
-            <h1>Welcome to Freedactive!</h1>\
-            ${customButton}\
-        </div>\
-    ').$({
-        customButton: new MyButton().markup
-    });
-    this.style = './App.css';
-    this.children = [
-        MyButton
-    ];
-}
-```
-
-### Styles
-***Inline Styles***\
-Freedactive inline styles are very similar to React's inline styles. You use
-camel casing of normal css attributes for keys and normal css values for values.
-*Note that Styles is a function rather than an object so we do not want to use new when creating an inline style*
-
-```js
-App.prototype = new Component;
-
-function App() {
-    var headerStyle = Style({
-        color: 'blue'
-    });
-
-    this.markup = ('
-        <div>\
-            <h1 style=${style}>Welcome to Freedactive!</h1>\
-        </div>\
-    ').$({
-        style: headerStyle
-    });
-}
-```
-
-### Routing
-***Router Object***\
-Navigation is a big concern in SPAs. With Freedactive you get the framework, batteries included.
-You first call 'Router.init' to set the routes and their corresponding component. Then use the 'Router.
-routeto' method for the event of your choice to cause that route to be executed.
-*Note when using the Router object you do not need to include your routing components in the children array of your component (NavBar)*
-
-```js
-NavBar.prototype = new Component;
-
-function NavBar() {
-
-    // Sets your routes
-    Router.init({
-        '/': App,
-        '/docs': Docs,
-        '/hello': Hello,
-        '/hello/world': World
-    });
-
-    // navbar navigation
-    var navbarRoutes = {
-        '/': App,
-        '/docs': Docs,
-        '/hello': Hello
-    };
-
-    /**
-     * Create the navbar list items.
-     * Have the onclick event call Router.routeto('/yourPath')
-     * to display the corresponding component.
-     * 
-     * @note the 'cash' method being used so you
-     * don't have to escape single or double quotes 
-     * for 'key', the parameter of 'Router.routeto'.
-     */
-    var lis = Object.keys(navbarRoutes).map(function(k) {
-        return ('<li onclick="Router.routeto(${key})">${route}</li>').$({
-            key: "'${yourPath}'".$({ yourPath: k }),
-            route: routes[k].name
-        });
-    });
-
-    /**
-     * Place the router's markup 'Router.markup' where you
-     * want to display your components when 'Router.routeto' is called.
-     */
-    this.markup = ('\
-        <div>\
-            <ul>\
-                ${items}\
-            </ul>\
-            <span></span>\
-        </div>\
-        ${Router}\
-    ').$({
-        items: lis.map(function(li) { return li; }).join(""),
-        Router: Router.markup
-    });
-}
-```
-
-### Events
-***Event Handlers***\
-Event handlers for components in Freedactive are just component methods.
-
-```js
-HelloWorld.prototype = new Component;
-
-function HelloWorld() {
-    /**
-    *   public method notify to handle onclick event
-    */
-    this.notify = function() {
-        // any DOM manipulation goes here
-        alert('Hello World!');
-    }
-
-    this.markup = ('
-        <div>\
-            <button onclick="notify()">Press Here</button>\
-        </div>\
-    ');
-}
-```
-
-### State
-Freedactive offers a simple interface to state management.
-
-***Actions***\
-*Action Types*: different types of actions
-```js
-var Type = {
-    INCREMENT: 'INCREMENT',
-    DECREMENT: 'DECREMENT'
-};
-```
-
-*Action Creators*: helper functions to create new actions if those actions take parameters
-```js
-var Creator = (function() {
-    function incrementCounter() {
-        return { type: Type.INCREMENT };
-    };
-
-    function decrementCounter() {
-        return { type: Type.DECREMENT };
-    };
-
-    return {
-        incrementCounter,
-        decrementCounter
-    };
-})();
-```
-
-***Reducers***\
-*Reducers*: changes the state of your instance given the current state and an action
-```js
-var Reducer = (function() {
-
-  function counter(state, action) {
-      if (typeof state === 'undefined')
-        return 1;
-      switch (action.type) {
-        case Type.INCREMENT:
-          return state + 1;
-        case Type.DECREMENT:
-          return state - 1;
-        default:
-          return state;
-      }
-  };
-
-  return {
-    counter
-  };
-})();
-```
-
-Action Types, Action Creators, and Reducers SHOULD BE KEPT in a self invoking function to reduce
-clutter in the global namespace. They should be accessed like so...
-```js
-Reducer.counter;
-Type.INCREMENT;
-Creator.incrementCounter;
-```
-
-***Methods***\
-*sub*: subscribes an event handler function to execute when a state change for your instance occurs\
-*pub*: publishes an action to change the state of your state instance and invoke your subscribers\
-*getState*: retrieves the current state of your state instance
-
-Please see https://github.com/steven-freed/freedactive/tree/master/examples/state-management for a full example.
-
-### PWA/HTML Apps
-***Service Workers***\
-Please see https://github.com/steven-freed/freedactive/tree/master/examples/service-worker for an example
-using service workers.
-
-# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Fa-ui Components Library
-***Coming Soon...***
-
 # ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive CLI
 Freedactive CLI for creating projects, components, serving your web apps and more.
 
@@ -557,6 +672,8 @@ $ freedactive create MyApp
 css file for your component.\
 **args**\
 name: your components name
+**flags**\
+-es: es version, defaults to es5
 ```
 $ freedactive component CustomButton
 ```
@@ -568,15 +685,3 @@ $ freedactive component CustomButton
 MyApp$ freedactive serve
 MyApp$ freedactive serve -p 3000
 ```
-
-- **build**: creates a production build of your web app\
-**flags**\
--es: *currently working on es6 implementation*, defaults to es5
--d: project directory to bundle
-```
-$ freedactive build -d MyProject
-$ freedactive build -d MyProject -es 5
-```
-
-After running the 'build' command, open 'index.html' and remove all of your component script tags\
-and your component stylesheet links. Replace those with one script tag for importing your minified js code and one link tag for importing your minified css code.

@@ -7,15 +7,6 @@ const tar = require('tar');
 const client = require('https');
 const serve = require('./dev-server');
 
-const gulp = require('gulp'); 
-const del = require('del');
-const concat = require('gulp-concat');
-const uglify = require('gulp-uglify');
-const babel = require('gulp-babel');
-const less = require('gulp-less');
-const grename = require('gulp-rename');
-const cleanCSS = require('gulp-clean-css');
-
 const HOST = 'steven-freed.github.io';
 const PATH = '/freedactive/cli/hello-world.tar.gz';
 const CREATE = colors.rainbow('THANK YOU ') +
@@ -72,15 +63,31 @@ const rename = function(dir) {
     });
 };
 
-const generateComponent = function(name, callback) {
-    const identifier = name.toLowerCase().replace(" ", "-");
-    name = name.replace(" ", "");
-    const componentJs = `${name}.prototype = new Component;\n` +
-    `function ${name}() {\n` + 
-    `\tthis.markup = ('\\\n\t\t<div id="${identifier}">\\\n\t\t\t<h1>${name} Component</h1>\\\n\t\t</div>\\\n\t');\n` +
-    `\tthis.style = './src/components/${name}/${name}.css';\n` +
-    `\tthis.children = [\n\t\t// components being used in your component\n\t];\n}`
-    const componentCss = `#${identifier} {\n\ttext-align: center;\n\tdisplay: inline-block;\n}`;
+const generateComponent = function(args, callback) {
+    const identifier = args.component.toLowerCase().replace(" ", "-");
+    args.component = args.component.replace(" ", "");
+    let componentJs, componentCss;
+    if (!args.es) args.es = 5;
+    if (args.es == 5) {
+        componentJs = `${args.component}.prototype = new Component;\n\n` +
+            `function ${args.component}() { // constructor }\n\n` + 
+            `${args.component}.prototype.markup = function() {\n' +
+            '\treturn ('<div id="${identifier}"><h1>Component ${name}</h1></div>');\n` +
+            '}\n\n' +
+            `${args.component}.prototype.componentMounted = function() { // component has been mounted to DOM }`;
+            componentCss = `#${identifier} {\n\ttext-align: center;\n\tdisplay: inline-block;\n}`;
+    } else if (args.es == 6) {
+        componentJs = `class ${args.component} extends Component {\n\n` +
+            `\tconstructor() {\n` +
+            `\t\tsuper();\n` +
+            `\t}\n\n` +
+            `\tmarkup() {\n` +
+            `\t\treturn ('<div id="${identifier}"><h1>Component ${name}</h1></div>');\n` +
+            `\t}\n\n` +
+            `\tcomponentMounted() { // component has been mounted to DOM }\n\n` +
+            `}`
+            componentCss = `#${identifier} {\n\ttext-align: center;\n\tdisplay: inline-block;\n}`;
+    }
     fs.writeFileSync(`${name}.js`, componentJs);
     fs.writeFileSync(`${name}.css`, componentCss);
     callback(COMPONENT(name));
@@ -93,13 +100,49 @@ const createApp = function(dir, callback) {
     generateProject(dir, (err) => err ? console.log(colors.red(err)) : null);
 };
 
-const createComponent = function(name, callback) {
-    if(!name)
+const createComponent = function(args, callback) {
+    if(!args || args.component)
         return callback(new Error('No component name specified'));
     else 
-        generateComponent(name, (res) => console.log(res));
+        generateComponent(args, (res) => console.log(res));
 };
 
+var args = {};
+switch(process.argv[2]) {
+    case 'create':
+        createApp(process.argv[3], (err) => err ? console.log(colors.red(err)) : null);
+        break;
+    case 'serve':
+        args = {
+            '-p': process.argv[4]
+        }
+        if(args['-p'])
+            serve(parseInt(args['-p']));
+        else
+            serve();
+        break;
+    /*case 'build':
+        args = {
+            '-d': process.argv[3] === '-d' ? process.argv[4] : process.argv[6],
+            '-es': process.argv[3] === '-es' ? process.argv[4] : process.argv[6]
+        }
+        createBuild(args);
+        break;*/
+    case 'component':
+        args = {
+            'component': process.argv[2] == 'component' ? process.argv[3] : process.argv[5],
+            '-es': process.argv[2] == '-es' ? process.argv[3] : process.argv[5] 
+        }
+        createComponent(args, (err) => err ? console.log(colors.red(err)) : null);
+        break;
+    default:
+        break;
+};
+
+
+
+
+/*
 const createBuild = async function(args) {
     var dir = args['-d'] ? args['-d'] : '.';
     minifyCode(dir, parseInt(args['-es']));
@@ -109,23 +152,23 @@ function minifyCode(dir, es=5) {
     var outputDir = 'prod/';
     var paths = {
         assets: {
-            src: dir + '/**/*.{jpg,gif,png,bmp}',
-            dest: outputDir
+          */ // src: dir + '/**/*.{jpg,gif,png,bmp}', 
+           /* dest: outputDir
         },
         markup: {
-            src: dir + '/**/*.html',
-            dest: outputDir
+          */ // src: dir + '/**/*.html',
+          /*  dest: outputDir
         },
         styles: {
-          src: dir + '/**/*.css',
-          dest: outputDir
+         */ // src: dir + '/**/*.css',
+         /* dest: outputDir
         },
         scripts: {
-          src: dir + '/**/*.js',
-          dest: outputDir
+        */ // src: dir + '/**/*.js',
+         /* dest: outputDir
         }
     };
-
+    
     gulp.task('script', function() {
         return gulp.src(paths.scripts.src, { sourcemaps: true })
             .pipe(babel())
@@ -170,32 +213,4 @@ function minifyCode(dir, es=5) {
                                     gulp.task('markup'),
                                     gulp.task('assets')))();
     console.log(colors.magenta('Production bundle ready in directory "' + outputDir + '" ') + '🤙');
-}
-
-var args = {};
-switch(process.argv[2]) {
-    case 'create':
-        createApp(process.argv[3], (err) => err ? console.log(colors.red(err)) : null);
-        break;
-    case 'serve':
-        args = {
-            '-p': process.argv[4]
-        }
-        if(args['-p'])
-            serve(parseInt(args['-p']));
-        else
-            serve();
-        break;
-    case 'build':
-        args = {
-            '-d': process.argv[3] === '-d' ? process.argv[4] : process.argv[6],
-            '-es': process.argv[3] === '-es' ? process.argv[4] : process.argv[6]
-        }
-        createBuild(args);
-        break;
-    case 'component':
-        createComponent(process.argv[3], (err) => err ? console.log(colors.red(err)) : null);
-        break;
-    default:
-        break;
-};
+}*/
