@@ -67,30 +67,30 @@ const generateComponent = function(args, callback) {
     const identifier = args.component.toLowerCase().replace(" ", "-");
     args.component = args.component.replace(" ", "");
     let componentJs, componentCss;
-    if (!args.es) args.es = 5;
-    if (args.es == 5) {
+    if (args['-es'] === undefined) args['-es'] = 5;
+    if (parseInt(args['-es']) === 5) {
         componentJs = `${args.component}.prototype = new Component;\n\n` +
-            `function ${args.component}() { // constructor }\n\n` + 
-            `${args.component}.prototype.markup = function() {\n' +
-            '\treturn ('<div id="${identifier}"><h1>Component ${name}</h1></div>');\n` +
-            '}\n\n' +
-            `${args.component}.prototype.componentMounted = function() { // component has been mounted to DOM }`;
+            `function ${args.component}() { /* constructor */ }\n\n` + 
+            `${args.component}.prototype.markup = function() {\n` +
+            `\treturn ('<div id="${identifier}"><h1>Component ${args.component}</h1></div>');\n` +
+            `}\n\n` +
+            `${args.component}.prototype.componentMounted = function() { /* component has been mounted to DOM */ }`;
             componentCss = `#${identifier} {\n\ttext-align: center;\n\tdisplay: inline-block;\n}`;
-    } else if (args.es == 6) {
+    } else if (parseInt(args['-es']) === 6) {
         componentJs = `class ${args.component} extends Component {\n\n` +
             `\tconstructor() {\n` +
             `\t\tsuper();\n` +
             `\t}\n\n` +
             `\tmarkup() {\n` +
-            `\t\treturn ('<div id="${identifier}"><h1>Component ${name}</h1></div>');\n` +
+            `\t\treturn (\`<div id="${identifier}"><h1>Component ${args.component}</h1></div>\`);\n` +
             `\t}\n\n` +
-            `\tcomponentMounted() { // component has been mounted to DOM }\n\n` +
+            `\tcomponentMounted() { /* component has been mounted to DOM */ }\n\n` +
             `}`
             componentCss = `#${identifier} {\n\ttext-align: center;\n\tdisplay: inline-block;\n}`;
     }
-    fs.writeFileSync(`${name}.js`, componentJs);
-    fs.writeFileSync(`${name}.css`, componentCss);
-    callback(COMPONENT(name));
+    fs.writeFileSync(`${args.component}.js`, componentJs);
+    fs.writeFileSync(`${args.component}.css`, componentCss);
+    callback(COMPONENT(args.component));
 };
 
 const createApp = function(dir, callback) {
@@ -101,7 +101,7 @@ const createApp = function(dir, callback) {
 };
 
 const createComponent = function(args, callback) {
-    if(!args || args.component)
+    if(args.component === undefined)
         return callback(new Error('No component name specified'));
     else 
         generateComponent(args, (res) => console.log(res));
@@ -130,8 +130,8 @@ switch(process.argv[2]) {
         break;*/
     case 'component':
         args = {
-            'component': process.argv[1] == 'component' ? process.argv[2] : process.argv[4],
-            '-es': process.argv[1] == '-es' ? process.argv[2] : process.argv[4] 
+            'component': process.argv[2] == 'component' ? process.argv[3] : process.argv[5],
+            '-es': process.argv[2] == '-es' ? process.argv[3] : process.argv[5] 
         }
         createComponent(args, (err) => err ? console.log(colors.red(err)) : null);
         break;
