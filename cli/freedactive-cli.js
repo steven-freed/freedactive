@@ -130,8 +130,8 @@ switch(process.argv[2]) {
         break;*/
     case 'component':
         args = {
-            'component': process.argv[2] == 'component' ? process.argv[3] : process.argv[5],
-            '-es': process.argv[2] == '-es' ? process.argv[3] : process.argv[5] 
+            'component': process.argv[1] == 'component' ? process.argv[2] : process.argv[4],
+            '-es': process.argv[1] == '-es' ? process.argv[2] : process.argv[4] 
         }
         createComponent(args, (err) => err ? console.log(colors.red(err)) : null);
         break;
