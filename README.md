@@ -13,77 +13,8 @@ $ npm -g install freedactive
 ```
 
 ## Quick Start
-
-### Quick Start ES5
-*(older, more widely supported syntax)*
-
-Create an index.html file and an App.js file
-1. import the Freedactive framework
-2. import your entry component (e.g. App.js) and global styles
-3. create div with id "app-container"
-4. initialize Freedactive in your entry component and paths to all other js scripts and css styles
-5. run server; copy our 'dev-server.js' node server code or use freedactive-cli to serve your web app
- 
-index.html
-```html
-<!DOCTYPE html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-        <title>My App</title>
-        
-        <!-- 1 -->
-        <script src="https://unpkg.com/freedactive@latest/dist/freedactive.min.js"></script>
-        
-        <!-- 2 -->
-        <script src="/src/App.js"></script>
-        <link rel="stylesheet" href="/index.css" />
-
-    </head>
-    <body>
-        <!-- 3 -->
-        <div id="app-container"></div>
-    </body>
-</html>
-```
-
-App.js
-```js
-App.prototype = new Component;
-
-function App() {
-    // constructor
-}
-
-App.prototype.markup = function() {
-    return ('\
-        <div>\
-            <h1>Welcome to Freedactive!</h1>\
-        </div>\
-    ');
-}
-
-/**    4    **/
-Freedactive.init(App, {
-    scripts: [],
-    styles: [
-        '/index.css'
-    ]
-});
-```
-
-Terminal
-```
-/**    5    **/
-$ node dev-server.js
-OR
-$ freedactive serve
-```
-
 ### Quick Start ES6
-*(newer, easier, not as widely supported syntax)*
 
-Create an index.html file and an App.js file
 1. import the Freedactive framework
 2. import your entry component (e.g. App.js) and global styles
 3. create div with id "app-container"
@@ -146,26 +77,85 @@ OR
 $ freedactive serve
 ```
 
+### Quick Start ES5
+
+1. import the Freedactive framework
+2. import your entry component (e.g. App.js) and global styles
+3. create div with id "app-container"
+4. initialize Freedactive in your entry component and paths to all other js scripts and css styles
+5. run server; copy our 'dev-server.js' node server code or use freedactive-cli to serve your web app
+ 
+index.html
+```html
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+        <title>My App</title>
+        
+        <!-- 1 -->
+        <script src="https://unpkg.com/freedactive@latest/dist/freedactive.min.js"></script>
+        
+        <!-- 2 -->
+        <script src="/src/App.js"></script>
+        <link rel="stylesheet" href="/index.css" />
+
+    </head>
+    <body>
+        <!-- 3 -->
+        <div id="app-container"></div>
+    </body>
+</html>
+```
+
+App.js
+```js
+App.prototype = new Component;
+
+function App() {
+    // constructor
+}
+
+App.prototype.markup = function() {
+    return ('\
+        <div>\
+            <h1>Welcome to Freedactive!</h1>\
+        </div>\
+    ');
+}
+
+/**    4    **/
+Freedactive.init(App, {
+    scripts: [],
+    styles: [
+        '/index.css'
+    ]
+});
+```
+
+Terminal
+```
+/**    5    **/
+$ node dev-server.js
+OR
+$ freedactive serve
+```
+
 **Note: If using your own server, Freedactive requires that your server must always serve the index.html file**
 
 ## Contributions
 If you are interested in contributing to Freedactive please submit a pull request indicating your reason for contribution as well as tests for your contribution.
 
 ## Documentation
-
-Freedactive documentation follows the ES5 syntax because it is more widely accepted
-on the web. However you may use ES6 syntax too, it is supported by many browsers today.\
-ES6 example https://github.com/steven-freed/freedactive/tree/master/examples/js-classes
-
 ### Components
 Components can be JavaScript functions or classes. Components provide a mechanism for
 allowing html and JavaScript code reuse.
 
-*Inheritance*
+***Inheritance***\
 All components inherit from the Freedactive Component prototype. JavaScript uses
 the prototypical inheritance model.
 
-*Component Life Cycle Methods*
+***Component Life Cycle Methods***
 * constructor - called when an instance of the component has been created
 * markup - called when rendering an instance of the component to the DOM
 * componentMounted - called when the component has been successfully rendered to the DOM
@@ -215,7 +205,7 @@ Test.prototype.componentUnmounted = function() {
 }
 ```
 
-***JSXStrings (JSXS)***\
+### JSX Strings (JSXS)
 Similar to React you can use a JSX *like* syntax called JSXS, JSX Strings
 that work just like JSX. JSXS components are **always** capitalized and
 may contain a set of required properties and optional properties. JSXS works
@@ -251,7 +241,8 @@ class App extends Component {
 }
 ```
 
-You Can Even Pass Your Own Properties!
+
+***You Can Even Pass Your Own Properties!***\
 Properties are a set of *read only* attributes of components. Any property
 can be passed to a JSXS component and retrieved via the 'props' property.
 
@@ -290,7 +281,7 @@ class Button extends Component {
 }
 ```
 
-We've Looked at Self Closing JSXS Tags, Now Lets See Opening and Closing Tag Components
+***We've Looked at Self Closing JSXS Tags, Now Lets See Opening and Closing Tag Components***\
 Opening and closing tag components use the 'innerHTML' prop (similar to React's children prop) to
 nest any other HTML tags, JSXS component tags, or just text in the component.
 
@@ -358,16 +349,15 @@ class App extends Component {
 ```
 
 ### Routing
-***Switch and Link***\
 Switch and Link provide the solution to routing a single page application.
 
 ***Switch***\
-(Self-Closing Tag)
+(Self-Closing Tag)\
 Requires a property called 'routes' which must be formatted using the 'Route' function,
 this allows Switch to understand your routing mapping.
 
 ***Link***\
-(Open-Close or Self-Closing Tag)
+(Open-Close or Self-Closing Tag)\
 Requires a Switch JSXS tag set with the 'routes' property and has a required property
 called 'path' with the path you want the Link to route to. Link has a class property called
 'fa-link' that may be used to style your Links.
@@ -442,7 +432,7 @@ class HelloWorld extends Component {
 Freedactive offers a simple interface to state management.
 
 ***Actions***\
-*Action Types*: different types of actions
+* Action Types - different types of actions
 ```js
 const Type = {
     INCREMENT: 'INCREMENT',
@@ -450,7 +440,7 @@ const Type = {
 };
 ```
 
-*Action Creators*: helper functions to create new actions if those actions take parameters
+* Action Creators - helper functions to create new actions if those actions take parameters
 ```js
 const Creator = (function() {
     function incrementCounter() {
@@ -469,7 +459,7 @@ const Creator = (function() {
 ```
 
 ***Reducers***\
-*Reducers*: changes the state of your instance given the current state and an action
+* Reducers - changes the state of your instance given the current state and an action
 ```js
 const Reducer = (function() {
 
@@ -500,7 +490,7 @@ Type.INCREMENT;
 Creator.incrementCounter;
 ```
 
-***Methods***\
+***Methods***
 * sub - subscribes an event handler function to execute when a state change for your instance occurs\
 * pub - publishes an action to change the state of your state instance and invoke your subscribers\
 * getState - retrieves the current state of your state instance
@@ -657,7 +647,7 @@ state.pub(action);
 state.sub(eventHandler);
 ```
 
-# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive CLI
+# ![Alt text](/examples/hello-world/assets/favicon.png?raw=true) Freedactive cli
 Freedactive CLI for creating projects, components, serving your web apps and more.
 
 ## Commands
