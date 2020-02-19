@@ -167,13 +167,13 @@ class App extends Component {
 
 Freedactive.init(App, {
     scripts: [
-        '/src/components/Button.js',
-        '/src/components/View.js'
+        '/src/components/Button/Button.js',
+        '/src/components/View/View.js'
     ],
     styles: [
         '/src/App.css',
-        '/src/components/Button.css',
-        '/src/components/View.css'
+        '/src/components/Button/Button.css',
+        '/src/components/View/View.css'
     ]
 })
 ```
@@ -399,11 +399,11 @@ class Navigator extends Component {
     constructor() {
         super();
 
-        this.routes = Route({
+        this.routes = {
             '/hello': Hello,
             '/docs': Docs,
             '/hello/world': World
-        });
+        };
 
         this.listItems = Object.keys(this.routes).map(function(path) {
             return (`
@@ -424,7 +424,7 @@ class Navigator extends Component {
                         }
                     </ul>
                 </div>
-                <Switch routes="${this.routes}" />
+                <Switch routes="${Route(this.routes)}" />
             </div>
         `);
     }
